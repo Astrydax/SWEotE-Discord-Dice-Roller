@@ -7,8 +7,6 @@ bot.login(config.token);
 var version = "1.0.2";
 
 
-
-
 //Called When bot becomes functional.
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
