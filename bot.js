@@ -78,23 +78,32 @@ bot.on("message", message => {
     //init the descriptor string to an empty string
     var desc = "";
 
-    var descArr = [];
-    var j = 0;
+    //var descArr = [];
     var beg, end = 0;
     var begF, endF = false;
     for(var i = 0; i< params.length; i++){
-      if(params[i].contains('"')){
+      if(params[i].includes('"')){
         if(!begF){
           beg = i;
-        }else if(begF){
+          begF = true;
+        }else if(begF && !endF){
           end = i;
+          endF = true;
         }
       }
     }
 
-    for(i = beg; i < end; i++){
+    console.log("Beg: " + beg + " End: " + end);
+    for(i = beg; i < end + 1; i++){
+      console.log(params[i]);
       desc += " " + params[i];
     }
+
+    spliceAmnt = end + 1 - beg;
+
+    //remove the text field arguments from the list of parameters before checking for dice.
+    params.splice(beg, spliceAmnt);
+
 
 
 
@@ -104,13 +113,15 @@ bot.on("message", message => {
       if(abandonShip) break;
       //Begin checking for any dice rolls
 
-      /*Given that dice rolls must be between 1-99 and the suffix with the most chars is "blk" we must only check for
+      /*
+        NOTE: made redundant by update version 1.0.2
+
+        Given that dice rolls must be between 1-99 and the suffix with the most chars is "blk" we must only check for
         arguments that are equal or less than 5 chars. Example !roll 99blk  has 5 chars in the dice argument.
         This allows dynamic dice argument order in conjunction with a string descriptor, but requires string descriptors
-        to be greater than 5 characters
+        to be greater than 5 characters.
       */
       if(params[i].length <= 5){
-
       //check command for yellow dice roll
       if(params[i].endsWith("y")){
         //make sure they haven't already rolled these dice
@@ -308,6 +319,8 @@ bot.on("message", message => {
     console.log("\nThe Standing Count is");
     console.log(diceResult);
 
+    //BEGIN PREPARING THE MESSAGE TO SEND
+
 
     //Extract the descriptor from the command assuming it's the only param greater than 5 chars
     for(var i = 0; i < params.length; i++){
@@ -317,51 +330,57 @@ bot.on("message", message => {
       }
     }
 
+
     //Do the cancellations
     if(!abandonShip){
 
-      var response = message.author.username + " roll results:";
+      var response = message.author.username + " roll results: ";
 
       //cancel success/failures
       if(diceResult.success > diceResult.failure ){
         var successRemaining = diceResult.success - diceResult.failure;
-        response += " " + "Success:" + successRemaining;
+        response += "   " + "Success: " + successRemaining;
       }else if(diceResult.success < diceResult.failure ){
         var failureRemaining = diceResult.failure - diceResult.success;
-        response += " " + "Failure:" + failureRemaining;
+        response += "   " + "Failure: " + failureRemaining;
       }
 
       //cancel Advantage/Threat
       if(diceResult.advantage > diceResult.threat ){
         var advantageRemaining = diceResult.advantage - diceResult.threat;
-        response += " " + "Advantage:" + advantageRemaining;
+        response += "   " + "Advantage: " + advantageRemaining;
       }else if(diceResult.advantage < diceResult.threat ){
         var threatRemaining = diceResult.threat - diceResult.advantage;
-        response += " " + "Threat:" + threatRemaining;
+        response += "   " + "Threat: " + threatRemaining;
       }
       //Check for any Triumphs
       if(diceResult.triumph != 0){
-        response += " " + "Triumph:" + diceResult.triumph;
+        response += "   " + "Triumph: " + diceResult.triumph;
       }
       //Check for any Despair
       if(diceResult.despair != 0){
-        response += " " + "Despair:" + diceResult.despair;
+        response += "   " + "Despair: " + diceResult.despair;
       }
 
       //check for force
       if(diceResult.light != 0 || diceResult.dark != 0){
         if(diceResult.light > diceResult.dark ){
           var lightRemaining = diceResult.light - diceResult.dark;
-          response += " " + "Light Force:" + lightRemaining;
+          response += "   " + "Light Force: " + lightRemaining;
         }else if(diceResult.light < diceResult.dark ){
           var darkRemaining = diceResult.dark - diceResult.light;
-          response += " " + "Dark Force:" + darkRemaining;
+          response += "   " + "Dark Force: " + darkRemaining;
         }
       }
 
+      //remove Quotes from descriptor
+      desc = desc.replace(/['"]+/g, '');
+
       //response += " " + desc;
-      message.channel.sendMessage(desc + "\n" + response);
+      message.channel.sendMessage(config.descriptorPrepend + " " + desc + "\n" + response);
       //message.channel.sendMessage(response);
+    }else if (abandonShip) {
+      message.channel.sendMessage("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
     }
   }
 });

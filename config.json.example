@@ -1,5 +1,6 @@
 {
   "token": "BOT TOKEN",
   "prefix": "!",
+  "descriptorPrepend": "",
   "maxRollsPerDie": 20
 }
