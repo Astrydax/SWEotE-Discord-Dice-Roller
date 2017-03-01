@@ -4,7 +4,7 @@ var chalk = require("chalk");
 const bot = new Discord.Client();
 bot.login(config.token);
 
-var version = "1.0.1";
+var version = "1.0.2";
 
 
 
