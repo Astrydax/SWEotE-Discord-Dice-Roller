@@ -27,8 +27,27 @@ A Discord Bot Companion for the Star Wars: Edge of the Empire RPG
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
 4. Open Config.json.example with a text editor program of your choice.
-5. Replace "BOT TOKEN" with your sercret token you copied in step 2.6 
+5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 
 6. Save the file as "config.json" without the trailing "example".
 7. Your bot is now configured and ready to launch.
+
+#Running the bot
+
+To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move this file to any location you want. However, do not move "start.bat" out of the installation folder.
+
+#Configuration File config.json
+
+config.json has four properties
+
+1. token
+  - this is the login token for your bot
+2. prefix
+  - this is the symbol the bot uses to recognize commands. This is set to "!" by default
+3. descriptorPrenpend
+  - Any text you place between the double quotes following this property will be prepended to the text provided in the comment parameter.
+  Example: if "descriptorPrepend" is set to "Targeting: ", then the command !roll 2g 2blk "Soldier 1" is called, the bot will respond with:     Targeting: Soldier 1 
+  Astrydax roll results:    Success: 1   Threat: 1
+4. maxRollsPerDie
+  - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
 
 
