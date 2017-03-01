@@ -50,4 +50,14 @@ config.json has four properties
 4. maxRollsPerDie
   - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
 
+#Dice Suffixes 
+
+    y = Yellow/Proficiency
+    g = Green/Ability
+    b = Blue/Boost
+    blk = Black/Setback
+    r = Red/ Challenge
+    p = Purple/ Difficulty
+    d/w = White/Destiny/Force
+
 
