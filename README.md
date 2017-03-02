@@ -11,6 +11,7 @@ A Discord Bot Companion for the Star Wars: Edge of the Empire RPG
     - !roll 2blk "Attack on Trooper 1" 3g
   
   Both command structures are treated the same way by the bot.
+
   Dice results and cancellations are computed by the bot so you don't have to!  
 #Installation and Setup
 
