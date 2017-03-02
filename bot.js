@@ -1,5 +1,5 @@
 /*
-  Developed by Astrydax, aka Royalcrown28
+  Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please visit me on fiverr at
   https://www.fiverr.com/royalcrown28
 */
