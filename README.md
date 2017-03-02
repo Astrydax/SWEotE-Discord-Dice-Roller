@@ -3,7 +3,7 @@ A Discord Bot Companion for the Star Wars: Edge of the Empire RPG
 
 #Usage
 - !roll [1y 2g 3b 4blk 5r 6p 7d 7w "A Comment for this Roll"]  
-  Parameters are usable in any order. 
+  Parameters are usable in any order and all parameters are optional.
   
   For Example:
   
