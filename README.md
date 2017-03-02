@@ -1,5 +1,5 @@
 # SWEotE-Discord-Dice-Roller
-A Discord Bot Companion for the Star Wars: Edge of the Empire RPG
+A Discord Bot Companion for the SW:EotE RPG
 
 #Usage
 - !roll [1y 2g 3b 4blk 5r 6p 7d 7w "A Comment for this Roll"]  
