@@ -386,7 +386,7 @@ bot.on("message", message => {
       message.channel.sendMessage(config.descriptorPrepend + " " + desc + "\n" + response);
       //message.channel.sendMessage(response);
     }else if (abandonShip) {
-      message.channel.sendMessage("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
+      message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
     }
   }
 });
