@@ -1,5 +1,5 @@
 # SWEotE-Discord-Dice-Roller
-A Discord Bot Companion for the Star Wars: Edge of the Empire RPG
+A Discord Bot Companion for the SW:EotE RPG
 
 #Usage
 - !roll [1y 2g 3b 4blk 5r 6p 7d 7w "A Comment for this Roll"]  
@@ -11,7 +11,9 @@ A Discord Bot Companion for the Star Wars: Edge of the Empire RPG
     - !roll 2blk "Attack on Trooper 1" 3g
   
   Both command structures are treated the same way by the bot.
-  
+
+  Dice results and cancellations are computed by the bot so you don't have to!  
+  Only the remaining symbols will be displayed.
 #Installation and Setup
 
 1. First you will need to have NodeJS installed on your machine. You can find the latest version [here](https://nodejs.org/en/)
