@@ -1,3 +1,9 @@
+/*
+  Developed by Astrydax, aka Royalcrown28
+  For Custom Discord Bots please visit me on fiverr at
+  https://www.fiverr.com/royalcrown28
+*/
+
 const Discord = require("discord.js");
 const config = require("./config.json");
 var chalk = require("chalk");
