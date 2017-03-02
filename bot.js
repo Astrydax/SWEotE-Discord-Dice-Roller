@@ -35,10 +35,12 @@ bot.on("message", message => {
   const params = message.content.split(" ").slice(1);
 
   //************************COMMANDS START HERE************************
-  if(message.content.startsWith(config.prefix + "kill")){
-    console.log("!kill command was called... Now Exiting");
-    process.exit();
-  }
+
+  // Command to kill the bot application
+  // if(message.content.startsWith(config.prefix + "kill")){
+  //   console.log("!kill command was called... Now Exiting");
+  //   process.exit();
+  // }
 
   // Roll the dice command
   if(message.content.startsWith(config.prefix + "roll")){
