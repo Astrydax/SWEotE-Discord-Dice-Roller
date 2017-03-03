@@ -28,10 +28,9 @@ A Discord Bot Companion for the SW:EotE RPG
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
-4. Open Config.json.example with a text editor program of your choice.
-5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 
-6. Save the file as "config.json" without the trailing ".example".
-7. Your bot is now configured and ready to launch.
+4. Open Config.json with a text editor program of your choice.
+5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
+6. Your bot is now configured and ready to launch.
 
 #Running the bot
 
