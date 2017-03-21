@@ -34,6 +34,8 @@ A Discord Bot Companion for the SW:EotE RPG
 
 #Running the bot
 
+Before you first launch the bot you need to run the file "Run this before first launch". You can't miss it. This will install all the dependencies that bot needs to run.
+
 To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move this file to any location you want. However, do not move "start.bat" out of the installation folder.
 
 #Configuration File config.json
