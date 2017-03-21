@@ -1,7 +1,6 @@
 /*
   Developed by Astrydax, aka Royalcrown28 for vampwood
-  For Custom Discord Bots please visit me on fiverr at
-  https://www.fiverr.com/royalcrown28
+  For Custom Discord Bots please email me at Astrydax@gmail.com
 */
 
 const Discord = require("discord.js");
@@ -10,14 +9,13 @@ var chalk = require("chalk");
 const bot = new Discord.Client();
 bot.login(config.token);
 
-var version = "1.0.2";
+var version = "1.0.3";
 
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
-  console.log("the PID is: " + process.pid);
   if (config.maxRollsPerDie >= 100) {
     console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
   }
@@ -42,6 +40,12 @@ bot.on("message", message => {
   //   console.log("!kill command was called... Now Exiting");
   //   process.exit();
   // }
+
+  // D100 command
+  if (message.content.startsWith(config.prefix + "d100")) {
+    let r = Math.floor(Math.random() * 100) + 1;
+    message.reply(" rolled: " + r);
+  }
 
   // Roll the dice command
   if (message.content.startsWith(config.prefix + "roll")) {
