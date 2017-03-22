@@ -1,4 +1,5 @@
 # SWEotE-Discord-Dice-Roller
+CREDIT: Vampwood for conceiving the bot.
 A Discord Bot Companion for the SW:EotE RPG
 
 #Usage
