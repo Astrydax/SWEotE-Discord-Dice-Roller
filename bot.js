@@ -723,6 +723,7 @@ function rollYellow(diceQty) {
       case 12:
         console.log(chalk.black.bgYellow("Triumph"));
         diceResult.triumph = diceResult.triumph + 1;
+        diceResult.success = diceResult.success + 1;
         diceResult.face += "<:yt:294475842812248074>";
         break;
     }
@@ -904,6 +905,7 @@ function rollRed(diceQty) {
       case 2:
         console.log(chalk.black.bgRed("Despair"));
         diceResult.despair = diceResult.despair + 1;
+        diceResult.failure = diceResult.failure + 1;
         diceResult.face += "<:rd:294475839305678848>";
         break;
       case 3:
