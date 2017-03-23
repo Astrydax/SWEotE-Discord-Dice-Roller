@@ -10,7 +10,11 @@ const bot = new Discord.Client();
 bot.login(config.token);
 
 var version = "1.0.3";
-
+var destinyBalance = {
+      light: 0,
+      dark: 0,
+      face: "",
+    };
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
@@ -46,7 +50,73 @@ bot.on("message", message => {
     let r = Math.floor(Math.random() * 100) + 1;
     message.reply(" rolled: " + r);
   }
+  
+//Destiny Point Module
 
+if (message.content.startsWith(config.prefix + "destiny")) {
+    
+	//Sets Denstiny balance per color
+    if (params.includes("set")) {
+    console.log("Setting current Destiny Balance for " + message.author.username);
+        
+    	for (var i = 0; i < params.length; i++) {
+        	
+	    	if (params[i].endsWith("l")) {
+			destinyBalance.light = extractNumbers(params[i]);
+			console.log (destinyBalance)
+        	}
+        
+    		if (params[i].endsWith("d")) {
+			destinyBalance.dark = extractNumbers(params[i]);
+        	}
+    	}
+    }
+    //Reset the Destiny pool
+    if (params.includes("reset")) {
+        console.log(message.author.username + " resets the Destiny Pool");
+        destinyBalance.light = 0;
+        destinyBalance.dark = 0;
+        destinyBalance.face = "";
+        message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
+        }
+    
+    //Use a lightside from the Destiny pool
+    if (params.includes("light")) {
+        if (destinyBalance.light == 0){
+        message.channel.sendMessage("No lightside points available, request will be ignored");
+        }
+        else {
+        console.log(message.author.username + " uses a Lightside point");
+        destinyBalance.light--;
+        destinyBalance.dark++;
+        message.channel.sendMessage(message.author.username + " uses a Lightside point");
+        }
+    }
+    
+    //Use a darkside from the Destiny pool
+    if (params.includes("dark")) {
+        if (destinyBalance.dark == 0){
+        message.channel.sendMessage("No Darkside points available, request will be ignored");
+        }
+        else {
+        console.log(message.author.username + " uses a Darkside point");
+        destinyBalance.dark--;
+        destinyBalance.light++;
+        message.channel.sendMessage(message.author.username + " uses a Darkside point");
+        }
+    }
+    
+	//Prints out destiny pool to channel
+	destinyBalance.face = "Destiny Pool: ";	
+		for (var i = 1; i <= destinyBalance.light; i++) {
+    	destinyBalance.face += "<:ls:294221000504246283>";
+    	}
+		for (var i = 1; i <= destinyBalance.dark; i++) {
+    	destinyBalance.face += "<:ds:294221001015689217>";
+  		}
+	message.channel.sendMessage(config.descriptorPrepend + " " + "\n" + destinyBalance.face);
+}
+  
   // Roll the dice command
   if (message.content.startsWith(config.prefix + "roll")) {
     console.log("Rolling dice for " + message.author.username);
@@ -84,9 +154,6 @@ bot.on("message", message => {
       face: "",
     };
     
-    //Init the face results to zero
-    var faceResult = "";
-
     //Switch to abort command if ever turns true
     var abandonShip = false;
 
@@ -118,9 +185,6 @@ bot.on("message", message => {
 
     //remove the text field arguments from the list of parameters before checking for dice.
     params.splice(beg, spliceAmnt);
-
-
-
 
     //Iterate over the parameters and call the dice roll functions respective to color
     // this allows users to list dice colors in any order
@@ -430,8 +494,6 @@ function randomInteger(num) {
   var result = Math.floor(Math.random() * num) + 1;
   return result;
 }
-
-
 
 function rollBlue(diceQty) {
   //Blue "Boost" die (d6)
