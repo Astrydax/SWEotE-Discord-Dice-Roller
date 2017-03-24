@@ -72,7 +72,7 @@ if (message.content.startsWith(config.prefix + "d100")) {
           }
           let r = Math.floor(Math.random() * 100) + 1;
           var total = +r + +modifier;
-          message.reply(" rolled: " + r + " +" + modifier + " " + "for a total of " + total);
+          message.reply(" rolled: " + r + " + " + modifier + " " + "for a total of " + total);
       }
       
       else {
