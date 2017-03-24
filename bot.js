@@ -52,7 +52,6 @@ bot.on("message", message => {
   }
   
 //Destiny Point Module
-
 if (message.content.startsWith(config.prefix + "destiny")) {
     
 	//Sets Denstiny balance per color
@@ -63,7 +62,6 @@ if (message.content.startsWith(config.prefix + "destiny")) {
         	
 	    	if (params[i].endsWith("l")) {
 			destinyBalance.light = extractNumbers(params[i]);
-			console.log (destinyBalance)
         	}
         
     		if (params[i].endsWith("d")) {
@@ -107,14 +105,15 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     }
     
 	//Prints out destiny pool to channel
-	destinyBalance.face = "Destiny Pool: ";	
+	destinyBalance.face = "";	
 		for (var i = 1; i <= destinyBalance.light; i++) {
     	destinyBalance.face += "<:ls:294221000504246283>";
     	}
 		for (var i = 1; i <= destinyBalance.dark; i++) {
     	destinyBalance.face += "<:ds:294221001015689217>";
   		}
-	message.channel.sendMessage(config.descriptorPrepend + " " + "\n" + destinyBalance.face);
+	message.channel.sendMessage("Destiny Pool: "); 
+	message.channel.sendMessage(destinyBalance.face);
 }
   
   // Roll the dice command
