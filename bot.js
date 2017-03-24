@@ -492,7 +492,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
         response += "   " + emoji.ds + diceResult.dark;
       }
 
-      message.channel.sendMessage(message.author.username + " roll results:" + desc);
+      message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
       message.channel.sendMessage(diceResult.face); 
       message.channel.sendMessage("Final results: " + response);
 
