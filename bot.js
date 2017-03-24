@@ -1002,62 +1002,62 @@ function rollWhite(diceQty) {
       case 1:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += "<:ls:294221000504246283>";
+        diceResult.face += "<:wl:294661335310925834>";
         break;
       case 2:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += "<:ls:294221000504246283>";
+        diceResult.face += "<:wl:294661335310925834>";
         break;
       case 3:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += "<:ls:294221000504246283><:ls:294221000504246283>";
+        diceResult.face += "<:wll:294661335155867650>";
         break;
       case 4:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += "<:ls:294221000504246283><:ls:294221000504246283>";
+        diceResult.face += "<:wll:294661335155867650>";
         break;
       case 5:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += "<:ls:294221000504246283><:ls:294221000504246283>";
+        diceResult.face += "<:wll:294661335155867650>";
         break;
       case 6:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:ds:294221001015689217>";
+        diceResult.face += "<:wd:294661334971187200>";
         break;
       case 7:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:ds:294221001015689217>";
+        diceResult.face += "<:wd:294661334971187200>";
         break;
       case 8:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:ds:294221001015689217>";
+        diceResult.face += "<:wd:294661334971187200>";
         break;
       case 9:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:ds:294221001015689217>";
+        diceResult.face += "<:wd:294661334971187200>";
         break;
       case 10:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:ds:294221001015689217>";
+        diceResult.face += "<:wd:294661334971187200>";
         break;
       case 11:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:ds:294221001015689217>";
+        diceResult.face += "<:wd:294661334971187200>";
         break;
       case 12:
         console.log(chalk.black.bgWhite("Dark x2"));
         diceResult.dark = diceResult.dark + 2;
-        diceResult.face += "<:ds:294221001015689217><:ds:294221001015689217>";
+        diceResult.face += "<:wdd:294661335243816960>";
         break;
     }
   }
