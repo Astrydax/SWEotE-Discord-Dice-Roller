@@ -1,6 +1,7 @@
 {
-  "token": "your bot token here",
+  "token": "Mjk0NTc2Mzg2Njk2NTQ0Mjcz.C7XK4w.BSqa_P3u6NVOcZw9sXxiyOwRzA4",
   "prefix": "!",
   "maxRollsPerDie": 20,
-  "descriptorPrepend": ""
+  "descriptorPrepend": "",
+  "emoji": false
 }

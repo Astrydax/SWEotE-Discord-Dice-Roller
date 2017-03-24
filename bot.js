@@ -5,9 +5,10 @@
 
 const Discord = require("discord.js");
 const config = require("./config.json");
-const emoji = require("./emojiValues.json");
 var chalk = require("chalk");
 const bot = new Discord.Client();
+var print = require("./printValues.json");
+
 bot.login(config.token);
 
 var version = "1.0.3";
@@ -24,6 +25,18 @@ bot.on("ready", () => {
   if (config.maxRollsPerDie >= 100) {
     console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
   }
+  
+  //Point print out to print or text
+	if (config.emoji == true) {
+		console.log ("emoji set to true");
+		print = print.emoji;
+	}
+
+	if (config.emoji == false) {
+		console.log ("emoji set to false");
+		print = print.text;
+	}
+	
   //console.log(chalk.red('Hello', chalk.underline.bgBlue('world') + '!'));
 });
 
@@ -46,9 +59,8 @@ bot.on("message", message => {
   //   process.exit();
   // }
 
-  // D100 command
-  if (message.content.startsWith(config.prefix + "d100")) {
-      
+// D100 command
+if (message.content.startsWith(config.prefix + "d100")) {   
       if (params.includes("+")) {
           console.log("modifer detected");
           var modifier = 0
@@ -60,7 +72,7 @@ bot.on("message", message => {
           }
           let r = Math.floor(Math.random() * 100) + 1;
           var total = +r + +modifier;
-          message.reply(" rolled: " + r + " + " + modifier + " " + "for a total of " + total);
+          message.reply(" rolled: " + r + " +" + modifier + " " + "for a total of " + total);
       }
       
       else {
@@ -68,10 +80,7 @@ bot.on("message", message => {
           let r = Math.floor(Math.random() * 100) + 1;
           message.reply(" rolled: " + r);
       }
-      
-      
-
-  }
+}
   
 //Destiny Point Module
 if (message.content.startsWith(config.prefix + "destiny")) {
@@ -129,10 +138,10 @@ if (message.content.startsWith(config.prefix + "destiny")) {
 	//Prints out destiny pool to channel
 	destinyBalance.face = "";	
 		for (var i = 1; i <= destinyBalance.light; i++) {
-    	destinyBalance.face += emoji.ls;
+    	destinyBalance.face += print.ls;
     	}
 		for (var i = 1; i <= destinyBalance.dark; i++) {
-    	destinyBalance.face += emoji.ds;
+    	destinyBalance.face += print.ds;
   		}
 	message.channel.sendMessage("Destiny Pool: "); 
 	message.channel.sendMessage(destinyBalance.face);
@@ -455,41 +464,41 @@ if (message.content.startsWith(config.prefix + "destiny")) {
       if (diceResult.success > diceResult.failure) {
         var successRemaining = diceResult.success - diceResult.failure;
         cancelledDiceResult.success = successRemaining;
-        response += "   " + emoji.suc + successRemaining;
+        response += "   " + print.suc + successRemaining;
       } else if (diceResult.success < diceResult.failure) {
         var failureRemaining = diceResult.failure - diceResult.success;
         cancelledDiceResult.failure = failureRemaining;
-        response += "   " + emoji.fail + failureRemaining;
+        response += "   " + print.fail + failureRemaining;
       }
 
       //cancel Advantage/Threat
       if (diceResult.advantage > diceResult.threat) {
         var advantageRemaining = diceResult.advantage - diceResult.threat;
         cancelledDiceResult.advantage = advantageRemaining;
-        response += "   " + emoji.adv + advantageRemaining;
+        response += "   " + print.adv + advantageRemaining;
       } else if (diceResult.advantage < diceResult.threat) {
         var threatRemaining = diceResult.threat - diceResult.advantage;
         cancelledDiceResult.threat = threatRemaining;
-        response += "   " + emoji.thr + threatRemaining;
+        response += "   " + print.thr + threatRemaining;
       }
       //Check for any Triumphs
       if (diceResult.triumph != 0) {
         cancelledDiceResult.triumph = diceResult.triumph;
-        response += "   " + emoji.tri + diceResult.triumph;
+        response += "   " + print.tri + diceResult.triumph;
       }
       //Check for any Despair
       if (diceResult.despair != 0) {
         cancelledDiceResult.despair = diceResult.despair;
-        response += "   " + emoji.des + diceResult.despair;
+        response += "   " + print.des + diceResult.despair;
       }
 
       //check for force
       if (diceResult.light != 0) {
-        response += "   " + emoji.ls + diceResult.light;
+        response += "   " + print.ls + diceResult.light;
       }
 
       if (diceResult.dark != 0) {
-        response += "   " + emoji.ds + diceResult.dark;
+        response += "   " + print.ds + diceResult.dark;
       }
 
       message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
@@ -543,32 +552,32 @@ function rollBlue(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgBlue("Blank"));
-        diceResult.face += emoji.bb;
+        diceResult.face += print.bb;
         break;
       case 2:
         console.log(chalk.white.bgBlue("Blank"));
-        diceResult.face += emoji.bb;
+        diceResult.face += print.bb;
         break;
       case 3:
         console.log(chalk.white.bgBlue("Success"));
         diceResult.success = diceResult.success + 1;
-        diceResult.face += emoji.bs;
+        diceResult.face += print.bs;
         break;
       case 4:
         console.log(chalk.white.bgBlue("Advantage"));
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += emoji.ba;
+        diceResult.face += print.ba;
         break;
       case 5:
         console.log(chalk.white.bgBlue("Advantage x2"));
         diceResult.advantage = diceResult.advantage + 2;
-        diceResult.face += emoji.baa;
+        diceResult.face += print.baa;
         break;
       case 6:
         console.log(chalk.white.bgBlue("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += emoji.bsa;
+        diceResult.face += print.bsa;
         break;
     }
   }
@@ -606,42 +615,42 @@ function rollGreen(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgGreen("Blank"));
-        diceResult.face += emoji.gb;
+        diceResult.face += print.gb;
         break;
       case 2:
         console.log(chalk.white.bgGreen("Success"));
-        diceResult.face += emoji.gs;
+        diceResult.face += print.gs;
         diceResult.success = diceResult.success + 1;
         break;
       case 3:
         console.log(chalk.white.bgGreen("Success"));
-        diceResult.face += emoji.gs;
+        diceResult.face += print.gs;
         diceResult.success = diceResult.success + 1;
         break;
       case 4:
         console.log(chalk.white.bgGreen("Advantage"));        
-        diceResult.face += emoji.ga;
+        diceResult.face += print.ga;
         diceResult.advantage = diceResult.advantage + 1;
         break;
       case 5:
         console.log(chalk.white.bgGreen("Advantage"));
-        diceResult.face += emoji.ga;
+        diceResult.face += print.ga;
         diceResult.advantage = diceResult.advantage + 1;
         break;
       case 6:
         console.log(chalk.white.bgGreen("Success + Advantage"));
-        diceResult.face += emoji.gsa;
+        diceResult.face += print.gsa;
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
         break;
       case 7:
         console.log(chalk.white.bgGreen("Advantage x2"));
-        diceResult.face += emoji.gaa;
+        diceResult.face += print.gaa;
         diceResult.advantage = diceResult.advantage + 2;
         break;
       case 8:
         console.log(chalk.white.bgGreen("Success x2"));
-        diceResult.face += emoji.gss;
+        diceResult.face += print.gss;
         diceResult.success = diceResult.success + 2;
         break;
     }
@@ -684,66 +693,66 @@ function rollYellow(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.black.bgYellow("blank"));
-        diceResult.face += emoji.yb;
+        diceResult.face += print.yb;
         break;
       case 2:
         console.log(chalk.black.bgYellow("Success"));
         diceResult.success = diceResult.success + 1;
-        diceResult.face += emoji.ys;
+        diceResult.face += print.ys;
         break;
       case 3:
         console.log(chalk.black.bgYellow("Success"));
         diceResult.success = diceResult.success + 1;
-        diceResult.face += emoji.ys;
+        diceResult.face += print.ys;
         break;
       case 4:
         console.log(chalk.black.bgYellow("Success x2"));
         diceResult.success = diceResult.success + 2;
-        diceResult.face += emoji.yss;
+        diceResult.face += print.yss;
         break;
       case 5:
         console.log(chalk.black.bgYellow("Success x2"));
         diceResult.success = diceResult.success + 2;
-        diceResult.face += emoji.yss;
+        diceResult.face += print.yss;
         break;
       case 6:
         console.log(chalk.black.bgYellow("Advantage"));
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += emoji.ya;
+        diceResult.face += print.ya;
         break;
       case 7:
         console.log(chalk.black.bgYellow("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += emoji.ysa;
+        diceResult.face += print.ysa;
         break;
       case 8:
         console.log(chalk.black.bgYellow("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += emoji.ysa;
+        diceResult.face += print.ysa;
         break;
       case 9:
         console.log(chalk.black.bgYellow("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += emoji.ysa;
+        diceResult.face += print.ysa;
         break;
       case 10:
         console.log(chalk.black.bgYellow("Advantage x2"));
         diceResult.advantage = diceResult.advantage + 2;
-        diceResult.face += emoji.yaa;
+        diceResult.face += print.yaa;
         break;
       case 11:
         console.log(chalk.black.bgYellow("Advantage x2"));
         diceResult.advantage = diceResult.advantage + 2;
-        diceResult.face += emoji.yaa;
+        diceResult.face += print.yaa;
         break;
       case 12:
         console.log(chalk.black.bgYellow("Triumph"));
         diceResult.triumph = diceResult.triumph + 1;
         diceResult.success = diceResult.success + 1;
-        diceResult.face += emoji.yt;
+        diceResult.face += print.yt;
         break;
     }
   }
@@ -778,31 +787,31 @@ function rollBlack(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgBlack("Blank"));
-        diceResult.face += emoji.blkb;
+        diceResult.face += print.blkb;
         break;
       case 2:
         console.log(chalk.white.bgBlack("Blank"));
-        diceResult.face += emoji.blkb;
+        diceResult.face += print.blkb;
         break;
       case 3:
         console.log(chalk.white.bgBlack("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += emoji.blkf;
+        diceResult.face += print.blkf;
         break;
       case 4:
         console.log(chalk.white.bgBlack("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += emoji.blkf;
+        diceResult.face += print.blkf;
         break;
       case 5:
         console.log(chalk.white.bgBlack("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.blkt;
+        diceResult.face += print.blkt;
         break;
       case 6:
         console.log(chalk.white.bgBlack("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.blkt;
+        diceResult.face += print.blkt;
         break;
     }
   }
@@ -840,43 +849,43 @@ function rollPurple(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgMagenta("Blank"));
-        diceResult.face += emoji.pb;
+        diceResult.face += print.pb;
         break;
       case 2:
         console.log(chalk.white.bgMagenta("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += emoji.pf;
+        diceResult.face += print.pf;
         break;
       case 3:
         console.log(chalk.white.bgMagenta("Failure x2"));
         diceResult.failure = diceResult.failure + 2;
-        diceResult.face += emoji.pff;
+        diceResult.face += print.pff;
         break;
       case 4:
         console.log(chalk.white.bgMagenta("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.pt;
+        diceResult.face += print.pt;
         break;
       case 5:
         console.log(chalk.white.bgMagenta("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.pt;
+        diceResult.face += print.pt;
         break;
       case 6:
         console.log(chalk.white.bgMagenta("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.pt;
+        diceResult.face += print.pt;
         break;
       case 7:
         console.log(chalk.white.bgMagenta("Threat x2"));
         diceResult.threat = diceResult.threat + 2;
-        diceResult.face += emoji.ptt;
+        diceResult.face += print.ptt;
         break;
       case 8:
         console.log(chalk.white.bgMagenta("Failure + Threat"));
         diceResult.failure = diceResult.failure + 1;
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.pft;
+        diceResult.face += print.pft;
         break;
     }
   }
@@ -919,65 +928,65 @@ function rollRed(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.black.bgRed("Blank"));
-        diceResult.face += emoji.rb;
+        diceResult.face += print.rb;
         break;
       case 2:
         console.log(chalk.black.bgRed("Despair"));
         diceResult.despair = diceResult.despair + 1;
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += emoji.rd;
+        diceResult.face += print.rd;
         break;
       case 3:
         console.log(chalk.black.bgRed("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += emoji.rf;
+        diceResult.face += print.rf;
         break;
       case 4:
         console.log(chalk.black.bgRed("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += emoji.rf;
+        diceResult.face += print.rf;
         break;
       case 5:
         console.log(chalk.black.bgRed("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.rt;
+        diceResult.face += print.rt;
         break;
       case 6:
         console.log(chalk.black.bgRed("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.rt;
+        diceResult.face += print.rt;
         break;
       case 7:
         console.log(chalk.black.bgRed("Failure x2"));
         diceResult.failure = diceResult.failure + 2;
-        diceResult.face += emoji.rff;
+        diceResult.face += print.rff;
         break;
       case 8:
         console.log(chalk.black.bgRed("Failure x2"));
         diceResult.failure = diceResult.failure + 2;
-        diceResult.face += emoji.rff;
+        diceResult.face += print.rff;
         break;
       case 9:
         console.log(chalk.black.bgRed("Threat x2"));
         diceResult.threat = diceResult.threat + 2;
-        diceResult.face += emoji.rtt;
+        diceResult.face += print.rtt;
         break;
       case 10:
         console.log(chalk.black.bgRed("Threat x2"));
         diceResult.threat = diceResult.threat + 2;
-        diceResult.face += emoji.rtt;
+        diceResult.face += print.rtt;
         break;
       case 11:
         console.log(chalk.black.bgRed("Failure + Threat"));
         diceResult.failure = diceResult.failure + 1;
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.rft;
+        diceResult.face += print.rft;
         break;
       case 12:
         console.log(chalk.black.bgRed("Failure + Threat"));
         diceResult.failure = diceResult.failure + 1;
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += emoji.rft;
+        diceResult.face += print.rft;
         break;
     }
   }
@@ -1021,62 +1030,62 @@ function rollWhite(diceQty) {
       case 1:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += emoji.wl;
+        diceResult.face += print.wl;
         break;
       case 2:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += emoji.wl;
+        diceResult.face += print.wl;
         break;
       case 3:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += emoji.wll;
+        diceResult.face += print.wll;
         break;
       case 4:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += emoji.wll;
+        diceResult.face += print.wll;
         break;
       case 5:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += emoji.wll;
+        diceResult.face += print.wll;
         break;
       case 6:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += emoji.wd;
+        diceResult.face += print.wd;
         break;
       case 7:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += emoji.wd;
+        diceResult.face += print.wd;
         break;
       case 8:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += emoji.wd;
+        diceResult.face += print.wd;
         break;
       case 9:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += emoji.wd;
+        diceResult.face += print.wd;
         break;
       case 10:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += emoji.wd;
+        diceResult.face += print.wd;
         break;
       case 11:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += emoji.wd;
+        diceResult.face += print.wd;
         break;
       case 12:
         console.log(chalk.black.bgWhite("Dark x2"));
         diceResult.dark = diceResult.dark + 2;
-        diceResult.face += emoji.wdd;
+        diceResult.face += print.wdd;
         break;
     }
   }
