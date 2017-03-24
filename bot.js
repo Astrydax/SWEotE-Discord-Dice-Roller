@@ -47,8 +47,29 @@ bot.on("message", message => {
 
   // D100 command
   if (message.content.startsWith(config.prefix + "d100")) {
-    let r = Math.floor(Math.random() * 100) + 1;
-    message.reply(" rolled: " + r);
+      
+      if (params.includes("+")) {
+          console.log("modifer detected");
+          var modifier = 0
+          for (var i = 0; i < params.length; i++) {
+	    	if (params[i].endsWith("0")) {
+			modifier = extractNumbers(params[i]);
+			console.log("The modifer is: " + modifier);
+        	}
+          }
+          let r = Math.floor(Math.random() * 100) + 1;
+          var total = +r + +modifier;
+          message.reply(" rolled: " + r + " +" + modifier + " " + "for a total of " + total);
+      }
+      
+      else {
+          console.log("No modifier, straight d100 roll");
+          let r = Math.floor(Math.random() * 100) + 1;
+          message.reply(" rolled: " + r);
+      }
+      
+      
+
   }
   
 //Destiny Point Module
