@@ -5,6 +5,7 @@
 
 const Discord = require("discord.js");
 const config = require("./config.json");
+const emoji = require("./emojiValues.json");
 var chalk = require("chalk");
 const bot = new Discord.Client();
 bot.login(config.token);
@@ -59,7 +60,7 @@ bot.on("message", message => {
           }
           let r = Math.floor(Math.random() * 100) + 1;
           var total = +r + +modifier;
-          message.reply(" rolled: " + r + " + " + modifier + " " + "for a total of " + total);
+          message.reply(" rolled: " + r + " +" + modifier + " " + "for a total of " + total);
       }
       
       else {
@@ -128,10 +129,10 @@ if (message.content.startsWith(config.prefix + "destiny")) {
 	//Prints out destiny pool to channel
 	destinyBalance.face = "";	
 		for (var i = 1; i <= destinyBalance.light; i++) {
-    	destinyBalance.face += "<:ls:294221000504246283>";
+    	destinyBalance.face += emoji.ls;
     	}
 		for (var i = 1; i <= destinyBalance.dark; i++) {
-    	destinyBalance.face += "<:ds:294221001015689217>";
+    	destinyBalance.face += emoji.ds;
   		}
 	message.channel.sendMessage("Destiny Pool: "); 
 	message.channel.sendMessage(destinyBalance.face);
@@ -454,41 +455,41 @@ if (message.content.startsWith(config.prefix + "destiny")) {
       if (diceResult.success > diceResult.failure) {
         var successRemaining = diceResult.success - diceResult.failure;
         cancelledDiceResult.success = successRemaining;
-        response += "   " + "<:suc:294221000814493696> " + successRemaining;
+        response += "   " + emoji.suc + successRemaining;
       } else if (diceResult.success < diceResult.failure) {
         var failureRemaining = diceResult.failure - diceResult.success;
         cancelledDiceResult.failure = failureRemaining;
-        response += "   " + "<:fail:294221000634007553> " + failureRemaining;
+        response += "   " + emoji.fail + failureRemaining;
       }
 
       //cancel Advantage/Threat
       if (diceResult.advantage > diceResult.threat) {
         var advantageRemaining = diceResult.advantage - diceResult.threat;
         cancelledDiceResult.advantage = advantageRemaining;
-        response += "   " + "<:adv:294221000277491714> " + advantageRemaining;
+        response += "   " + emoji.adv + advantageRemaining;
       } else if (diceResult.advantage < diceResult.threat) {
         var threatRemaining = diceResult.threat - diceResult.advantage;
         cancelledDiceResult.threat = threatRemaining;
-        response += "   " + "<:thr:294221000684470274> " + threatRemaining;
+        response += "   " + emoji.thr + threatRemaining;
       }
       //Check for any Triumphs
       if (diceResult.triumph != 0) {
         cancelledDiceResult.triumph = diceResult.triumph;
-        response += "   " + "<:tri:294221000713830401> " + diceResult.triumph;
+        response += "   " + emoji.tri + diceResult.triumph;
       }
       //Check for any Despair
       if (diceResult.despair != 0) {
         cancelledDiceResult.despair = diceResult.despair;
-        response += "   " + "<:des:294221000911093760> " + diceResult.despair;
+        response += "   " + emoji.des + diceResult.despair;
       }
 
       //check for force
       if (diceResult.light != 0) {
-        response += "   " + "<:ls:294221000504246283> " + diceResult.light;
+        response += "   " + emoji.ls + diceResult.light;
       }
 
       if (diceResult.dark != 0) {
-        response += "   " + "<:ds:294221001015689217> " + diceResult.dark;
+        response += "   " + emoji.ds + diceResult.dark;
       }
 
       message.channel.sendMessage(message.author.username + " roll results:" + desc);
@@ -542,32 +543,32 @@ function rollBlue(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgBlue("Blank"));
-        diceResult.face += "<:bb:294475842799665152> ";
+        diceResult.face += emoji.bb;
         break;
       case 2:
         console.log(chalk.white.bgBlue("Blank"));
-        diceResult.face += "<:bb:294475842799665152> ";
+        diceResult.face += emoji.bb;
         break;
       case 3:
         console.log(chalk.white.bgBlue("Success"));
         diceResult.success = diceResult.success + 1;
-        diceResult.face += "<:bs:294475842812248064> ";
+        diceResult.face += emoji.bs;
         break;
       case 4:
         console.log(chalk.white.bgBlue("Advantage"));
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += "<:ba:294475842778693633> ";
+        diceResult.face += emoji.ba;
         break;
       case 5:
         console.log(chalk.white.bgBlue("Advantage x2"));
         diceResult.advantage = diceResult.advantage + 2;
-        diceResult.face += "<:baa:294475841453162506> ";
+        diceResult.face += emoji.baa;
         break;
       case 6:
         console.log(chalk.white.bgBlue("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += "<:bsa:294475842803728384> ";
+        diceResult.face += emoji.bsa;
         break;
     }
   }
@@ -605,42 +606,42 @@ function rollGreen(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgGreen("Blank"));
-        diceResult.face += "<:gb:294232171286364161> ";
+        diceResult.face += emoji.gb;
         break;
       case 2:
         console.log(chalk.white.bgGreen("Success"));
-        diceResult.face += "<:gs:294232171840012288> ";
+        diceResult.face += emoji.gs;
         diceResult.success = diceResult.success + 1;
         break;
       case 3:
         console.log(chalk.white.bgGreen("Success"));
-        diceResult.face += "<:gs:294232171840012288> ";
+        diceResult.face += emoji.gs;
         diceResult.success = diceResult.success + 1;
         break;
       case 4:
         console.log(chalk.white.bgGreen("Advantage"));        
-        diceResult.face += "<:ga:294232171131043851> ";
+        diceResult.face += emoji.ga;
         diceResult.advantage = diceResult.advantage + 1;
         break;
       case 5:
         console.log(chalk.white.bgGreen("Advantage"));
-        diceResult.face += "<:ga:294232171131043851> ";
+        diceResult.face += emoji.ga;
         diceResult.advantage = diceResult.advantage + 1;
         break;
       case 6:
         console.log(chalk.white.bgGreen("Success + Advantage"));
-        diceResult.face += "<:gsa:294232171688886273> ";
+        diceResult.face += emoji.gsa;
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
         break;
       case 7:
         console.log(chalk.white.bgGreen("Advantage x2"));
-        diceResult.face += "<:gaa:294232171369988096> ";
+        diceResult.face += emoji.gaa;
         diceResult.advantage = diceResult.advantage + 2;
         break;
       case 8:
         console.log(chalk.white.bgGreen("Success x2"));
-        diceResult.face += "<:gss:294232171907121162> ";
+        diceResult.face += emoji.gss;
         diceResult.success = diceResult.success + 2;
         break;
     }
@@ -683,66 +684,66 @@ function rollYellow(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.black.bgYellow("blank"));
-        diceResult.face += "<:yb:294475842581692417> ";
+        diceResult.face += emoji.yb;
         break;
       case 2:
         console.log(chalk.black.bgYellow("Success"));
         diceResult.success = diceResult.success + 1;
-        diceResult.face += "<:ys:294475842506194946> ";
+        diceResult.face += emoji.ys;
         break;
       case 3:
         console.log(chalk.black.bgYellow("Success"));
         diceResult.success = diceResult.success + 1;
-        diceResult.face += "<:ys:294475842506194946> ";
+        diceResult.face += emoji.ys;
         break;
       case 4:
         console.log(chalk.black.bgYellow("Success x2"));
         diceResult.success = diceResult.success + 2;
-        diceResult.face += "<:yss:294475842573303809> ";
+        diceResult.face += emoji.yss;
         break;
       case 5:
         console.log(chalk.black.bgYellow("Success x2"));
         diceResult.success = diceResult.success + 2;
-        diceResult.face += "<:yss:294475842573303809> ";
+        diceResult.face += emoji.yss;
         break;
       case 6:
         console.log(chalk.black.bgYellow("Advantage"));
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += "<:ya:294475842602532866> ";
+        diceResult.face += emoji.ya;
         break;
       case 7:
         console.log(chalk.black.bgYellow("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += "<:ysa:294475842854322177> ";
+        diceResult.face += emoji.ysa;
         break;
       case 8:
         console.log(chalk.black.bgYellow("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += "<:ysa:294475842854322177> ";
+        diceResult.face += emoji.ysa;
         break;
       case 9:
         console.log(chalk.black.bgYellow("Success + Advantage"));
         diceResult.success = diceResult.success + 1;
         diceResult.advantage = diceResult.advantage + 1;
-        diceResult.face += "<:ysa:294475842854322177> ";
+        diceResult.face += emoji.ysa;
         break;
       case 10:
         console.log(chalk.black.bgYellow("Advantage x2"));
         diceResult.advantage = diceResult.advantage + 2;
-        diceResult.face += "<:yaa:294475842699132930> ";
+        diceResult.face += emoji.yaa;
         break;
       case 11:
         console.log(chalk.black.bgYellow("Advantage x2"));
         diceResult.advantage = diceResult.advantage + 2;
-        diceResult.face += "<:yaa:294475842699132930> ";
+        diceResult.face += emoji.yaa;
         break;
       case 12:
         console.log(chalk.black.bgYellow("Triumph"));
         diceResult.triumph = diceResult.triumph + 1;
         diceResult.success = diceResult.success + 1;
-        diceResult.face += "<:yt:294475842812248074> ";
+        diceResult.face += emoji.yt;
         break;
     }
   }
@@ -777,31 +778,31 @@ function rollBlack(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgBlack("Blank"));
-        diceResult.face += "<:blkb:294475842757722113> ";
+        diceResult.face += emoji.blkb;
         break;
       case 2:
         console.log(chalk.white.bgBlack("Blank"));
-        diceResult.face += "<:blkb:294475842757722113> ";
+        diceResult.face += emoji.blkb;
         break;
       case 3:
         console.log(chalk.white.bgBlack("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += "<:blkf:294475839171461121> ";
+        diceResult.face += emoji.blkf;
         break;
       case 4:
         console.log(chalk.white.bgBlack("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += "<:blkf:294475839171461121> ";
+        diceResult.face += emoji.blkf;
         break;
       case 5:
         console.log(chalk.white.bgBlack("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:blkt:294475842615115777> ";
+        diceResult.face += emoji.blkt;
         break;
       case 6:
         console.log(chalk.white.bgBlack("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:blkt:294475842615115777> ";
+        diceResult.face += emoji.blkt;
         break;
     }
   }
@@ -839,43 +840,43 @@ function rollPurple(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.white.bgMagenta("Blank"));
-        diceResult.face += "<:pb:294238724043309057> ";
+        diceResult.face += emoji.pb;
         break;
       case 2:
         console.log(chalk.white.bgMagenta("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += "<:pf:294238724659740673> ";
+        diceResult.face += emoji.pf;
         break;
       case 3:
         console.log(chalk.white.bgMagenta("Failure x2"));
         diceResult.failure = diceResult.failure + 2;
-        diceResult.face += "<:pff:294238724638900224> ";
+        diceResult.face += emoji.pff;
         break;
       case 4:
         console.log(chalk.white.bgMagenta("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:pt:294238723837788172> ";
+        diceResult.face += emoji.pt;
         break;
       case 5:
         console.log(chalk.white.bgMagenta("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:pt:294238723837788172> ";
+        diceResult.face += emoji.pt;
         break;
       case 6:
         console.log(chalk.white.bgMagenta("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:pt:294238723837788172> ";
+        diceResult.face += emoji.pt;
         break;
       case 7:
         console.log(chalk.white.bgMagenta("Threat x2"));
         diceResult.threat = diceResult.threat + 2;
-        diceResult.face += "<:ptt:294238724680581120> ";
+        diceResult.face += emoji.ptt;
         break;
       case 8:
         console.log(chalk.white.bgMagenta("Failure + Threat"));
         diceResult.failure = diceResult.failure + 1;
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:pft:294238724621860874> ";
+        diceResult.face += emoji.pft;
         break;
     }
   }
@@ -918,65 +919,65 @@ function rollRed(diceQty) {
     switch (roll) {
       case 1:
         console.log(chalk.black.bgRed("Blank"));
-        diceResult.face += "<:rb:294475842803859466> ";
+        diceResult.face += emoji.rb;
         break;
       case 2:
         console.log(chalk.black.bgRed("Despair"));
         diceResult.despair = diceResult.despair + 1;
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += "<:rd:294475839305678848> ";
+        diceResult.face += emoji.rd;
         break;
       case 3:
         console.log(chalk.black.bgRed("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += "<:rf:294475842501738498> ";
+        diceResult.face += emoji.rf;
         break;
       case 4:
         console.log(chalk.black.bgRed("Failure"));
         diceResult.failure = diceResult.failure + 1;
-        diceResult.face += "<:rf:294475842501738498> ";
+        diceResult.face += emoji.rf;
         break;
       case 5:
         console.log(chalk.black.bgRed("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:rt:294475842564653057> ";
+        diceResult.face += emoji.rt;
         break;
       case 6:
         console.log(chalk.black.bgRed("Threat"));
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:rt:294475842564653057> ";
+        diceResult.face += emoji.rt;
         break;
       case 7:
         console.log(chalk.black.bgRed("Failure x2"));
         diceResult.failure = diceResult.failure + 2;
-        diceResult.face += "<:rff:294475842426503171> ";
+        diceResult.face += emoji.rff;
         break;
       case 8:
         console.log(chalk.black.bgRed("Failure x2"));
         diceResult.failure = diceResult.failure + 2;
-        diceResult.face += "<:rff:294475842426503171> ";
+        diceResult.face += emoji.rff;
         break;
       case 9:
         console.log(chalk.black.bgRed("Threat x2"));
         diceResult.threat = diceResult.threat + 2;
-        diceResult.face += "<:rtt:294475842346811394> ";
+        diceResult.face += emoji.rtt;
         break;
       case 10:
         console.log(chalk.black.bgRed("Threat x2"));
         diceResult.threat = diceResult.threat + 2;
-        diceResult.face += "<:rtt:294475842346811394> ";
+        diceResult.face += emoji.rtt;
         break;
       case 11:
         console.log(chalk.black.bgRed("Failure + Threat"));
         diceResult.failure = diceResult.failure + 1;
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:rft:294475842833219585> ";
+        diceResult.face += emoji.rft;
         break;
       case 12:
         console.log(chalk.black.bgRed("Failure + Threat"));
         diceResult.failure = diceResult.failure + 1;
         diceResult.threat = diceResult.threat + 1;
-        diceResult.face += "<:rft:294475842833219585> ";
+        diceResult.face += emoji.rft;
         break;
     }
   }
@@ -1020,62 +1021,62 @@ function rollWhite(diceQty) {
       case 1:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += "<:wl:294661335310925834> ";
+        diceResult.face += emoji.wl;
         break;
       case 2:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += "<:wl:294661335310925834> ";
+        diceResult.face += emoji.wl;
         break;
       case 3:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += "<:wll:294661335155867650> ";
+        diceResult.face += emoji.wll;
         break;
       case 4:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += "<:wll:294661335155867650> ";
+        diceResult.face += emoji.wll;
         break;
       case 5:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += "<:wll:294661335155867650> ";
+        diceResult.face += emoji.wll;
         break;
       case 6:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:wd:294661334971187200> ";
+        diceResult.face += emoji.wd;
         break;
       case 7:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:wd:294661334971187200> ";
+        diceResult.face += emoji.wd;
         break;
       case 8:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:wd:294661334971187200> ";
+        diceResult.face += emoji.wd;
         break;
       case 9:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:wd:294661334971187200> ";
+        diceResult.face += emoji.wd;
         break;
       case 10:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:wd:294661334971187200> ";
+        diceResult.face += emoji.wd;
         break;
       case 11:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += "<:wd:294661334971187200> ";
+        diceResult.face += emoji.wd;
         break;
       case 12:
         console.log(chalk.black.bgWhite("Dark x2"));
         diceResult.dark = diceResult.dark + 2;
-        diceResult.face += "<:wdd:294661335243816960> ";
+        diceResult.face += emoji.wdd;
         break;
     }
   }
