@@ -60,7 +60,7 @@ bot.on("message", message => {
           }
           let r = Math.floor(Math.random() * 100) + 1;
           var total = +r + +modifier;
-          message.reply(" rolled: " + r + " +" + modifier + " " + "for a total of " + total);
+          message.reply(" rolled: " + r + " + " + modifier + " " + "for a total of " + total);
       }
       
       else {
