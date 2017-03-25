@@ -2,5 +2,6 @@
   "token": "your bot token here",
   "prefix": "!",
   "maxRollsPerDie": 20,
-  "descriptorPrepend": ""
+  "descriptorPrepend": "",
+  "emoji": false
 }
