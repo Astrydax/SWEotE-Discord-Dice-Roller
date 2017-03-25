@@ -80,9 +80,164 @@ if (message.content.startsWith(config.prefix + "d100")) {
     	console.log("No modifier, straight d100 roll");
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r;
-        message.channel.sendMessage(message.author.username + " rolled: " + total);
+        message.channel.sendMessage(" rolled: " + total);
 	}
 } 
+// crit command
+if (message.content.startsWith(config.prefix + "crit")) {   
+	var total = 0;
+	var crit  = {
+	option1: print.pb + "Minor Nick: The target suffers 1 strain.",
+	option2: print.pb + "Slowed Down: The target can only act during the last allied Initiative slot on his next turn..", 
+	option3: print.pb + "Sudden Jolt: The target drops whatever is in hand.", 
+	option4: print.pb + "Distracted: The target cannot perform a free maneuver during his next turn.", 
+	option5: print.pb + "Off-Balance. Add " + print.blkb + " to his next skill check.", 
+	option6: print.pb + "Discouraging Wound: Flip one light side Destiny point to a dark side Destiny Point (reverse if NPC).", 
+	option7: print.pb + "Stunned: The target is staggered until the end of his next turn.", 
+	option8: print.pb + "Stinger: Increase difficulty of next check by one.", 
+	option9: print.pb + print.pb + "Bowled Over: The target is knocked prone and suffers 1 strain.", 
+	option10: print.pb + print.pb + "Head Ringer: The target increases the difficulty of all Intellect and Cunning Checks by one until the end of the encounter.", 
+	option11: print.pb + print.pb + "Fearsome Wound: The target increases the difficulty of all Presence and Willpower checks by one until the end of the encounter.",
+	option12: print.pb + print.pb + "Agonizing Wound: The target increases the difficulty of all Brawn and Agility checks by one until the end of the encounter.",
+	option13: print.pb + print.pb + "Slightly Dazed: The target is disoriented until the end of the encounter.", 
+	option14: print.pb + print.pb + "Scattered Senses: The target removes all " + print.bb + " from skill checks until end of encounter.", 
+	option15: print.pb + print.pb + "Hamstrung: The target loses his free maneuver until the end of the encounter.",
+	option16: print.pb + print.pb + "Overpowered: The target leaves himself open, and the attacker may immediately attempt another free attack against him, using the exact same pool as the original attack.", 
+	option17: print.pb + print.pb + "Winded: Until the end of the encounter, the target cannot voluntarily suffer strain to activate any abilities or gain additional maneuvers.",
+	option18: print.pb + print.pb + "Compromised: Increase difficulty of all skill checks by one until the end of the encounter.", 
+	option19: print.pb + print.pb + print.pb + "At the Brink: The target suffers 1 strain each time he performs an action.",
+	option20: print.pb + print.pb + print.pb + "Crippled: One of the target’s limbs (selected by the GM) is crippled until healed or replaced. Increase difficulty of all checks that require use of that limb by one.", 
+	option21: print.pb + print.pb + print.pb + "Maimed: One of the target’s limbs (selected by the GM) is permanently lost. Unless the target has a cybernetic replacement, the target cannot perform actions that would require the use of that limb. All other actions gain " + print.blkb + ".",
+	option22: print.pb + print.pb + print.pb + "Horrific Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. Until this Critical Injury is healed, treat that characteristic as one point lower.", 
+	option23: print.pb + print.pb + print.pb + "Temporarily Lame: Until this Critical Injury is healed, the target cannot perform more than one maneuver during his turn.", 
+	option24: print.pb + print.pb + print.pb + "Blinded: The target can no longer see. Upgrade the difficulty of all checks twice. Upgrade the difficulty of Perception and Vigilance checks three times.", 
+	option25: print.pb + print.pb + print.pb + "Knocked Senseless: The target is staggered for the remainder of the encounter.",
+	option26: print.pb + print.pb + print.pb + print.pb + "Gruesome Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. That characteristic is permanently reduced by one, to a minimum of one.",
+	option27: print.pb + print.pb + print.pb + print.pb + "Bleeding Out: Every round, the target suffers 1 wound and 1 strain at the beginning of his turn. For every five wounds he suffers beyond his wound threshold, he suffers one additional Critical Injury. Roll on the chart, suffering the injury (if he suffers this result a second time due to this, roll again).", 
+	option28: print.pb + print.pb + print.pb + print.pb + "The End is Nigh: The target will die after the last Initiative slot during the next round.", 
+	option29: "Dead: Complete, obliterated death."
+};
+
+	//addition modifer
+	if (params.includes("+")) { 
+		console.log("+ modifer detected");
+        var modifier = params[1];
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r + +modifier;
+        message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
+	//subtraction modifier
+	} else if (params.includes("-")) {
+    	console.log("- modifer detected");
+        var modifier = params[1]
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r - +modifier;
+        message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);  
+    //no modifier
+	} else {
+    	console.log("No modifier, straight d100 roll");
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r;
+        message.channel.sendMessage(message.author.username + " rolled: " + total);
+	}
+      
+    //build textCrit
+	var textCrit = "";
+	switch (true) {
+    	case (total < 5):
+      		textCrit = crit.option1;
+      		break;
+		case (total >= 6 && total <= 10):
+			textCrit = crit.option2;
+			break;
+		case (total >= 11 && total <= 15):
+			textCrit = crit.option3;
+			break;
+		case (total >= 16 && total <= 20):
+			textCrit = crit.option4;
+			break;
+		case (total >= 21 && total <= 25):
+			textCrit = crit.option5;
+			break;
+		case (total >= 26 && total <= 30):
+			textCrit = crit.option6;
+			break;
+		case (total >= 31 && total <= 35):
+			textCrit = crit.option7;
+			break;
+		case (total >= 36 && total <= 40):
+			textCrit = crit.option8;
+			break;
+		case (total >= 41 && total <= 45):
+			textCrit = crit.option9;
+			break;
+		case (total >= 46 && total <= 50):
+			textCrit = crit.option10;
+			break;
+		case (total >= 51 && total <= 55):
+			textCrit = crit.option11;
+			break;
+		case (total >= 56 && total <= 60):
+			textCrit = crit.option12;
+			break;
+		case (total >= 61 && total <= 65):
+			textCrit = crit.option13;
+			break;
+		case (total >= 66 && total <= 70):
+			textCrit = crit.option14;
+			break;
+		case (total >= 71 && total <= 75):
+			textCrit = crit.option15;
+			break;
+		case (total >= 76 && total <= 80):
+			textCrit = crit.option16;
+			break;
+		case (total >= 81 && total <= 85):
+			textCrit = crit.option17;
+			break;
+		case (total >= 86 && total <= 90):
+			textCrit = crit.option18;
+			break;
+		case (total >= 91 && total <= 95):
+			textCrit = crit.option19;
+			break;
+		case (total >= 96 && total <= 100):
+			textCrit = crit.option20;
+			break;
+		case (total >= 101 && total <= 105):
+			textCrit = crit.option21;
+			break;
+		case (total >= 106 && total <= 110):
+			textCrit = crit.option22;
+			break;
+		case (total >= 111 && total <= 115):
+			textCrit = crit.option23;
+			break;
+		case (total >= 116 && total <= 120):
+			textCrit = crit.option24;
+			break;
+		case (total >= 121 && total <= 125):
+			textCrit = crit.option25;
+			break;
+		case (total >= 126 && total <= 130):
+			textCrit = crit.option26;
+			break;
+		case (total >= 131 && total <= 140):
+			textCrit = crit.option27;
+			break;
+		case (total >= 141 && total <= 150):
+			textCrit = crit.option28;
+			break;
+		case (total >= 151):
+			textCrit = crit.option29;
+			break;
+		default:	
+			console.log ("Something has gone horribly wrong. total is " + total);
+			break;
+	}
+	message.channel.sendMessage("Crit " + total + ": " + textCrit);  
+}
+
+  
 //Destiny Point Module
 if (message.content.startsWith(config.prefix + "destiny")) {
     
@@ -112,7 +267,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     
     //Use a lightside from the Destiny pool
     if (params.includes("light")) {
-        if (destinyBalance.light == 0) {
+        if (destinyBalance.light == 0){
         message.channel.sendMessage("No lightside points available, request will be ignored");
         }
         else {
@@ -125,7 +280,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     
     //Use a darkside from the Destiny pool
     if (params.includes("dark")) {
-        if (destinyBalance.dark == 0) {
+        if (destinyBalance.dark == 0){
         message.channel.sendMessage("No Darkside points available, request will be ignored");
         }
         else {
