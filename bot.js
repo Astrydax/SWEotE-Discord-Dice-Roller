@@ -60,28 +60,29 @@ bot.on("message", message => {
   // }
 
 // D100 command
-if (message.content.startsWith(config.prefix + "d100")) {   
-      if (params.includes("+")) {
-          console.log("modifer detected");
-          var modifier = 0
-          for (var i = 0; i < params.length; i++) {
-	    	if (params[i].endsWith("0")) {
-			modifier = extractNumbers(params[i]);
-			console.log("The modifer is: " + modifier);
-        	}
-          }
-          let r = Math.floor(Math.random() * 100) + 1;
-          var total = +r + +modifier;
-          message.reply(" rolled: " + r + " + " + modifier + " " + "for a total of " + total);
-      }
-      
-      else {
-          console.log("No modifier, straight d100 roll");
-          let r = Math.floor(Math.random() * 100) + 1;
-          message.reply(" rolled: " + r);
-      }
-}
-  
+if (message.content.startsWith(config.prefix + "d100")) {
+	//addition modifer
+	if (params.includes("+")) { 
+		console.log("+ modifer detected");
+        var modifier = params[1];
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r + +modifier;
+        message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
+	//subtraction modifier
+	} else if (params.includes("-")) {
+    	console.log("- modifer detected");
+        var modifier = params[1]
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r - +modifier;
+        message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);  
+    //no modifier
+	} else {
+    	console.log("No modifier, straight d100 roll");
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r;
+        message.channel.sendMessage(" rolled: " + total);
+	}
+} 
 //Destiny Point Module
 if (message.content.startsWith(config.prefix + "destiny")) {
     
@@ -111,7 +112,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     
     //Use a lightside from the Destiny pool
     if (params.includes("light")) {
-        if (destinyBalance.light == 0){
+        if (destinyBalance.light == 0) {
         message.channel.sendMessage("No lightside points available, request will be ignored");
         }
         else {
@@ -124,7 +125,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     
     //Use a darkside from the Destiny pool
     if (params.includes("dark")) {
-        if (destinyBalance.dark == 0){
+        if (destinyBalance.dark == 0) {
         message.channel.sendMessage("No Darkside points available, request will be ignored");
         }
         else {
