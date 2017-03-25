@@ -80,7 +80,7 @@ if (message.content.startsWith(config.prefix + "d100")) {
     	console.log("No modifier, straight d100 roll");
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r;
-        message.channel.sendMessage(" rolled: " + total);
+	message.channel.sendMessage(message.author.username + " rolled: " + total);		
 	}
 } 
 // crit command
@@ -267,7 +267,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     
     //Use a lightside from the Destiny pool
     if (params.includes("light")) {
-        if (destinyBalance.light == 0){
+        if (destinyBalance.light == 0) {
         message.channel.sendMessage("No lightside points available, request will be ignored");
         }
         else {
@@ -280,7 +280,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     
     //Use a darkside from the Destiny pool
     if (params.includes("dark")) {
-        if (destinyBalance.dark == 0){
+        if (destinyBalance.dark == 0) {
         message.channel.sendMessage("No Darkside points available, request will be ignored");
         }
         else {
