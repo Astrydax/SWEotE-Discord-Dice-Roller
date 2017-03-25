@@ -80,7 +80,7 @@ if (message.content.startsWith(config.prefix + "d100")) {
     	console.log("No modifier, straight d100 roll");
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r;
-        message.channel.sendMessage(" rolled: " + total);
+        message.channel.sendMessage(message.author.username + " rolled: " + total);
 	}
 } 
 //Destiny Point Module
