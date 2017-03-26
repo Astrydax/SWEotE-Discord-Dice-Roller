@@ -6,6 +6,9 @@
 !.eslintrc.json
 !config.json.example
 config.json
+.DS_Store
+node_modules/**/*
+
 <<<<<<< HEAD
 
 =======
