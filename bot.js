@@ -11,7 +11,7 @@ var print = require("./printValues.json");
 
 bot.login(config.token);
 
-var version = "1.0.3";
+var version = "1.2.0";
 var destinyBalance = {
       light: 0,
       dark: 0,
