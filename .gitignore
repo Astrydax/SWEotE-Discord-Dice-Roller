@@ -1,6 +1,10 @@
+*.json
 !package.json
 *.txt
 #console.bat
+*.sdo
+!.eslintrc.json
+!config.json.example
 config.json
 <<<<<<< HEAD
 
