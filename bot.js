@@ -60,7 +60,7 @@ bot.on("message", message => {
   // }
 
 // D100 command
-if (message.content.startsWith(config.prefix + "d100")) {
+if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
 	//addition modifer
 	if (params.includes("+")) {
 		console.log("+ modifer detected");
@@ -83,9 +83,8 @@ if (message.content.startsWith(config.prefix + "d100")) {
         message.channel.sendMessage(" rolled: " + total);
 	}
 }
-
 //!crit command
-if (message.content.startsWith(config.prefix + "crit")) {
+if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
 	var total = 0;
 	var crit  = {
 	option1: print.pb + "Minor Nick: The target suffers 1 strain.",
@@ -118,6 +117,7 @@ if (message.content.startsWith(config.prefix + "crit")) {
 	option28: print.pb + print.pb + print.pb + print.pb + "The End is Nigh: The target will die after the last Initiative slot during the next round.",
 	option29: "Dead: Complete, obliterated death."
 };
+
 	//addition modifer
 	if (params.includes("+")) {
 		console.log("+ modifer detected");
@@ -235,9 +235,8 @@ if (message.content.startsWith(config.prefix + "crit")) {
 	}
 	message.channel.sendMessage("Crit " + total + ": " + textCrit);
 }
-
 //!shipcrit command
-if (message.content.startsWith(config.prefix + "shipcrit")) {
+if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
 	var total = 0;
 	var crit  = {
   option1: print.pb + "Mechanical Stress. Ship or vehicle suffers 1 system strain.",
@@ -259,7 +258,7 @@ if (message.content.startsWith(config.prefix + "shipcrit")) {
   option17: print.pb + print.pb + print.pb + print.pb + "Fire! Fire rages through ship or vehicle and it immediately takes 2 system strain. Fire can be extinguished with appropriate skill, Vigilance or Cool checks at GM’s discretion. Takes one round per two silhouette to put out.",
   option18: print.pb + print.pb + print.pb + print.pb + "Breaking Up. At the end of next round, ship is completely destroyed. Anyone aboard has one round to reach escape pod or bail out before they are lost.",
   option19: "Vaporized. The ship or Vehicle is completely destroyed, consumed in a particularly large and dramatic fireball.  Nothing survives."
-  };
+};
 	//addition modifer
 	if (params.includes("+")) {
 		console.log("+ modifer detected");
@@ -347,16 +346,19 @@ if (message.content.startsWith(config.prefix + "shipcrit")) {
 	}
 	message.channel.sendMessage("Ship Crit " + total + ": " + textCrit);
 }
-
 //Destiny Point Module
-if (message.content.startsWith(config.prefix + "destiny")) {
-    //Sets Denstiny balance per color
+if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
+
+	//Sets Denstiny balance per color
     if (params.includes("set")) {
     console.log("Setting current Destiny Balance for " + message.author.username);
+
     	for (var i = 0; i < params.length; i++) {
+
 	    	if (params[i].endsWith("l")) {
 			destinyBalance.light = extractNumbers(params[i]);
         	}
+
     		if (params[i].endsWith("d")) {
 			destinyBalance.dark = extractNumbers(params[i]);
         	}
@@ -370,9 +372,10 @@ if (message.content.startsWith(config.prefix + "destiny")) {
         destinyBalance.face = "";
         message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
         }
+
     //Use a lightside from the Destiny pool
     if (params.includes("light")) {
-        if (destinyBalance.light == 0){
+        if (destinyBalance.light <= 0){
         message.channel.sendMessage("No lightside points available, request will be ignored");
         }
         else {
@@ -382,9 +385,10 @@ if (message.content.startsWith(config.prefix + "destiny")) {
         message.channel.sendMessage(message.author.username + " uses a Lightside point");
         }
     }
+
     //Use a darkside from the Destiny pool
     if (params.includes("dark")) {
-        if (destinyBalance.dark == 0){
+        if (destinyBalance.dark <= 0){
         message.channel.sendMessage("No Darkside points available, request will be ignored");
         }
         else {
@@ -394,6 +398,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
         message.channel.sendMessage(message.author.username + " uses a Darkside point");
         }
     }
+
 	//Prints out destiny pool to channel
 	destinyBalance.face = "";
 		for (var i = 1; i <= destinyBalance.light; i++) {
@@ -405,8 +410,9 @@ if (message.content.startsWith(config.prefix + "destiny")) {
 	message.channel.sendMessage("Destiny Pool: ");
 	message.channel.sendMessage(destinyBalance.face);
 }
-// Roll the dice command
-  if (message.content.startsWith(config.prefix + "roll")) {
+
+  // Roll the dice command
+  if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
     console.log("Rolling dice for " + message.author.username);
     /*Sorting the dice types by suffix
     7 unique dice in total
@@ -418,6 +424,7 @@ if (message.content.startsWith(config.prefix + "destiny")) {
     p = Purple
     d/w = destiny/white
     */
+
 
     //check off colors as they are rolled to make sure users don't accidentally roll duplicates
     var yellowRolled = false;
