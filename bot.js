@@ -62,8 +62,8 @@ bot.on("message", message => {
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
 
-  //Seperate and create a list of parameters. A space in the message denotes a new parameter
-  const params = message.content.split(" ").slice(1);
+  //Seperate and create a list of lowercase parameters. A space in the message denotes a new parameter
+  const params = message.content.toLowerCase().split(" ").slice(1);
 
   //************************COMMANDS START HERE************************
 
@@ -445,6 +445,19 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
 
     //init the descriptor string to an empty string
     var desc = "";
+
+    //reint diceResult
+    diceResult = {
+      success: 0,
+      failure: 0,
+      advantage: 0,
+      threat: 0,
+      triumph: 0,
+      despair: 0,
+      light: 0,
+      dark: 0,
+      face: "",
+    };
 
     //var descArr = [];
     var beg, end = 0;
