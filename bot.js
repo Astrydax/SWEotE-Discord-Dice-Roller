@@ -63,7 +63,7 @@ bot.on("message", message => {
   if (!message.content.startsWith(config.prefix)) return;
 
   //Seperate and create a list of lowercase parameters. A space in the message denotes a new parameter
-  const params = message.content.toLowerCase().split(" ").slice(1);
+  const params = message.content.split(" ").slice(1);
 
   //************************COMMANDS START HERE************************
 
@@ -474,20 +474,17 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       }
     }
 
+    //remove the text field arguments from the list of parameters before checking for dice.
     console.log("Beg: " + beg + " End: " + end);
     for (i = beg; i < end + 1; i++) {
       console.log(params[i]);
       desc += " " + params[i];
     }
-
     var spliceAmnt = end + 1 - beg;
-
-    //remove the text field arguments from the list of parameters before checking for dice.
     params.splice(beg, spliceAmnt);
 
     //Iterate over the parameters and call the dice roll functions respective to color
     // this allows users to list dice colors in any order
-    console.log(params)
     for (var i = 0; i < params.length; i++) {
         rollDice(params[i]);
       }
@@ -507,16 +504,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       light: 0,
       dark: 0
     };
-
-
-    //Extract the descriptor from the command assuming it's the only param greater than 5 chars
-    //Poetnetially obsolete
-    for (var i = 0; i < params.length; i++) {
-      if (params[i].length > 5) {
-        desc = params[i];
-        break;
-      }
-    }
 
     //Do the cancellations
     if (!abandonShip) {
@@ -591,9 +578,7 @@ function randomInteger(num) {
 
 //uses the current params to roll dice and adds result to diceResult
 function rollDice(params) {
-        //check command for yellow dice roll
           var color = params.replace(/\d/g, "");
-          console.log("params: " + params + " color: " + color)
           switch(color) {
             case "y":
             case "pro":
