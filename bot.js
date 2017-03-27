@@ -12,11 +12,25 @@ var print = require("./printValues.json");
 bot.login(config.token);
 
 var version = "1.2.0";
+//init destinyBalance
 var destinyBalance = {
       light: 0,
       dark: 0,
       face: "",
     };
+
+//Init the dice results to zero
+var diceResult = {
+  success: 0,
+  failure: 0,
+  advantage: 0,
+  threat: 0,
+  triumph: 0,
+  despair: 0,
+  light: 0,
+  dark: 0,
+  face: "",
+};
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
@@ -426,19 +440,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     d/w/f = destiny/white
     */
 
-    //Init the dice results to zero
-    var diceResult = {
-      success: 0,
-      failure: 0,
-      advantage: 0,
-      threat: 0,
-      triumph: 0,
-      despair: 0,
-      light: 0,
-      dark: 0,
-      face: "",
-    };
-
     //Switch to abort command if ever turns true
     var abandonShip = false;
 
@@ -477,6 +478,104 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     for (var i = 0; i < params.length; i++) {
         rollDice(params[i]);
       }
+
+    console.log("\nThe Standing Count is");
+    console.log(diceResult);
+
+    //BEGIN PREPARING THE MESSAGE TO SEND
+
+    var cancelledDiceResult = {
+      success: 0,
+      failure: 0,
+      advantage: 0,
+      threat: 0,
+      triumph: 0,
+      despair: 0,
+      light: 0,
+      dark: 0
+    };
+
+
+    //Extract the descriptor from the command assuming it's the only param greater than 5 chars
+    //Poetnetially obsolete
+    for (var i = 0; i < params.length; i++) {
+      if (params[i].length > 5) {
+        desc = params[i];
+        break;
+      }
+    }
+
+    //Do the cancellations
+    if (!abandonShip) {
+
+      //remove Quotes from descriptor
+      desc = desc.replace(/['"]+/g, '');
+
+      var response = "";
+
+      //cancel success/failures
+      if (diceResult.success > diceResult.failure) {
+        var successRemaining = diceResult.success - diceResult.failure;
+        cancelledDiceResult.success = successRemaining;
+        response += "   " + print.suc + successRemaining;
+      } else if (diceResult.success < diceResult.failure) {
+        var failureRemaining = diceResult.failure - diceResult.success;
+        cancelledDiceResult.failure = failureRemaining;
+        response += "   " + print.fail + failureRemaining;
+      }
+
+      //cancel Advantage/Threat
+      if (diceResult.advantage > diceResult.threat) {
+        var advantageRemaining = diceResult.advantage - diceResult.threat;
+        cancelledDiceResult.advantage = advantageRemaining;
+        response += "   " + print.adv + advantageRemaining;
+      } else if (diceResult.advantage < diceResult.threat) {
+        var threatRemaining = diceResult.threat - diceResult.advantage;
+        cancelledDiceResult.threat = threatRemaining;
+        response += "   " + print.thr + threatRemaining;
+      }
+      //Check for any Triumphs
+      if (diceResult.triumph != 0) {
+        cancelledDiceResult.triumph = diceResult.triumph;
+        response += "   " + print.tri + diceResult.triumph;
+      }
+      //Check for any Despair
+      if (diceResult.despair != 0) {
+        cancelledDiceResult.despair = diceResult.despair;
+        response += "   " + print.des + diceResult.despair;
+      }
+
+      //check for force
+      if (diceResult.light != 0) {
+        response += "   " + print.ls + diceResult.light;
+      }
+
+      if (diceResult.dark != 0) {
+        response += "   " + print.ds + diceResult.dark;
+      }
+
+      message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
+      message.channel.sendMessage(diceResult.face);
+      message.channel.sendMessage("Final results: " + response);
+
+    } else if (abandonShip) {
+      message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
+    }
+  }
+});
+
+//Function for extracting the number of times to roll a dice from the command string
+function extractNumbers(str) {
+  var num = str.replace(/\D/g, "");
+  return num;
+}
+
+//Function that generates random numbers based on varying dice sizes
+function randomInteger(num) {
+  var result = Math.floor(Math.random() * num) + 1;
+  return result;
+}
+
 //uses the current params to roll dice and adds result to diceResult
 function rollDice(params) {
         //check command for yellow dice roll
@@ -601,104 +700,6 @@ function rollDice(params) {
               break;
           }
         return diceResult;
-}
-
-
-    console.log("\nThe Standing Count is");
-    console.log(diceResult);
-
-    //BEGIN PREPARING THE MESSAGE TO SEND
-
-    var cancelledDiceResult = {
-      success: 0,
-      failure: 0,
-      advantage: 0,
-      threat: 0,
-      triumph: 0,
-      despair: 0,
-      light: 0,
-      dark: 0
-    };
-
-
-    //Extract the descriptor from the command assuming it's the only param greater than 5 chars
-    //Poetnetially obsolete
-    for (var i = 0; i < params.length; i++) {
-      if (params[i].length > 5) {
-        desc = params[i];
-        break;
-      }
-    }
-
-    //Do the cancellations
-    if (!abandonShip) {
-
-      //remove Quotes from descriptor
-      desc = desc.replace(/['"]+/g, '');
-
-      var response = "";
-
-      //cancel success/failures
-      if (diceResult.success > diceResult.failure) {
-        var successRemaining = diceResult.success - diceResult.failure;
-        cancelledDiceResult.success = successRemaining;
-        response += "   " + print.suc + successRemaining;
-      } else if (diceResult.success < diceResult.failure) {
-        var failureRemaining = diceResult.failure - diceResult.success;
-        cancelledDiceResult.failure = failureRemaining;
-        response += "   " + print.fail + failureRemaining;
-      }
-
-      //cancel Advantage/Threat
-      if (diceResult.advantage > diceResult.threat) {
-        var advantageRemaining = diceResult.advantage - diceResult.threat;
-        cancelledDiceResult.advantage = advantageRemaining;
-        response += "   " + print.adv + advantageRemaining;
-      } else if (diceResult.advantage < diceResult.threat) {
-        var threatRemaining = diceResult.threat - diceResult.advantage;
-        cancelledDiceResult.threat = threatRemaining;
-        response += "   " + print.thr + threatRemaining;
-      }
-      //Check for any Triumphs
-      if (diceResult.triumph != 0) {
-        cancelledDiceResult.triumph = diceResult.triumph;
-        response += "   " + print.tri + diceResult.triumph;
-      }
-      //Check for any Despair
-      if (diceResult.despair != 0) {
-        cancelledDiceResult.despair = diceResult.despair;
-        response += "   " + print.des + diceResult.despair;
-      }
-
-      //check for force
-      if (diceResult.light != 0) {
-        response += "   " + print.ls + diceResult.light;
-      }
-
-      if (diceResult.dark != 0) {
-        response += "   " + print.ds + diceResult.dark;
-      }
-
-      message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
-      message.channel.sendMessage(diceResult.face);
-      message.channel.sendMessage("Final results: " + response);
-
-    } else if (abandonShip) {
-      message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
-    }
-  }
-});
-
-//Function for extracting the number of times to roll a dice from the command string
-function extractNumbers(str) {
-  var num = str.replace(/\D/g, "");
-  return num;
-}
-
-//Function that generates random numbers based on varying dice sizes
-function randomInteger(num) {
-  var result = Math.floor(Math.random() * num) + 1;
-  return result;
 }
 
 function rollBlue(diceQty) {
