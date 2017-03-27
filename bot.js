@@ -434,7 +434,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     y/pro = Yellow
     g/a = Green
     b/boo = Blue
-    blk/sb = Black
+    blk/sb/k = Black
     r/c = red
     p/diff = Purple
     d/w/f = destiny/white
@@ -485,15 +485,29 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
 
     //Iterate over the parameters and call the dice roll functions respective to color
     // this allows users to list dice colors in any order
-    for (var i = 0; i < params.length; i++) {
-        rollDice(params[i]);
+
+    if (checkNumbers(params[0]) != null) {
+      for (var i = 0; i < params.length; i++) {
+        //extracts the number of dice to roll
+        var diceQty = extractNumbers(params[i]);
+        if (diceQty > config.maxRollsPerDie) {
+          abandonShip = true;
+          break;
+        }
+        rollDice(params[i], diceQty);
       }
+    } else {
+      for(var i = 0; i < params[0].length; i++) {
+        console.log(params[0][i]);
+        var diceQty = 1;
+        rollDice(params[0][i], diceQty);
+      }
+    }
 
     console.log("\nThe Standing Count is");
     console.log(diceResult);
 
     //BEGIN PREPARING THE MESSAGE TO SEND
-
     var cancelledDiceResult = {
       success: 0,
       failure: 0,
@@ -570,6 +584,11 @@ function extractNumbers(str) {
   return num;
 }
 
+function checkNumbers(str) {
+  var num = str.match(/\d+/g);
+  return num;
+}
+
 //Function that generates random numbers based on varying dice sizes
 function randomInteger(num) {
   var result = Math.floor(Math.random() * num) + 1;
@@ -577,127 +596,89 @@ function randomInteger(num) {
 }
 
 //uses the current params to roll dice and adds result to diceResult
-function rollDice(params) {
-          var color = params.replace(/\d/g, "");
-          switch(color) {
-            case "y":
-            case "pro":
-              var diceQty = extractNumbers(params);
-              if (diceQty > config.maxRollsPerDie) {
-                abandonShip = true;
-                break;
-              }
-                console.log("Rolling " + diceQty + " Proficiency Dice.");
-              //Call the function that rolls the yellow dice
-              var yellowResult = rollYellow(diceQty);
-              //Add the result of all the yellow dice rolls to the standing count
-              for (var k in yellowResult) {
-                diceResult[k] += yellowResult[k];
-              }
-              break;
-            case "g":
-            case "a":
-              var diceQty = extractNumbers(params);
-              if (diceQty > config.maxRollsPerDie) {
-                abandonShip = true;
-                break;
-              }
-                console.log("Rolling " + diceQty + " Ability Dice.");
-              //Call the function that rolls the green dice
-              var greenResult = rollGreen(diceQty);
-              //Add the result of all the green dice rolls to the standing count
-              for (var k in greenResult) {
-                diceResult[k] += greenResult[k];
-              }
-              break;
+function rollDice(params, diceQty) {
+    var color = params.replace(/\d/g, "");
+    switch(color) {
+      case "y":
+      case "pro":
+        console.log("Rolling " + diceQty + " Proficiency Dice.");
+        //Call the function that rolls the yellow dice
+        var yellowResult = rollYellow(diceQty);
+        //Add the result of all the yellow dice rolls to the standing count
+        for (var k in yellowResult) {
+          diceResult[k] += yellowResult[k];
+        }
+        break;
+      case "g":
+      case "a":
+        console.log("Rolling " + diceQty + " Ability Dice.");
+        //Call the function that rolls the green dice
+        var greenResult = rollGreen(diceQty);
+        //Add the result of all the green dice rolls to the standing count
+        for (var k in greenResult) {
+          diceResult[k] += greenResult[k];
+        }
+        break;
 
-            case "b":
-            case "boo":
-              var diceQty = extractNumbers(params);
-              if (diceQty > config.maxRollsPerDie) {
-                abandonShip = true;
-                break;
-              }
-                console.log("Rolling " + diceQty + " Boost Dice.");
-              //Call the function that rolls the blue dice
-              var blueResult = rollBlue(diceQty);
-              //Add the result of all the blue dice rolls to the standing count
-              for (var k in blueResult) {
-                diceResult[k] += blueResult[k];
-              }
-              break;
+      case "b":
+      case "boo":
+        console.log("Rolling " + diceQty + " Boost Dice.");
+        //Call the function that rolls the blue dice
+        var blueResult = rollBlue(diceQty);
+        //Add the result of all the blue dice rolls to the standing count
+        for (var k in blueResult) {
+          diceResult[k] += blueResult[k];
+        }
+        break;
 
-              case "blk":
-              case "sb":
-                //Extract the number of dice to troll from the string
-                var diceQty = extractNumbers(params);
-                if (diceQty > config.maxRollsPerDie) {
-                  abandonShip = true;
-                  break;
-                }
-                console.log("Rolling " + diceQty + " Setback Dice.");
-                //Call the function that rolls the black dice
-                var blackResult = rollBlack(diceQty);
-                //Add the result of all the black dice rolls to the standing count
-                for (var k in blackResult) {
-                  diceResult[k] += blackResult[k];
-                }
-                break;
+      case "blk":
+      case "sb":
+      case "k":
+        console.log("Rolling " + diceQty + " Setback Dice.");
+        //Call the function that rolls the black dice
+        var blackResult = rollBlack(diceQty);
+        //Add the result of all the black dice rolls to the standing count
+        for (var k in blackResult) {
+          diceResult[k] += blackResult[k];
+        }
+        break;
 
-              case "r":
-              case "c":
-                //Extract the number of dice to troll from the string
-                var diceQty = extractNumbers(params);
-                if (diceQty > config.maxRollsPerDie) {
-                  abandonShip = true;
-                  break;
-                }
-                console.log("Rolling " + diceQty + " Challenge Dice.");
-                //Call the function that rolls the red dice
-                var redResult = rollRed(diceQty);
-                //Add the result of all the red dice rolls to the standing count
-                for (var k in redResult) {
-                  diceResult[k] += redResult[k];
-                }
-                break;
+      case "r":
+      case "c":
+        console.log("Rolling " + diceQty + " Challenge Dice.");
+        //Call the function that rolls the red dice
+        var redResult = rollRed(diceQty);
+        //Add the result of all the red dice rolls to the standing count
+        for (var k in redResult) {
+          diceResult[k] += redResult[k];
+        }
+        break;
 
-              case "p":
-              case "diff":
-                //Extract the number of dice to troll from the string
-                var diceQty = extractNumbers(params);
-                if (diceQty > config.maxRollsPerDie) {
-                  abandonShip = true;
-                  break;
-                }
-                console.log("Rolling " + diceQty + " Difficulty Dice.");
-                //Call the function that rolls the purple dice
-                var purpleResult = rollPurple(diceQty);
-                //Add the result of all the purple dice rolls to the standing count
-                for (var k in purpleResult) {
-                  diceResult[k] += purpleResult[k];
-                }
-                break;
+      case "p":
+      case "diff":
+        console.log("Rolling " + diceQty + " Difficulty Dice.");
+        //Call the function that rolls the purple dice
+        var purpleResult = rollPurple(diceQty);
+        //Add the result of all the purple dice rolls to the standing count
+        for (var k in purpleResult) {
+          diceResult[k] += purpleResult[k];
+        }
+        break;
 
-              case "d":
-              case "w":
-              case "f":
-                //Extract the number of dice to troll from the string
-                var diceQty = extractNumbers(params);
-                if (diceQty > config.maxRollsPerDie) {
-                  abandonShip = true;
-                  break;
-                }
-                console.log("Rolling " + diceQty + " Destiny Dice.");
-                //Call the function that rolls the white dice
-                var whiteResult = rollWhite(diceQty);
-                //Add the result of all the white dice rolls to the standing count
-                for (var k in whiteResult) {
-                  diceResult[k] += whiteResult[k];
-                }
-              default:
-              break;
-          }
-        return diceResult;
+      case "d":
+      case "w":
+      case "f":
+        console.log("Rolling " + diceQty + " Destiny Dice.");
+        //Call the function that rolls the white dice
+        var whiteResult = rollWhite(diceQty);
+        //Add the result of all the white dice rolls to the standing count
+        for (var k in whiteResult) {
+          diceResult[k] += whiteResult[k];
+        }
+      default:
+      break;
+    }
+  return diceResult;
 }
 
 function rollBlue(diceQty) {
