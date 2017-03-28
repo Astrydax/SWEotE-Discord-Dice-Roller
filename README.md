@@ -67,21 +67,14 @@ config.json has four properties
 
 #Amazon EC2 install
 
-1.  Connect to your Linux instance using SSH.
+1.  Connect to your ubuntu Linux instance using SSH.
 
-2.  Install node version manager (nvm) by typing the following at the command line.
+2.  Install node  
 
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+    curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+    sudo apt-get install -y nodejs
 
-3.  Activate nvm by typing the following at the command line.
-
-    . ~/.nvm/nvm.sh
-
-4.  Use nvm to install the version of Node.js you intend to use by typing the following at the command line.
-
-    nvm install 7.7.4
-
-5.  Download lastest and unzip lastest build
+3.  Download and unzip lastest build
 
     wget https://github.com/SkyJedi/SWEotE-Discord-Dice-Roller/archive/master.zip
 
@@ -89,14 +82,14 @@ config.json has four properties
 
     cd SWEotE-Discord-Dice-Roller-master
 
-6.  Install npm for the bot
+4.  Install npm for the bot
 
     npm install
 
-7.  Configure the bot
+5.  Configure the bot
 
     sudo nano config.json
 
-8.  launch bot
+6.  launch bot (this will launch the bot and let you close the terminal window)
 
-    node bot.js
+    nohup nodejs bot.js &>/dev/null & disown
