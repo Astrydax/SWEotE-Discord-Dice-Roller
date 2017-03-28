@@ -386,7 +386,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     } else {
       for(var i = 0; i < params[1].length; i++) {
         var color = params[1][i];
-        console.log(color);
         switch(color) {
           case "l":
             destinyBalance.light = destinyBalance.light + 1;
@@ -413,7 +412,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         }
 
     //Use a lightside from the Destiny pool
-    if (params.includes("light") || params.includes("l")) {
+    if (params[0].includes("light") || params[0].includes("l")) {
         if (destinyBalance.light <= 0){
         message.channel.sendMessage("No lightside points available, request will be ignored");
         } else {
@@ -425,7 +424,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     }
 
     //Use a darkside from the Destiny pool
-    if (params.includes("dark") || params.includes("d"))  {
+    if (params[0].includes("dark") || params[0].includes("d"))  {
         if (destinyBalance.dark <= 0){
         message.channel.sendMessage("No Darkside points available, request will be ignored");
         } else {
@@ -435,7 +434,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         message.channel.sendMessage(message.author.username + " uses a Darkside point");
         }
     }
-
+    printdestinyBalance();
   	//Prints out destiny pool to channel
   	function printdestinyBalance() {
       destinyBalance.face = "";
@@ -447,7 +446,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     		}
   	message.channel.sendMessage("Destiny Pool: ");
   	message.channel.sendMessage(destinyBalance.face);
-  }
+    }
   }
 
   // Roll the dice command
