@@ -368,32 +368,55 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     if (params.includes("set")) {
     console.log("Setting current Destiny Balance for " + message.author.username);
 
-    	for (var i = 0; i < params.length; i++) {
-
-	    	if (params[i].endsWith("l")) {
-			destinyBalance.light = extractNumbers(params[i]);
-        	}
-
-    		if (params[i].endsWith("d")) {
-			destinyBalance.dark = extractNumbers(params[i]);
-        	}
-    	}
+    //check if numbers are used
+    if (checkNumbers(params[1]) != null) {
+      for (var i = 0; i < params.length; i++) {
+        var color = params[i].replace(/\d/g, "");
+        switch(color) {
+          case "l":
+            destinyBalance.light = extractNumbers(params[i]);
+            break;
+          case "d":
+            destinyBalance.dark = extractNumbers(params[i]);
+            break;
+          default:
+            break;
+          }
+      }
+    } else {
+      for(var i = 0; i < params[1].length; i++) {
+        var color = params[1][i];
+        console.log(color);
+        switch(color) {
+          case "l":
+            destinyBalance.light = destinyBalance.light + 1;
+            break;
+          case "d":
+            destinyBalance.dark = destinyBalance.dark + 1;
+            break;
+          default:
+            break;
+          }
     }
+  }
+}
+
     //Reset the Destiny pool
     if (params.includes("reset")) {
         console.log(message.author.username + " resets the Destiny Pool");
-        destinyBalance.light = 0;
-        destinyBalance.dark = 0;
-        destinyBalance.face = "";
+        destinyBalance = {
+              light: 0,
+              dark: 0,
+              face: "",
+            };
         message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
         }
 
     //Use a lightside from the Destiny pool
-    if (params.includes("light")) {
+    if (params.includes("light") || params.includes("l")) {
         if (destinyBalance.light <= 0){
         message.channel.sendMessage("No lightside points available, request will be ignored");
-        }
-        else {
+        } else {
         console.log(message.author.username + " uses a Lightside point");
         destinyBalance.light--;
         destinyBalance.dark++;
@@ -402,11 +425,10 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     }
 
     //Use a darkside from the Destiny pool
-    if (params.includes("dark")) {
+    if (params.includes("dark") || params.includes("d"))  {
         if (destinyBalance.dark <= 0){
         message.channel.sendMessage("No Darkside points available, request will be ignored");
-        }
-        else {
+        } else {
         console.log(message.author.username + " uses a Darkside point");
         destinyBalance.dark--;
         destinyBalance.light++;
@@ -414,17 +436,19 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         }
     }
 
-	//Prints out destiny pool to channel
-	destinyBalance.face = "";
-		for (var i = 1; i <= destinyBalance.light; i++) {
-    	destinyBalance.face += print.ls;
-    	}
-		for (var i = 1; i <= destinyBalance.dark; i++) {
-    	destinyBalance.face += print.ds;
-  		}
-	message.channel.sendMessage("Destiny Pool: ");
-	message.channel.sendMessage(destinyBalance.face);
-}
+  	//Prints out destiny pool to channel
+  	function printdestinyBalance() {
+      destinyBalance.face = "";
+  	for (var i = 1; i <= destinyBalance.light; i++) {
+      	destinyBalance.face += print.ls;
+      	}
+  	for (var i = 1; i <= destinyBalance.dark; i++) {
+      	destinyBalance.face += print.ds;
+    		}
+  	message.channel.sendMessage("Destiny Pool: ");
+  	message.channel.sendMessage(destinyBalance.face);
+  }
+  }
 
   // Roll the dice command
   if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
@@ -446,7 +470,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     //init the descriptor string to an empty string
     var desc = "";
 
-    //reint diceResult
+    //init diceResult
     diceResult = {
       success: 0,
       failure: 0,
