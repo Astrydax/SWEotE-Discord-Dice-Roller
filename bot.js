@@ -561,30 +561,29 @@ function randomInteger(num) {
 //function for rolling a d100 and using a modifer
 function d100(str, message) {
   var total = 0;
+  //no modifier
+  if (str.length < 1) {
+    console.log("No modifier, straight d100 roll");
+      let r = Math.floor(Math.random() * 100) + 1;
+      total = +r;
+      message.channel.sendMessage(message.author.username + " rolled: " + total);
   //addition modifer
-	if (str.includes("+")) {
+  } else if (str.includes("+") || str[0][0] == "+") {
 		console.log("+ modifer detected");
-        var modifier = str[1];
+        var modifier = extractNumbers(str[str.length - 1]);
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r + +modifier;
         message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
 	//subtraction modifier
-} else if (str.includes("-")) {
+} else if (str.includes("-") ||str[0][0] == "-") {
     	console.log("- modifer detected");
-        var modifier = str[1]
+        var modifier = extractNumbers(str[str.length - 1]);
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r - +modifier;
         message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);
-  //no modifier
-	} else {
-    	console.log("No modifier, straight d100 roll");
-        let r = Math.floor(Math.random() * 100) + 1;
-        total = +r;
-        message.channel.sendMessage(message.author.username + " rolled: " + total);
-	}
-  return (total);
+    }
+    return (total);
 }
-
 //uses the current params to roll dice and adds result to diceResult
 function rollDice(params, diceQty) {
     var color = params.replace(/\d/g, "");
