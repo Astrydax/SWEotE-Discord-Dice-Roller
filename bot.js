@@ -12,12 +12,11 @@ var print = require("./printValues.json");
 bot.login(config.token);
 
 var version = "1.2.0";
-//init destinyBalance
 var destinyBalance = {
-      light: 0,
-      dark: 0,
-      face: "",
-    };
+  light: 0,
+  dark: 0,
+  face: "",
+};
 
 //Init the dice results to zero
 var diceResult = {
@@ -41,15 +40,15 @@ bot.on("ready", () => {
   }
 
   //Point print out to print or text
-	if (config.emoji == true) {
-		console.log ("emoji set to true");
-		print = print.emoji;
-	}
+  if (config.emoji == true) {
+    console.log("emoji set to true");
+    print = print.emoji;
+  }
 
-	if (config.emoji == false) {
-		console.log ("emoji set to false");
-		print = print.text;
-	}
+  if (config.emoji == false) {
+    console.log("emoji set to false");
+    print = print.text;
+  }
 
   //console.log(chalk.red('Hello', chalk.underline.bgBlue('world') + '!'));
 });
@@ -62,7 +61,7 @@ bot.on("message", message => {
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
 
-  //Seperate and create a list of lowercase parameters. A space in the message denotes a new parameter
+  //Seperate and create a list of parameters. A space in the message denotes a new parameter
   const params = message.content.split(" ").slice(1);
 
   //************************COMMANDS START HERE************************
@@ -304,9 +303,9 @@ if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
 //Destiny Point Module
 if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
 
-	//Sets Denstiny balance per color
+    //Sets Denstiny balance per color
     if (params.includes("set")) {
-    console.log("Setting current Destiny Balance for " + message.author.username);
+      console.log("Setting current Destiny Balance for " + message.author.username);
 
       //check if numbers are used
       if (checkNumbers(params[1]) != null) {
@@ -340,6 +339,15 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       }
   }
 
+        if (params[i].endsWith("l")) {
+          destinyBalance.light = extractNumbers(params[i]);
+        }
+
+        if (params[i].endsWith("d")) {
+          destinyBalance.dark = extractNumbers(params[i]);
+        }
+      }
+    }
     //Reset the Destiny pool
     if (params.includes("reset")) {
         console.log(message.author.username + " resets the Destiny Pool");
@@ -360,7 +368,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         destinyBalance.light--;
         destinyBalance.dark++;
         message.channel.sendMessage(message.author.username + " uses a Lightside point");
-        }
+      }
     }
 
     //Use a darkside from the Destiny pool
@@ -372,7 +380,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         destinyBalance.dark--;
         destinyBalance.light++;
         message.channel.sendMessage(message.author.username + " uses a Darkside point");
-        }
+      }
     }
     printdestinyBalance();
   	//Prints out destiny pool to channel
@@ -805,7 +813,7 @@ function rollGreen(diceQty) {
         break;
     }
   }
-return diceResult;
+  return diceResult;
 }
 //
 function rollYellow(diceQty) {
