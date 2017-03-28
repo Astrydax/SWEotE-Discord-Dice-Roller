@@ -337,7 +337,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
           }
         }
       }
-  }
 
         if (params[i].endsWith("l")) {
           destinyBalance.light = extractNumbers(params[i]);
@@ -347,7 +346,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
           destinyBalance.dark = extractNumbers(params[i]);
         }
       }
-    }
+
     //Reset the Destiny pool
     if (params.includes("reset")) {
         console.log(message.author.username + " resets the Destiny Pool");
