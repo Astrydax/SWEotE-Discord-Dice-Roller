@@ -337,15 +337,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
           }
         }
       }
-
-        if (params[i].endsWith("l")) {
-          destinyBalance.light = extractNumbers(params[i]);
-        }
-
-        if (params[i].endsWith("d")) {
-          destinyBalance.dark = extractNumbers(params[i]);
-        }
-      }
+    }
 
     //Reset the Destiny pool
     if (params.includes("reset")) {
