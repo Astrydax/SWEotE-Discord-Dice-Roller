@@ -46,10 +46,10 @@ Commands:
 - !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
 
   EXAMPLES
-      - !crit +10
-      - !crit + 10
-      - !crit -10
-      - !crit - 10
+    - !crit +10
+    - !crit + 10
+    - !crit -10
+    - !crit - 10
 
 - !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
 
