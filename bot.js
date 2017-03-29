@@ -18,6 +18,19 @@ var destinyBalance = {
   face: "",
 };
 
+//Init the dice results to zero
+var diceResult = {
+  success: 0,
+  failure: 0,
+  advantage: 0,
+  threat: 0,
+  triumph: 0,
+  despair: 0,
+  light: 0,
+  dark: 0,
+  face: "",
+};
+
 //Called When bot becomes functional.
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
@@ -59,186 +72,146 @@ bot.on("message", message => {
   //   process.exit();
   // }
 
-  // D100 command
-  if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
-    //addition modifer
-    if (params.includes("+")) {
-      console.log("+ modifer detected");
-      var modifier = params[1];
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r + modifier;
-      message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
-      //subtraction modifier
-    } else if (params.includes("-")) {
-      console.log("- modifer detected");
-      var modifier = params[1]
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r - modifier;
-      message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);
-      //no modifier
-    } else {
-      console.log("No modifier, straight d100 roll");
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r;
-      message.channel.sendMessage(" rolled: " + total);
-    }
-  }
-  //!crit command
-  if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
-    var total = 0;
-    var crit = {
-      option1: print.pb + "Minor Nick: The target suffers 1 strain.",
-      option2: print.pb + "Slowed Down: The target can only act during the last allied Initiative slot on his next turn.",
-      option3: print.pb + "Sudden Jolt: The target drops whatever is in hand.",
-      option4: print.pb + "Distracted: The target cannot perform a free maneuver during his next turn.",
-      option5: print.pb + "Off-Balance. Add " + print.blkb + " to his next skill check.",
-      option6: print.pb + "Discouraging Wound: Flip one light side Destiny point to a dark side Destiny Point (reverse if NPC).",
-      option7: print.pb + "Stunned: The target is staggered until the end of his next turn.",
-      option8: print.pb + "Stinger: Increase difficulty of next check by one.",
-      option9: print.pb + print.pb + "Bowled Over: The target is knocked prone and suffers 1 strain.",
-      option10: print.pb + print.pb + "Head Ringer: The target increases the difficulty of all Intellect and Cunning Checks by one until the end of the encounter.",
-      option11: print.pb + print.pb + "Fearsome Wound: The target increases the difficulty of all Presence and Willpower checks by one until the end of the encounter.",
-      option12: print.pb + print.pb + "Agonizing Wound: The target increases the difficulty of all Brawn and Agility checks by one until the end of the encounter.",
-      option13: print.pb + print.pb + "Slightly Dazed: The target is disoriented until the end of the encounter.",
-      option14: print.pb + print.pb + "Scattered Senses: The target removes all " + print.bb + " from skill checks until end of encounter.",
-      option15: print.pb + print.pb + "Hamstrung: The target loses his free maneuver until the end of the encounter.",
-      option16: print.pb + print.pb + "Overpowered: The target leaves himself open, and the attacker may immediately attempt another free attack against him, using the exact same pool as the original attack.",
-      option17: print.pb + print.pb + "Winded: Until the end of the encounter, the target cannot voluntarily suffer strain to activate any abilities or gain additional maneuvers.",
-      option18: print.pb + print.pb + "Compromised: Increase difficulty of all skill checks by one until the end of the encounter.",
-      option19: print.pb + print.pb + print.pb + "At the Brink: The target suffers 1 strain each time he performs an action.",
-      option20: print.pb + print.pb + print.pb + "Crippled: One of the target’s limbs (selected by the GM) is crippled until healed or replaced. Increase difficulty of all checks that require use of that limb by one.",
-      option21: print.pb + print.pb + print.pb + "Maimed: One of the target’s limbs (selected by the GM) is permanently lost. Unless the target has a cybernetic replacement, the target cannot perform actions that would require the use of that limb. All other actions gain " + print.blkb + ".",
-      option22: print.pb + print.pb + print.pb + "Horrific Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. Until this Critical Injury is healed, treat that characteristic as one point lower.",
-      option23: print.pb + print.pb + print.pb + "Temporarily Lame: Until this Critical Injury is healed, the target cannot perform more than one maneuver during his turn.",
-      option24: print.pb + print.pb + print.pb + "Blinded: The target can no longer see. Upgrade the difficulty of all checks twice. Upgrade the difficulty of Perception and Vigilance checks three times.",
-      option25: print.pb + print.pb + print.pb + "Knocked Senseless: The target is staggered for the remainder of the encounter.",
-      option26: print.pb + print.pb + print.pb + print.pb + "Gruesome Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. That characteristic is permanently reduced by one, to a minimum of one.",
-      option27: print.pb + print.pb + print.pb + print.pb + "Bleeding Out: Every round, the target suffers 1 wound and 1 strain at the beginning of his turn. For every five wounds he suffers beyond his wound threshold, he suffers one additional Critical Injury. Roll on the chart, suffering the injury (if he suffers this result a second time due to this, roll again).",
-      option28: print.pb + print.pb + print.pb + print.pb + "The End is Nigh: The target will die after the last Initiative slot during the next round.",
-      option29: "Dead: Complete, obliterated death."
-    };
+// D100 command
+if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
+  d100(params, message);
+}
 
-    //addition modifer
-    if (params.includes("+")) {
-      console.log("+ modifer detected");
-      var modifier = params[1];
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r + modifier;
-      message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
-      //subtraction modifier
-    } else if (params.includes("-")) {
-      console.log("- modifer detected");
-      var modifier = params[1]
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r - modifier;
-      message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);
-      //no modifier
-    } else {
-      console.log("No modifier, straight d100 roll");
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r;
-      message.channel.sendMessage(message.author.username + " rolled: " + total);
-    }
-    //build textCrit
-    var textCrit = "";
-    switch (true) {
-      case (total < 5):
-        textCrit = crit.option1;
-        break;
-      case (total >= 6 && total <= 10):
-        textCrit = crit.option2;
-        break;
-      case (total >= 11 && total <= 15):
-        textCrit = crit.option3;
-        break;
-      case (total >= 16 && total <= 20):
-        textCrit = crit.option4;
-        break;
-      case (total >= 21 && total <= 25):
-        textCrit = crit.option5;
-        break;
-      case (total >= 26 && total <= 30):
-        textCrit = crit.option6;
-        break;
-      case (total >= 31 && total <= 35):
-        textCrit = crit.option7;
-        break;
-      case (total >= 36 && total <= 40):
-        textCrit = crit.option8;
-        break;
-      case (total >= 41 && total <= 45):
-        textCrit = crit.option9;
-        break;
-      case (total >= 46 && total <= 50):
-        textCrit = crit.option10;
-        break;
-      case (total >= 51 && total <= 55):
-        textCrit = crit.option11;
-        break;
-      case (total >= 56 && total <= 60):
-        textCrit = crit.option12;
-        break;
-      case (total >= 61 && total <= 65):
-        textCrit = crit.option13;
-        break;
-      case (total >= 66 && total <= 70):
-        textCrit = crit.option14;
-        break;
-      case (total >= 71 && total <= 75):
-        textCrit = crit.option15;
-        break;
-      case (total >= 76 && total <= 80):
-        textCrit = crit.option16;
-        break;
-      case (total >= 81 && total <= 85):
-        textCrit = crit.option17;
-        break;
-      case (total >= 86 && total <= 90):
-        textCrit = crit.option18;
-        break;
-      case (total >= 91 && total <= 95):
-        textCrit = crit.option19;
-        break;
-      case (total >= 96 && total <= 100):
-        textCrit = crit.option20;
-        break;
-      case (total >= 101 && total <= 105):
-        textCrit = crit.option21;
-        break;
-      case (total >= 106 && total <= 110):
-        textCrit = crit.option22;
-        break;
-      case (total >= 111 && total <= 115):
-        textCrit = crit.option23;
-        break;
-      case (total >= 116 && total <= 120):
-        textCrit = crit.option24;
-        break;
-      case (total >= 121 && total <= 125):
-        textCrit = crit.option25;
-        break;
-      case (total >= 126 && total <= 130):
-        textCrit = crit.option26;
-        break;
-      case (total >= 131 && total <= 140):
-        textCrit = crit.option27;
-        break;
-      case (total >= 141 && total <= 150):
-        textCrit = crit.option28;
-        break;
-      case (total >= 151):
-        textCrit = crit.option29;
-        break;
-      default:
-        console.log("Something has gone horribly wrong. total is " + total);
-        break;
-    }
-    message.channel.sendMessage("Crit " + total + ": " + textCrit);
-  }
-  //!shipcrit command
-  if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
-    var total = 0;
-    var crit = {
+//!crit command
+if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
+  var total = d100(params, message);
+	var crit  = {
+  	option1: print.pb + "Minor Nick: The target suffers 1 strain.",
+  	option2: print.pb + "Slowed Down: The target can only act during the last allied Initiative slot on his next turn.",
+  	option3: print.pb + "Sudden Jolt: The target drops whatever is in hand.",
+  	option4: print.pb + "Distracted: The target cannot perform a free maneuver during his next turn.",
+  	option5: print.pb + "Off-Balance. Add " + print.blkb + " to his next skill check.",
+  	option6: print.pb + "Discouraging Wound: Flip one light side Destiny point to a dark side Destiny Point (reverse if NPC).",
+  	option7: print.pb + "Stunned: The target is staggered until the end of his next turn.",
+  	option8: print.pb + "Stinger: Increase difficulty of next check by one.",
+  	option9: print.pb + print.pb + "Bowled Over: The target is knocked prone and suffers 1 strain.",
+  	option10: print.pb + print.pb + "Head Ringer: The target increases the difficulty of all Intellect and Cunning Checks by one until the end of the encounter.",
+  	option11: print.pb + print.pb + "Fearsome Wound: The target increases the difficulty of all Presence and Willpower checks by one until the end of the encounter.",
+  	option12: print.pb + print.pb + "Agonizing Wound: The target increases the difficulty of all Brawn and Agility checks by one until the end of the encounter.",
+  	option13: print.pb + print.pb + "Slightly Dazed: The target is disoriented until the end of the encounter.",
+  	option14: print.pb + print.pb + "Scattered Senses: The target removes all " + print.bb + " from skill checks until end of encounter.",
+  	option15: print.pb + print.pb + "Hamstrung: The target loses his free maneuver until the end of the encounter.",
+  	option16: print.pb + print.pb + "Overpowered: The target leaves himself open, and the attacker may immediately attempt another free attack against him, using the exact same pool as the original attack.",
+  	option17: print.pb + print.pb + "Winded: Until the end of the encounter, the target cannot voluntarily suffer strain to activate any abilities or gain additional maneuvers.",
+  	option18: print.pb + print.pb + "Compromised: Increase difficulty of all skill checks by one until the end of the encounter.",
+  	option19: print.pb + print.pb + print.pb + "At the Brink: The target suffers 1 strain each time he performs an action.",
+  	option20: print.pb + print.pb + print.pb + "Crippled: One of the target’s limbs (selected by the GM) is crippled until healed or replaced. Increase difficulty of all checks that require use of that limb by one.",
+  	option21: print.pb + print.pb + print.pb + "Maimed: One of the target’s limbs (selected by the GM) is permanently lost. Unless the target has a cybernetic replacement, the target cannot perform actions that would require the use of that limb. All other actions gain " + print.blkb + ".",
+  	option22: print.pb + print.pb + print.pb + "Horrific Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. Until this Critical Injury is healed, treat that characteristic as one point lower.",
+  	option23: print.pb + print.pb + print.pb + "Temporarily Lame: Until this Critical Injury is healed, the target cannot perform more than one maneuver during his turn.",
+  	option24: print.pb + print.pb + print.pb + "Blinded: The target can no longer see. Upgrade the difficulty of all checks twice. Upgrade the difficulty of Perception and Vigilance checks three times.",
+  	option25: print.pb + print.pb + print.pb + "Knocked Senseless: The target is staggered for the remainder of the encounter.",
+  	option26: print.pb + print.pb + print.pb + print.pb + "Gruesome Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. That characteristic is permanently reduced by one, to a minimum of one.",
+  	option27: print.pb + print.pb + print.pb + print.pb + "Bleeding Out: Every round, the target suffers 1 wound and 1 strain at the beginning of his turn. For every five wounds he suffers beyond his wound threshold, he suffers one additional Critical Injury. Roll on the chart, suffering the injury (if he suffers this result a second time due to this, roll again).",
+  	option28: print.pb + print.pb + print.pb + print.pb + "The End is Nigh: The target will die after the last Initiative slot during the next round.",
+  	option29: "Dead: Complete, obliterated death."
+  };
+
+  //build textCrit
+	var textCrit = "";
+	switch (true) {
+    	case (total < 5):
+      textCrit = crit.option1;
+      break;
+		case (total >= 6 && total <= 10):
+			textCrit = crit.option2;
+			break;
+		case (total >= 11 && total <= 15):
+			textCrit = crit.option3;
+			break;
+		case (total >= 16 && total <= 20):
+			textCrit = crit.option4;
+			break;
+		case (total >= 21 && total <= 25):
+			textCrit = crit.option5;
+			break;
+		case (total >= 26 && total <= 30):
+			textCrit = crit.option6;
+			break;
+		case (total >= 31 && total <= 35):
+			textCrit = crit.option7;
+			break;
+		case (total >= 36 && total <= 40):
+			textCrit = crit.option8;
+			break;
+		case (total >= 41 && total <= 45):
+			textCrit = crit.option9;
+			break;
+		case (total >= 46 && total <= 50):
+			textCrit = crit.option10;
+			break;
+		case (total >= 51 && total <= 55):
+			textCrit = crit.option11;
+			break;
+		case (total >= 56 && total <= 60):
+			textCrit = crit.option12;
+			break;
+		case (total >= 61 && total <= 65):
+			textCrit = crit.option13;
+			break;
+		case (total >= 66 && total <= 70):
+			textCrit = crit.option14;
+			break;
+		case (total >= 71 && total <= 75):
+			textCrit = crit.option15;
+			break;
+		case (total >= 76 && total <= 80):
+			textCrit = crit.option16;
+			break;
+		case (total >= 81 && total <= 85):
+			textCrit = crit.option17;
+			break;
+		case (total >= 86 && total <= 90):
+			textCrit = crit.option18;
+			break;
+		case (total >= 91 && total <= 95):
+			textCrit = crit.option19;
+			break;
+		case (total >= 96 && total <= 100):
+			textCrit = crit.option20;
+			break;
+		case (total >= 101 && total <= 105):
+			textCrit = crit.option21;
+			break;
+		case (total >= 106 && total <= 110):
+			textCrit = crit.option22;
+			break;
+		case (total >= 111 && total <= 115):
+			textCrit = crit.option23;
+			break;
+		case (total >= 116 && total <= 120):
+			textCrit = crit.option24;
+			break;
+		case (total >= 121 && total <= 125):
+			textCrit = crit.option25;
+			break;
+		case (total >= 126 && total <= 130):
+			textCrit = crit.option26;
+			break;
+		case (total >= 131 && total <= 140):
+			textCrit = crit.option27;
+			break;
+		case (total >= 141 && total <= 150):
+			textCrit = crit.option28;
+			break;
+		case (total >= 151):
+			textCrit = crit.option29;
+			break;
+		default:
+			console.log ("Something has gone horribly wrong. total is " + total);
+			break;
+	}
+	message.channel.sendMessage("Crit " + total + ": " + textCrit);
+}
+//!shipcrit command
+if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
+  var total = d100(params, message);
+	var crit  = {
       option1: print.pb + "Mechanical Stress: The ship or vehicle suffers one point of system strain.",
       option2: print.pb + "Jostled: A small explosion or impact rocks the vehicle. All crew members suffer one strain and are disoriented for one round.",
       option3: print.pb + "Losing Power to Shields: Decrease defense in affected defense zone by one until the Critical Hit is repaired. If the ship or vehicle has no defense, suffer one point of system strain.",
@@ -260,101 +233,110 @@ bot.on("message", message => {
       option19: "Vaporized: The ship or vehicle is completely destroyed, consumed in a particularly large and dramatic fireball. Nothing survives."
     };
 
-    //addition modifer
-    if (params.includes("+")) {
-      console.log("+ modifer detected");
-      var modifier = params[1];
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r + modifier;
-      message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
-      //subtraction modifier
-    } else if (params.includes("-")) {
-      console.log("- modifer detected");
-      var modifier = params[1]
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r - modifier;
-      message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);
-      //no modifier
-    } else {
-      console.log("No modifier, straight d100 roll");
-      let r = Math.floor(Math.random() * 100) + 1;
-      total = r;
-      message.channel.sendMessage(message.author.username + " rolled: " + total);
-    }
-    //build textCrit
-    var textCrit = "";
-    switch (true) {
-      case (total <= 9):
-        textCrit = crit.option1;
-        break;
-      case (total >= 10 && total <= 18):
-        textCrit = crit.option2;
-        break;
-      case (total >= 19 && total <= 27):
-        textCrit = crit.option3;
-        break;
-      case (total >= 28 && total <= 36):
-        textCrit = crit.option4;
-        break;
-      case (total >= 37 && total <= 45):
-        textCrit = crit.option5;
-        break;
-      case (total >= 46 && total <= 54):
-        textCrit = crit.option6;
-        break;
-      case (total >= 55 && total <= 63):
-        textCrit = crit.option7;
-        break;
-      case (total >= 64 && total <= 72):
-        textCrit = crit.option8;
-        break;
-      case (total >= 73 && total <= 81):
-        textCrit = crit.option9;
-        break;
-      case (total >= 82 && total <= 90):
-        textCrit = crit.option10;
-        break;
-      case (total >= 91 && total <= 99):
-        textCrit = crit.option11;
-        break;
-      case (total >= 100 && total <= 108):
-        textCrit = crit.option12;
-        break;
-      case (total >= 109 && total <= 117):
-        textCrit = crit.option13;
-        break;
-      case (total >= 118 && total <= 126):
-        textCrit = crit.option14;
-        break;
-      case (total >= 127 && total <= 133):
-        textCrit = crit.option15;
-        break;
-      case (total >= 134 && total <= 138):
-        textCrit = crit.option16;
-        break;
-      case (total >= 139 && total <= 144):
-        textCrit = crit.option17;
-        break;
-      case (total >= 145 && total <= 153):
-        textCrit = crit.option18;
-        break;
-      case (total >= 154):
-        textCrit = crit.option19;
-        break;
-      default:
-        console.log("Something has gone horribly wrong. total is " + total);
-        break;
-    }
-    message.channel.sendMessage("Ship Crit " + total + ": " + textCrit);
-  }
-  //Destiny Point Module
-  if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
+  //build textCrit
+	var textCrit = "";
+	switch (true) {
+    case (total <= 9):
+      textCrit = crit.option1;
+      break;
+		case (total >= 10 && total <= 18):
+			textCrit = crit.option2;
+			break;
+		case (total >= 19 && total <= 27):
+			textCrit = crit.option3;
+			break;
+		case (total >= 28 && total <= 36):
+			textCrit = crit.option4;
+			break;
+		case (total >= 37 && total <= 45):
+			textCrit = crit.option5;
+			break;
+		case (total >= 46 && total <= 54):
+			textCrit = crit.option6;
+			break;
+		case (total >= 55 && total <= 63):
+			textCrit = crit.option7;
+			break;
+		case (total >= 64 && total <= 72):
+			textCrit = crit.option8;
+			break;
+		case (total >= 73 && total <= 81):
+			textCrit = crit.option9;
+			break;
+		case (total >= 82 && total <= 90):
+			textCrit = crit.option10;
+			break;
+		case (total >= 91 && total <= 99):
+			textCrit = crit.option11;
+			break;
+		case (total >= 100 && total <= 108):
+			textCrit = crit.option12;
+			break;
+		case (total >= 109 && total <= 117):
+			textCrit = crit.option13;
+			break;
+		case (total >= 118 && total <= 126):
+			textCrit = crit.option14;
+			break;
+		case (total >= 127 && total <= 133):
+			textCrit = crit.option15;
+			break;
+		case (total >= 134 && total <= 138):
+			textCrit = crit.option16;
+			break;
+		case (total >= 139 && total <= 144):
+			textCrit = crit.option17;
+			break;
+		case (total >= 145 && total <= 153):
+			textCrit = crit.option18;
+			break;
+		case (total >= 154):
+			textCrit = crit.option19;
+			break;
+		default:
+			console.log ("Something has gone horribly wrong. total is " + total);
+			break;
+	}
+	message.channel.sendMessage("Ship Crit " + total + ": " + textCrit);
+}
+
+//Destiny Point Module
+if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
 
     //Sets Denstiny balance per color
     if (params.includes("set")) {
       console.log("Setting current Destiny Balance for " + message.author.username);
 
-      for (var i = 0; i < params.length; i++) {
+      //check if numbers are used
+      if (checkNumbers(params[1]) != null) {
+        for (var i = 0; i < params.length; i++) {
+          var color = params[i].replace(/\d/g, "");
+          switch(color) {
+            case "l":
+              destinyBalance.light = extractNumbers(params[i]);
+              break;
+            case "d":
+              destinyBalance.dark = extractNumbers(params[i]);
+              break;
+            default:
+              break;
+            }
+        }
+      } else {
+        for(var i = 0; i < params[1].length; i++) {
+          var color = params[1][i];
+          switch(color) {
+            case "l":
+              destinyBalance.light = destinyBalance.light + 1;
+              break;
+            case "d":
+              destinyBalance.dark = destinyBalance.dark + 1;
+              break;
+            default:
+              break;
+          }
+        }
+      }
 
         if (params[i].endsWith("l")) {
           destinyBalance.light = extractNumbers(params[i]);
@@ -364,21 +346,23 @@ bot.on("message", message => {
           destinyBalance.dark = extractNumbers(params[i]);
         }
       }
-    }
+
     //Reset the Destiny pool
     if (params.includes("reset")) {
-      console.log(message.author.username + " resets the Destiny Pool");
-      destinyBalance.light = 0;
-      destinyBalance.dark = 0;
-      destinyBalance.face = "";
-      message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
-    }
+        console.log(message.author.username + " resets the Destiny Pool");
+        destinyBalance = {
+              light: 0,
+              dark: 0,
+              face: "",
+            };
+        message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
+        }
 
     //Use a lightside from the Destiny pool
-    if (params.includes("light")) {
-      if (destinyBalance.light <= 0) {
+    if (params[0].includes("light") || params[0].includes("l")) {
+        if (destinyBalance.light <= 0){
         message.channel.sendMessage("No lightside points available, request will be ignored");
-      } else {
+        } else {
         console.log(message.author.username + " uses a Lightside point");
         destinyBalance.light--;
         destinyBalance.dark++;
@@ -387,27 +371,29 @@ bot.on("message", message => {
     }
 
     //Use a darkside from the Destiny pool
-    if (params.includes("dark")) {
-      if (destinyBalance.dark <= 0) {
+    if (params[0].includes("dark") || params[0].includes("d"))  {
+        if (destinyBalance.dark <= 0){
         message.channel.sendMessage("No Darkside points available, request will be ignored");
-      } else {
+        } else {
         console.log(message.author.username + " uses a Darkside point");
         destinyBalance.dark--;
         destinyBalance.light++;
         message.channel.sendMessage(message.author.username + " uses a Darkside point");
       }
     }
-
-    //Prints out destiny pool to channel
-    destinyBalance.face = "";
-    for (var i = 1; i <= destinyBalance.light; i++) {
-      destinyBalance.face += print.ls;
+    printdestinyBalance();
+  	//Prints out destiny pool to channel
+  	function printdestinyBalance() {
+      destinyBalance.face = "";
+  	for (var i = 1; i <= destinyBalance.light; i++) {
+      	destinyBalance.face += print.ls;
+      	}
+  	for (var i = 1; i <= destinyBalance.dark; i++) {
+      	destinyBalance.face += print.ds;
+    		}
+  	message.channel.sendMessage("Destiny Pool: ");
+  	message.channel.sendMessage(destinyBalance.face);
     }
-    for (var i = 1; i <= destinyBalance.dark; i++) {
-      destinyBalance.face += print.ds;
-    }
-    message.channel.sendMessage("Destiny Pool: ");
-    message.channel.sendMessage(destinyBalance.face);
   }
 
   // Roll the dice command
@@ -415,27 +401,23 @@ bot.on("message", message => {
     console.log("Rolling dice for " + message.author.username);
     /*Sorting the dice types by suffix
     7 unique dice in total
-    y = Yellow
-    g = Green
-    b = Blue
-    blk = Black
-    r = red
-    p = Purple
-    d/w = destiny/white
+    y/pro = Yellow
+    g/a = Green
+    b/boo = Blue
+    blk/sb/k = Black
+    r/c = red
+    p/diff = Purple
+    d/w/f = destiny/white
     */
 
+    //Switch to abort command if ever turns true
+    var abandonShip = false;
 
-    //check off colors as they are rolled to make sure users don't accidentally roll duplicates
-    var yellowRolled = false;
-    var greenRolled = false;
-    var blueRolled = false;
-    var blackRolled = false;
-    var redRolled = false;
-    var purpleRolled = false;
-    var whiteRolled = false;
+    //init the descriptor string to an empty string
+    var desc = "";
 
-    //Init the dice results to zero
-    var diceResult = {
+    //init diceResult
+    diceResult = {
       success: 0,
       failure: 0,
       advantage: 0,
@@ -446,12 +428,6 @@ bot.on("message", message => {
       dark: 0,
       face: "",
     };
-
-    //Switch to abort command if ever turns true
-    var abandonShip = false;
-
-    //init the descriptor string to an empty string
-    var desc = "";
 
     //var descArr = [];
     var beg, end = 0;
@@ -468,232 +444,40 @@ bot.on("message", message => {
       }
     }
 
+    //remove the text field arguments from the list of parameters before checking for dice.
     console.log("Beg: " + beg + " End: " + end);
     for (i = beg; i < end + 1; i++) {
       console.log(params[i]);
       desc += " " + params[i];
     }
-
     var spliceAmnt = end + 1 - beg;
-
-    //remove the text field arguments from the list of parameters before checking for dice.
     params.splice(beg, spliceAmnt);
 
     //Iterate over the parameters and call the dice roll functions respective to color
     // this allows users to list dice colors in any order
-    for (var i = 0; i < params.length; i++) {
-      if (abandonShip) break;
-      //Begin checking for any dice rolls
 
-      /*
-        NOTE: made redundant by update version 1.0.2
-
-        Given that dice rolls must be between 1-99 and the suffix with the most chars is "blk" we must only check for
-        arguments that are equal or less than 5 chars. Example !roll 99blk  has 5 chars in the dice argument.
-        This allows dynamic dice argument order in conjunction with a string descriptor, but requires string descriptors
-        to be greater than 5 characters.
-      */
-      if (params[i].length <= 5) {
-        //check command for yellow dice roll
-        if (params[i].endsWith("y")) {
-          //make sure they haven't already rolled these dice
-          if (yellowRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.black.bgYellow("yellow") + " dice rolls"));
-          } else if (yellowRolled == false) {
-            yellowRolled = true;
-            //Extract the number of dice to roll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Proficiency Dice.");
-
-            //Call the function that rolls the yellow dice
-
-            var yellowResult = rollYellow(diceQty);
-
-
-            //Add the result of all the yellow dice rolls to the standing count
-            for (var k in yellowResult) {
-              diceResult[k] += yellowResult[k];
-            }
-
-          }
+    if (checkNumbers(params[0]) != null) {
+      for (var i = 0; i < params.length; i++) {
+        //extracts the number of dice to roll
+        var diceQty = extractNumbers(params[i]);
+        if (diceQty > config.maxRollsPerDie) {
+          abandonShip = true;
+          break;
         }
-        //check command for green dice roll
-        if (params[i].endsWith("g")) {
-          //make sure they haven't already rolled these dice
-          if (greenRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.white.bgGreen("green") + " dice rolls"));
-          } else if (greenRolled == false) {
-            greenRolled = true;
-            //Extract the number of dice to roll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Ability Dice.");
-
-            //Call the function that rolls the green dice
-            var greenResult = rollGreen(diceQty);
-
-
-            //Add the result of all the green dice rolls to the standing count
-            for (var k in greenResult) {
-              diceResult[k] += greenResult[k];
-            }
-
-          }
-        }
-        //check command for Blue dice roll
-        if (params[i].endsWith("b")) {
-          //make sure they haven't already rolled these dice
-          if (blueRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.white.bgBlue("blue") + " dice rolls"));
-          } else if (blueRolled == false) {
-            blueRolled = true;
-
-            //Extract the number of dice to troll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Boost Dice.");
-
-            //Call the function that rolls the blue dice
-            var blueResult = rollBlue(diceQty);
-
-            //Add the result of all the blue dice rolls to the standing count
-            for (var k in blueResult) {
-              diceResult[k] += blueResult[k];
-            }
-          }
-        }
-
-        //check command for Black dice roll
-        if (params[i].endsWith("blk")) {
-          //make sure they haven't already rolled these dice
-          if (blackRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.white.bgBlack("black") + " dice rolls"));
-          } else if (blackRolled == false) {
-            blackRolled = true;
-            //Extract the number of dice to troll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Setback Dice.");
-
-            //Call the function that rolls the black dice
-            var blackResult = rollBlack(diceQty);
-
-            //Add the result of all the black dice rolls to the standing count
-            for (var k in blackResult) {
-              diceResult[k] += blackResult[k];
-            }
-          }
-        }
-
-        //check command for red dice roll
-        if (params[i].endsWith("r")) {
-          //make sure they haven't already rolled these dice
-          if (redRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.black.bgRed("red") + " dice rolls"));
-          } else if (redRolled == false) {
-            redRolled = true;
-
-            //Extract the number of dice to troll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Challenge Dice.");
-
-            //Call the function that rolls the red dice
-            var redResult = rollRed(diceQty);
-
-            //Add the result of all the red dice rolls to the standing count
-            for (var k in redResult) {
-              diceResult[k] += redResult[k];
-            }
-          }
-        }
-        //check command for Purple dice roll
-        if (params[i].endsWith("p")) {
-          //make sure they haven't already rolled these dice
-          if (purpleRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.white.bgMagenta("purple") + " dice rolls"));
-          } else if (purpleRolled == false) {
-            purpleRolled = true;
-            //Extract the number of dice to troll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Difficulty Dice.");
-
-            //Call the function that rolls the purple dice
-            var purpleResult = rollPurple(diceQty);
-
-            //Add the result of all the purple dice rolls to the standing count
-            for (var k in purpleResult) {
-              diceResult[k] += purpleResult[k];
-            }
-          }
-        }
-        //check command for destiny/white dice roll
-        if (params[i].endsWith("d") || params[i].endsWith("w")) {
-          //make sure they haven't already rolled these dice
-          if (whiteRolled == true) {
-            message.channel.sendMessage("Duplicate dice argument detected. The roll " + params[i] + " will be ignored");
-            console.log(chalk.white.bgRed("User error, tried to call multiple " + chalk.black.bgWhite("white") + " dice rolls"));
-          } else if (whiteRolled == false) {
-            whiteRolled = true;
-
-            //Extract the number of dice to troll from the string
-            var diceQty = extractNumbers(params[i]);
-            if (diceQty > config.maxRollsPerDie) {
-              abandonShip = true;
-              break;
-            }
-
-            console.log("Rolling " + diceQty + " Destiny Dice.");
-
-            //Call the function that rolls the white dice
-            var whiteResult = rollWhite(diceQty);
-
-            //Add the result of all the white dice rolls to the standing count
-            for (var k in whiteResult) {
-              diceResult[k] += whiteResult[k];
-            }
-          }
-        }
+        rollDice(params[i], diceQty);
       }
-    } //end of For loop
+    } else {
+      for(var i = 0; i < params[0].length; i++) {
+        console.log(params[0][i]);
+        var diceQty = 1;
+        rollDice(params[0][i], diceQty);
+      }
+    }
 
     console.log("\nThe Standing Count is");
     console.log(diceResult);
 
     //BEGIN PREPARING THE MESSAGE TO SEND
-
     var cancelledDiceResult = {
       success: 0,
       failure: 0,
@@ -704,16 +488,6 @@ bot.on("message", message => {
       light: 0,
       dark: 0
     };
-
-
-    //Extract the descriptor from the command assuming it's the only param greater than 5 chars
-    //Poetnetially obsolete
-    for (var i = 0; i < params.length; i++) {
-      if (params[i].length > 5) {
-        desc = params[i];
-        break;
-      }
-    }
 
     //Do the cancellations
     if (!abandonShip) {
@@ -780,10 +554,129 @@ function extractNumbers(str) {
   return num;
 }
 
+function checkNumbers(str) {
+  var num = str.match(/\d+/g);
+  return num;
+}
+
 //Function that generates random numbers based on varying dice sizes
 function randomInteger(num) {
   var result = Math.floor(Math.random() * num) + 1;
   return result;
+}
+
+//function for rolling a d100 and using a modifer
+function d100(str, message) {
+  var total = 0;
+  //no modifier
+  if (str.length < 1) {
+    console.log("No modifier, straight d100 roll");
+      let r = Math.floor(Math.random() * 100) + 1;
+      total = +r;
+      message.channel.sendMessage(message.author.username + " rolled: " + total);
+  //addition modifer
+  } else if (str.includes("+") || str[0][0] == "+") {
+		console.log("+ modifer detected");
+        var modifier = extractNumbers(str[str.length - 1]);
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r + +modifier;
+        message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
+	//subtraction modifier
+} else if (str.includes("-") ||str[0][0] == "-") {
+    	console.log("- modifer detected");
+        var modifier = extractNumbers(str[str.length - 1]);
+        let r = Math.floor(Math.random() * 100) + 1;
+        total = +r - +modifier;
+        message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);
+    }
+    return (total);
+}
+//uses the current params to roll dice and adds result to diceResult
+function rollDice(params, diceQty) {
+    var color = params.replace(/\d/g, "");
+    switch(color) {
+      case "y":
+      case "pro":
+      //case "p":
+        console.log("Rolling " + diceQty + " Proficiency Dice.");
+        //Call the function that rolls the yellow dice
+        var yellowResult = rollYellow(diceQty);
+        //Add the result of all the yellow dice rolls to the standing count
+        for (var k in yellowResult) {
+          diceResult[k] += yellowResult[k];
+        }
+        break;
+      case "g":
+      case "a":
+        console.log("Rolling " + diceQty + " Ability Dice.");
+        //Call the function that rolls the green dice
+        var greenResult = rollGreen(diceQty);
+        //Add the result of all the green dice rolls to the standing count
+        for (var k in greenResult) {
+          diceResult[k] += greenResult[k];
+        }
+        break;
+
+      case "b":
+      case "boo":
+        console.log("Rolling " + diceQty + " Boost Dice.");
+        //Call the function that rolls the blue dice
+        var blueResult = rollBlue(diceQty);
+        //Add the result of all the blue dice rolls to the standing count
+        for (var k in blueResult) {
+          diceResult[k] += blueResult[k];
+        }
+        break;
+
+      case "blk":
+      case "sb":
+      case "s":
+      case "k":
+        console.log("Rolling " + diceQty + " Setback Dice.");
+        //Call the function that rolls the black dice
+        var blackResult = rollBlack(diceQty);
+        //Add the result of all the black dice rolls to the standing count
+        for (var k in blackResult) {
+          diceResult[k] += blackResult[k];
+        }
+        break;
+
+      case "r":
+      case "c":
+        console.log("Rolling " + diceQty + " Challenge Dice.");
+        //Call the function that rolls the red dice
+        var redResult = rollRed(diceQty);
+        //Add the result of all the red dice rolls to the standing count
+        for (var k in redResult) {
+          diceResult[k] += redResult[k];
+        }
+        break;
+
+      case "p":
+      case "diff":
+      case "d":
+        console.log("Rolling " + diceQty + " Difficulty Dice.");
+        //Call the function that rolls the purple dice
+        var purpleResult = rollPurple(diceQty);
+        //Add the result of all the purple dice rolls to the standing count
+        for (var k in purpleResult) {
+          diceResult[k] += purpleResult[k];
+        }
+        break;
+
+      case "w":
+      case "f":
+        console.log("Rolling " + diceQty + " Destiny Dice.");
+        //Call the function that rolls the white dice
+        var whiteResult = rollWhite(diceQty);
+        //Add the result of all the white dice rolls to the standing count
+        for (var k in whiteResult) {
+          diceResult[k] += whiteResult[k];
+        }
+      default:
+      break;
+    }
+  return diceResult;
 }
 
 function rollBlue(diceQty) {
