@@ -350,8 +350,11 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
         }
 
+    if (params == "") {
+      console.log("Just printing");
+    }
     //Use a lightside from the Destiny pool
-    if (params[0].includes("light") || params[0].includes("l")) {
+    else if (params[0].includes("light") || params[0].includes("l")) {
         if (destinyBalance.light <= 0){
         message.channel.sendMessage("No lightside points available, request will be ignored");
         } else {
@@ -363,7 +366,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     }
 
     //Use a darkside from the Destiny pool
-    if (params[0].includes("dark") || params[0].includes("d"))  {
+    else if (params[0].includes("dark") || params[0].includes("d"))  {
         if (destinyBalance.dark <= 0){
         message.channel.sendMessage("No Darkside points available, request will be ignored");
         } else {
