@@ -13,37 +13,37 @@ Commands:
   Only the remaining symbols will be displayed.
 
   DICE IDENTIFIERS
-  -p = Yellow/Proficiency
-  -a = Green/Ability
-  -b = Blue/Boost
-  -c = Black/Setback
-  -c = Red/ Challenge
-  -d = Purple/ Difficulty
-  -f = White/Force
+  - p = Yellow/Proficiency
+  - a = Green/Ability
+  - b = Blue/Boost
+  - c = Black/Setback
+  - c = Red/ Challenge
+  - d = Purple/ Difficulty
+  - f = White/Force
 
   note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
 
   EXAMPLES
-      -!roll pabcdsf "Blast Him!"
+      - !roll pabcdsf "Blast Him!"
 
 - !d100   (Rolls a d100 with optional modifier and displays result.)
 
   EXAMPLES
-      -!d100 +10
-      -!d100 + 10
-      -!d100 -10
-      -!d100 - 10
+      - !d100 +10
+      - !d100 + 10
+      - !d100 -10
+      - !d100 - 10
 
 
 - !destiny  (Sets and manages the Destiny Balance for the group)
 
 COMMANDS
-  -!destiny            (View the destiny pool)
-  -!destiny l/light    (uses light side point)
-  -!destiny d/dark     (uses dark side point)
-  -!destiny set #l #d  (sets destiny pool)
-  -!destiny set lldd   (sets destiny pool)
-  -!destiny reset      (resets the destiny pool)
+  - !destiny            (View the destiny pool)
+  - !destiny l/light    (uses light side point)
+  - !destiny d/dark     (uses dark side point)
+  - !destiny set #l #d  (sets destiny pool)
+  - !destiny set lldd   (sets destiny pool)
+  - !destiny reset      (resets the destiny pool)
 
 - !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
 
@@ -56,10 +56,10 @@ COMMANDS
 - !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
 
   EXAMPLES
-      !shipcrit +10
-      !shipcrit + 10
-      !shipcrit -10
-      !shipcrit - 10
+      - !shipcrit +10
+      - !shipcrit + 10
+      - !shipcrit -10
+      - !shipcrit - 10
 
 #Installation and Setup
 
