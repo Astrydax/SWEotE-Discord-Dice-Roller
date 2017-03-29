@@ -21,8 +21,6 @@ Commands:
   - d = Purple/ Difficulty
   - f = White/Force
 
-  note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
-
   EXAMPLES
       - !roll pabcdsf "Blast Him!"
 
