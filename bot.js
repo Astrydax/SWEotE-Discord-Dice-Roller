@@ -337,16 +337,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
           }
         }
       }
-
-        if (params[i].endsWith("l")) {
-          destinyBalance.light = extractNumbers(params[i]);
-        }
-
-        if (params[i].endsWith("d")) {
-          destinyBalance.dark = extractNumbers(params[i]);
-        }
-      }
-
+    }
     //Reset the Destiny pool
     if (params.includes("reset")) {
         console.log(message.author.username + " resets the Destiny Pool");
@@ -595,8 +586,8 @@ function d100(str, message) {
 function rollDice(params, diceQty) {
     var color = params.replace(/\d/g, "");
     switch(color) {
-      case "y":
-      case "pro":
+      //case "y":
+      //case "pro":
       case "p":
         console.log("Rolling " + diceQty + " Proficiency Dice.");
         //Call the function that rolls the yellow dice
@@ -606,7 +597,7 @@ function rollDice(params, diceQty) {
           diceResult[k] += yellowResult[k];
         }
         break;
-      case "g":
+      //case "g":
       case "a":
         console.log("Rolling " + diceQty + " Ability Dice.");
         //Call the function that rolls the green dice
@@ -618,7 +609,7 @@ function rollDice(params, diceQty) {
         break;
 
       case "b":
-      case "boo":
+      //case "boo":
         console.log("Rolling " + diceQty + " Boost Dice.");
         //Call the function that rolls the blue dice
         var blueResult = rollBlue(diceQty);
@@ -628,9 +619,9 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      case "blk":
-      case "sb":
-      case "k":
+      //case "blk":
+      //case "sb":
+      //case "k":
       case "s":
         console.log("Rolling " + diceQty + " Setback Dice.");
         //Call the function that rolls the black dice
@@ -641,7 +632,7 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      case "r":
+      //case "r":
       case "c":
         console.log("Rolling " + diceQty + " Challenge Dice.");
         //Call the function that rolls the red dice
@@ -653,7 +644,7 @@ function rollDice(params, diceQty) {
         break;
 
       //case "p":
-      case "diff":
+      //case "diff":
       case "d":
         console.log("Rolling " + diceQty + " Difficulty Dice.");
         //Call the function that rolls the purple dice
