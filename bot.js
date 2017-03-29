@@ -590,9 +590,11 @@ function d100(str, message) {
 function rollDice(params, diceQty) {
     var color = params.replace(/\d/g, "");
     switch(color) {
-      case "y":
-      case "pro":
-      //case "p":
+
+      //case "y":
+      //case "pro":
+      case "p":
+
         console.log("Rolling " + diceQty + " Proficiency Dice.");
         //Call the function that rolls the yellow dice
         var yellowResult = rollYellow(diceQty);
@@ -601,7 +603,7 @@ function rollDice(params, diceQty) {
           diceResult[k] += yellowResult[k];
         }
         break;
-      case "g":
+      //case "g":
       case "a":
         console.log("Rolling " + diceQty + " Ability Dice.");
         //Call the function that rolls the green dice
@@ -613,7 +615,7 @@ function rollDice(params, diceQty) {
         break;
 
       case "b":
-      case "boo":
+      //case "boo":
         console.log("Rolling " + diceQty + " Boost Dice.");
         //Call the function that rolls the blue dice
         var blueResult = rollBlue(diceQty);
@@ -623,10 +625,9 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      case "blk":
-      case "sb":
+      //case "blk":
+      //case "sb":
       case "s":
-      case "k":
         console.log("Rolling " + diceQty + " Setback Dice.");
         //Call the function that rolls the black dice
         var blackResult = rollBlack(diceQty);
@@ -636,7 +637,7 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      case "r":
+      //case "r":
       case "c":
         console.log("Rolling " + diceQty + " Challenge Dice.");
         //Call the function that rolls the red dice
@@ -647,8 +648,6 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      case "p":
-      case "diff":
       case "d":
         console.log("Rolling " + diceQty + " Difficulty Dice.");
         //Call the function that rolls the purple dice
@@ -659,7 +658,6 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      case "w":
       case "f":
         console.log("Rolling " + diceQty + " Destiny Dice.");
         //Call the function that rolls the white dice
