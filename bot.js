@@ -12,10 +12,14 @@ var print = require("./printValues.json");
 bot.login(config.token);
 
 var version = "1.2.0";
+
+//init destinyBalance
 var destinyBalance = {
-  light: 0,
-  dark: 0,
-  face: "",
+  blankchannel: {
+    light: 0,
+    dark: 0,
+    face: "",
+  },
 };
 
 //Init the dice results to zero
@@ -302,94 +306,123 @@ if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
 
 //Destiny Point Module
 if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
+  //setting the channel specific varible
+  var channel = message.channel.name;
+  if (destinyBalance[channel] == undefined) {
+    destinyBalance[channel] = {
+        light: 0,
+        dark: 0,
+        face: "",
+        };
+    console.log("Init " + destinyBalance[channel]);
+  }
 
+  //!destiny commands
+  var command = params[0];
+  switch(command) {
     //Sets Denstiny balance per color
-    if (params.includes("set")) {
+    case "set":
+      destinyBalance[channel] = {
+        light: 0,
+        dark: 0,
+        face: "",
+        };
       console.log("Setting current Destiny Balance for " + message.author.username);
-
       //check if numbers are used
       if (checkNumbers(params[1]) != null) {
         for (var i = 0; i < params.length; i++) {
           var color = params[i].replace(/\d/g, "");
           switch(color) {
             case "l":
-              destinyBalance.light = extractNumbers(params[i]);
+              destinyBalance[channel].light = extractNumbers(params[i]);
               break;
             case "d":
-              destinyBalance.dark = extractNumbers(params[i]);
+              destinyBalance[channel].dark = extractNumbers(params[i]);
               break;
             default:
               break;
             }
         }
+        break;
       } else {
         for(var i = 0; i < params[1].length; i++) {
           var color = params[1][i];
           switch(color) {
             case "l":
-              destinyBalance.light = destinyBalance.light + 1;
+              destinyBalance[channel].light = destinyBalance[channel].light + 1;
               break;
             case "d":
-              destinyBalance.dark = destinyBalance.dark + 1;
+              destinyBalance[channel].dark = destinyBalance[channel].dark + 1;
               break;
             default:
               break;
           }
         }
+        break;
       }
-    }
 
     //Reset the Destiny pool
-    if (params.includes("reset")) {
-        console.log(message.author.username + " resets the Destiny Pool");
-        destinyBalance = {
-              light: 0,
-              dark: 0,
-              face: "",
-            };
-        message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
-        }
+    case "reset":
+      console.log(message.author.username + " resets the Destiny Pool");
+      destinyBalance[channel] = {
+            light: 0,
+            dark: 0,
+            face: " ",
+          };
+      message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
+      break;
 
-    if (params == "") {
-      console.log("Just printing");
-    }
     //Use a lightside from the Destiny pool
-    else if (params[0].includes("light") || params[0].includes("l")) {
-        if (destinyBalance.light <= 0){
-        message.channel.sendMessage("No lightside points available, request will be ignored");
-        } else {
-        console.log(message.author.username + " uses a Lightside point");
-        destinyBalance.light--;
-        destinyBalance.dark++;
-        message.channel.sendMessage(message.author.username + " uses a Lightside point");
+    case "light":
+    case "l":
+      if (destinyBalance[channel].light <= 0){
+      message.channel.sendMessage("No lightside points available, request will be ignored");
+      break;
+      } else {
+      console.log(message.author.username + " uses a Lightside point");
+      destinyBalance[channel].light--;
+      destinyBalance[channel].dark++;
+      message.channel.sendMessage(message.author.username + " uses a Lightside point");
+      break;
       }
-    }
 
     //Use a darkside from the Destiny pool
-    else if (params[0].includes("dark") || params[0].includes("d"))  {
-        if (destinyBalance.dark <= 0){
-        message.channel.sendMessage("No Darkside points available, request will be ignored");
-        } else {
-        console.log(message.author.username + " uses a Darkside point");
-        destinyBalance.dark--;
-        destinyBalance.light++;
-        message.channel.sendMessage(message.author.username + " uses a Darkside point");
+    case "dark":
+    case "d":
+      if (destinyBalance[channel].dark <= 0){
+      message.channel.sendMessage("No Darkside points available, request will be ignored");
+      break;
+      } else {
+      console.log(message.author.username + " uses a Darkside point");
+      destinyBalance[channel].dark--;
+      destinyBalance[channel].light++;
+      message.channel.sendMessage(message.author.username + " uses a Darkside point");
+      break;
       }
-    }
-    printdestinyBalance();
-  	//Prints out destiny pool to channel
-  	function printdestinyBalance() {
-      destinyBalance.face = "";
-  	for (var i = 1; i <= destinyBalance.light; i++) {
-      	destinyBalance.face += print.ls;
+
+    default:
+      console.log("Just printing destinyBalance");
+      break;
+  }
+
+  //print out destinyBalance
+  printdestinyBalance();
+
+  //Prints out destiny pool to channel
+	function printdestinyBalance() {
+      destinyBalance[channel].face = "";
+  	for (var i = 1; i <= destinyBalance[channel].light; i++) {
+      	destinyBalance[channel].face += print.ls;
       	}
-  	for (var i = 1; i <= destinyBalance.dark; i++) {
-      	destinyBalance.face += print.ds;
+  	for (var i = 1; i <= destinyBalance[channel].dark; i++) {
+      	destinyBalance[channel].face += print.ds;
     		}
-  	message.channel.sendMessage("Destiny Pool: ");
-  	message.channel.sendMessage(destinyBalance.face);
+  	message.channel.sendMessage("Destiny Pool: ")
+    if (destinyBalance[channel].face != "") {
+    message.channel.sendMessage(destinyBalance[channel].face);
     }
   }
+}
 
   // Roll the dice command
   if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
@@ -534,7 +567,9 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       }
 
       message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
+      if (diceResult.face != "") {
       message.channel.sendMessage(diceResult.face);
+      }
       message.channel.sendMessage("Final results: " + response);
 
     } else if (abandonShip) {
@@ -587,14 +622,12 @@ function d100(str, message) {
     return (total);
 }
 //uses the current params to roll dice and adds result to diceResult
-function rollDice(params, diceQty) {
-    var color = params.replace(/\d/g, "");
+function rollDice(color, diceQty) {
+    color = color.replace(/\d/g, "");
     switch(color) {
-
-      //case "y":
-      //case "pro":
-      case "p":
-
+      case "y":
+      case "pro":
+      //case "p":
         console.log("Rolling " + diceQty + " Proficiency Dice.");
         //Call the function that rolls the yellow dice
         var yellowResult = rollYellow(diceQty);
@@ -603,7 +636,7 @@ function rollDice(params, diceQty) {
           diceResult[k] += yellowResult[k];
         }
         break;
-      //case "g":
+      case "g":
       case "a":
         console.log("Rolling " + diceQty + " Ability Dice.");
         //Call the function that rolls the green dice
@@ -615,7 +648,7 @@ function rollDice(params, diceQty) {
         break;
 
       case "b":
-      //case "boo":
+      case "boo":
         console.log("Rolling " + diceQty + " Boost Dice.");
         //Call the function that rolls the blue dice
         var blueResult = rollBlue(diceQty);
@@ -625,9 +658,10 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      //case "blk":
-      //case "sb":
+      case "blk":
+      case "sb":
       case "s":
+      case "k":
         console.log("Rolling " + diceQty + " Setback Dice.");
         //Call the function that rolls the black dice
         var blackResult = rollBlack(diceQty);
@@ -637,7 +671,7 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      //case "r":
+      case "r":
       case "c":
         console.log("Rolling " + diceQty + " Challenge Dice.");
         //Call the function that rolls the red dice
@@ -648,6 +682,8 @@ function rollDice(params, diceQty) {
         }
         break;
 
+      case "p":
+      case "diff":
       case "d":
         console.log("Rolling " + diceQty + " Difficulty Dice.");
         //Call the function that rolls the purple dice
@@ -658,6 +694,7 @@ function rollDice(params, diceQty) {
         }
         break;
 
+      case "w":
       case "f":
         console.log("Rolling " + diceQty + " Destiny Dice.");
         //Call the function that rolls the white dice
