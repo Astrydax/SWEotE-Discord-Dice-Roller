@@ -4,18 +4,65 @@ CREDIT: Vampwood for conceiving the bot, and SkyJedi for substantial contributio
 A Discord Bot Companion for the SW:EotE RPG
 
 #Usage
-- !roll [1y 2g 3b 4blk 5r 6p 7d 7w "A Comment for this Roll"]  
-  Parameters are usable in any order and all parameters are optional.
+Commands:
 
-  For Example:
+- !roll   (Rolls any combination of SWRPG dice and returns the canceled results)
 
-    - !roll 3g 2blk "Attack on Trooper 1"
-    - !roll 2blk "Attack on Trooper 1" 3g
-
-  Both command structures are treated the same way by the bot.
-
+  You may add " " at the end of the line to give the roll a name like Initiative
   Dice results and cancellations are computed by the bot so you don't have to!  
   Only the remaining symbols will be displayed.
+
+  DICE IDENTIFIERS
+  y/pro = Yellow/Proficiency
+  g/a = Green/Ability
+  b/boo = Blue/Boost
+  blk/k/sb/s = Black/Setback
+  r/c = Red/ Challenge
+  p/diff = Purple/ Difficulty
+  w/f = White/Force
+
+  note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
+
+  EXAMPLES
+      !roll yyyggbbd "Blast Him!"
+      !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
+      !roll "Get to the ship" 2y 1g 1r 1p
+
+- !d100   (Rolls a d100 with optional modifier and displays result.)
+
+  EXAMPLES
+      !d100 +10
+      !d100 + 10
+      !d100 -10
+      !d100 - 10
+
+
+- !destiny  (Sets and manages the Destiny Balance for the group)
+
+COMMANDS
+  !destiny            (View the destiny pool)
+  !destiny l/light    (uses light side point)
+  !destiny d/dark     (uses dark side point)
+  !destiny set #l #d  (sets destiny pool)
+           set lldd   (sets destiny pool)
+  !destiny reset      (resets the destiny pool)
+
+- !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
+
+  EXAMPLES
+      !crit +10
+      !crit + 10
+      !crit -10
+      !crit - 10
+
+- !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
+
+  EXAMPLES
+      !shipcrit +10
+      !shipcrit + 10
+      !shipcrit -10
+      !shipcrit - 10
+
 #Installation and Setup
 
 1. First you will need to have NodeJS installed on your machine. You can find the latest version [here](https://nodejs.org/en/)
@@ -42,54 +89,50 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
 
 #Configuration File config.json
 
-config.json has four properties
+  config.json has four properties
 
-1. token
-  - this is the login token for your bot
-2. prefix
-  - this is the symbol the bot uses to recognize commands. This is set to "!" by default
-3. descriptorPrenpend
-  - Any text you place between the double quotes following this property will be prepended to the text provided in the comment parameter.
-  Example: if "descriptorPrepend" is set to "Targeting: ", then the command !roll 2g 2blk "Soldier 1" is called, the bot will respond with:     Targeting: Soldier 1
-  Astrydax roll results:    Success: 1   Threat: 1
-4. maxRollsPerDie
-  - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
+  1. token
+    - this is the login token for your bot
+  2. prefix
+    - this is the symbol the bot uses to recognize commands. This is set to "!" by default
+  3. descriptorPrenpend
+    - Any text you place between the double quotes following this property will be prepended to the text provided in the comment parameter.
+    Example: if "descriptorPrepend" is set to "Targeting: ", then the command !roll 2g 2blk "Soldier 1" is called, the bot will respond with:     Targeting: Soldier 1
+    Astrydax roll results:    Success: 1   Threat: 1
+  4. maxRollsPerDie
+    - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
+  5.  emoji
+    - set to 'true' to enable custom emoji
 
-#Dice Suffixes
+#CUSTOM emoji
 
-    y = Yellow/Proficiency
-    g = Green/Ability
-    b = Blue/Boost
-    blk = Black/Setback
-    r = Red/ Challenge
-    p = Purple/ Difficulty
-    d/w = White/Destiny/Force
+  1. Follow instructions here https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic to add emoji from /dice to your discord server
+
+  2. Set "emoji": true in config.json
+
+  3. Start your bot
+    1.  if any emoji don't work type "\:emoji:" into your channel for every emoji that doesn't work. (ie \:adv:  \:tri:)
+        The server will output <:adv:294221000277491714> <:tri:294221000713830401>
+    2.  Make sure those output values match the values in printValues.json
 
 #Amazon EC2 install
 
-1.  Connect to your ubuntu Linux instance using SSH.
+  1.  Connect to your ubuntu Linux instance using SSH.
 
-2.  Install node  
+  2.  Install node  
+      curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+      sudo apt-get install -y nodejs
 
-    curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+  3.  Download and unzip lastest build
+      wget https://github.com/Astrydax/SWEotE-Discord-Dice-Roller/archive/master.zip
+      unzip master.zip
+      cd SWEotE-Discord-Dice-Roller-master
 
-3.  Download and unzip lastest build
+  4.  Install npm for the bot
+      npm install
 
-    wget https://github.com/SkyJedi/SWEotE-Discord-Dice-Roller/archive/master.zip
+  5.  Configure the bot
+      sudo nano config.json
 
-    unzip master.zip
-
-    cd SWEotE-Discord-Dice-Roller-master
-
-4.  Install npm for the bot
-
-    npm install
-
-5.  Configure the bot
-
-    sudo nano config.json
-
-6.  launch bot (this will launch the bot and let you close the terminal window)
-
-    nohup nodejs bot.js &>/dev/null & disown
+  6.  launch bot (this will launch the bot and let you close the terminal window)
+      nohup nodejs bot.js &>/dev/null & disown
