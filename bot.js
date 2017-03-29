@@ -11,7 +11,7 @@ var print = require("./printValues.json");
 
 bot.login(config.token);
 
-var version = "1.2.0";
+var version = "1.3.0";
 
 //init destinyBalance
 var destinyBalance = {
