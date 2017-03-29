@@ -8,60 +8,60 @@ Commands:
 
 - !roll   (Rolls any combination of SWRPG dice and returns the canceled results)
 
-  You may add " " at the end of the line to give the roll a name like Initiative
-  Dice results and cancellations are computed by the bot so you don't have to!  
-  Only the remaining symbols will be displayed.
+  - You may add " " at the end of the line to give the roll a name like Initiative
+  - Dice results and cancellations are computed by the bot so you don't have to!  
+  - Only the remaining symbols will be displayed.
 
   DICE IDENTIFIERS
-  y/pro = Yellow/Proficiency
-  g/a = Green/Ability
-  b/boo = Blue/Boost
-  blk/k/sb/s = Black/Setback
-  r/c = Red/ Challenge
-  p/diff = Purple/ Difficulty
-  w/f = White/Force
+  - y/pro = Yellow/Proficiency
+  - g/a = Green/Ability
+  - b/boo = Blue/Boost
+  - blk/k/sb/s = Black/Setback
+  - r/c = Red/ Challenge
+  - p/diff = Purple/ Difficulty
+  - w/f = White/Force
 
-  note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
+    - note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
 
   EXAMPLES
-      !roll yyyggbbd "Blast Him!"
-      !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
-      !roll "Get to the ship" 2y 1g 1r 1p
+      - !roll yyyggbbd "Blast Him!"
+      - !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
+      - !roll "Get to the ship" 2y 1g 1r 1p
 
 - !d100   (Rolls a d100 with optional modifier and displays result.)
 
   EXAMPLES
-      !d100 +10
-      !d100 + 10
-      !d100 -10
-      !d100 - 10
+      - !d100 +10
+      - !d100 + 10
+      - !d100 -10
+      - !d100 - 10
 
 
 - !destiny  (Sets and manages the Destiny Balance for the group)
 
-COMMANDS
-  !destiny            (View the destiny pool)
-  !destiny l/light    (uses light side point)
-  !destiny d/dark     (uses dark side point)
-  !destiny set #l #d  (sets destiny pool)
-           set lldd   (sets destiny pool)
-  !destiny reset      (resets the destiny pool)
+  COMMANDS
+  - !destiny            (View the destiny pool)
+  - !destiny l/light    (uses light side point)
+  - !destiny d/dark     (uses dark side point)
+  - !destiny set #l #d  (sets destiny pool)
+  - !destiny set lldd   (sets destiny pool)
+  - !destiny reset      (resets the destiny pool)
 
 - !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
 
   EXAMPLES
-      !crit +10
-      !crit + 10
-      !crit -10
-      !crit - 10
+      - !crit +10
+      - !crit + 10
+      - !crit -10
+      - !crit - 10
 
 - !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
 
   EXAMPLES
-      !shipcrit +10
-      !shipcrit + 10
-      !shipcrit -10
-      !shipcrit - 10
+      - !shipcrit +10
+      - !shipcrit + 10
+      - !shipcrit -10
+      - !shipcrit - 10
 
 #Installation and Setup
 
