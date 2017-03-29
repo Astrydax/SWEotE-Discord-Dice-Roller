@@ -35,21 +35,21 @@ Commands:
 
 - !destiny  (Sets and manages the Destiny Balance for the group)
 
-COMMANDS
-  - !destiny            (View the destiny pool)
-  - !destiny l/light    (uses light side point)
-  - !destiny d/dark     (uses dark side point)
-  - !destiny set #l #d  (sets destiny pool)
-  - !destiny set lldd   (sets destiny pool)
-  - !destiny reset      (resets the destiny pool)
+    #COMMANDS
+      - !destiny            (View the destiny pool)
+      - !destiny l/light    (uses light side point)
+      - !destiny d/dark     (uses dark side point)
+      - !destiny set #l #d  (sets destiny pool)
+      - !destiny set lldd   (sets destiny pool)
+      - !destiny reset      (resets the destiny pool)
 
 - !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
 
   EXAMPLES
-      -!crit +10
-      -!crit + 10
-      -!crit -10
-      -!crit - 10
+      - !crit +10
+      - !crit + 10
+      - !crit -10
+      - !crit - 10
 
 - !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
 
