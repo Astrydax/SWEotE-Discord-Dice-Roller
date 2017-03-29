@@ -31,10 +31,10 @@ Commands:
 - !d100   (Rolls a d100 with optional modifier and displays result.)
 
   EXAMPLES
-      - !d100 +10
-      - !d100 + 10
-      - !d100 -10
-      - !d100 - 10
+  - !d100 +10
+  - !d100 + 10
+  - !d100 -10
+  - !d100 - 10
 
 
 - !destiny  (Sets and manages the Destiny Balance for the group)
@@ -50,18 +50,18 @@ Commands:
 - !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
 
   EXAMPLES
-      - !crit +10
-      - !crit + 10
-      - !crit -10
-      - !crit - 10
+  - !crit +10
+  - !crit + 10
+  - !crit -10
+  - !crit - 10
 
 - !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
 
   EXAMPLES
-      - !shipcrit +10
-      - !shipcrit + 10
-      - !shipcrit -10
-      - !shipcrit - 10
+  - !shipcrit +10
+  - !shipcrit + 10
+  - !shipcrit -10
+  - !shipcrit - 10
 
 #Installation and Setup
 
