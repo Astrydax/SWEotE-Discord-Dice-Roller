@@ -597,7 +597,7 @@ function rollDice(params, diceQty) {
     switch(color) {
       case "y":
       case "pro":
-      case "p":
+      //case "p":
         console.log("Rolling " + diceQty + " Proficiency Dice.");
         //Call the function that rolls the yellow dice
         var yellowResult = rollYellow(diceQty);
@@ -630,8 +630,8 @@ function rollDice(params, diceQty) {
 
       case "blk":
       case "sb":
-      case "k":
       case "s":
+      case "k":
         console.log("Rolling " + diceQty + " Setback Dice.");
         //Call the function that rolls the black dice
         var blackResult = rollBlack(diceQty);
@@ -652,7 +652,7 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      //case "p":
+      case "p":
       case "diff":
       case "d":
         console.log("Rolling " + diceQty + " Difficulty Dice.");
@@ -664,8 +664,7 @@ function rollDice(params, diceQty) {
         }
         break;
 
-      //case "d":
-      //case "w":
+      case "w":
       case "f":
         console.log("Rolling " + diceQty + " Destiny Dice.");
         //Call the function that rolls the white dice
