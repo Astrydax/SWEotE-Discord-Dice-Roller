@@ -1,20 +1,11 @@
-*.json
-!package.json
 *.txt
 #console.bat
 *.sdo
 !.eslintrc.json
-!config.json.example
-config.json
+
 .DS_Store
 /node_modules
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 361a01f54c66120ffd4c2ac1d0bf96d99111c1b8
-
-
+config.json
 
 # Logs
 logs
