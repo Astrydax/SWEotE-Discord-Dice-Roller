@@ -22,6 +22,17 @@ var destinyBalance = {
   },
 };
 
+var characterStatus = {
+      blankchannel: {
+        blankcharacter: {
+        maxWound: 0,
+        maxStrain: 0,
+        currentWound: 0,
+        currentStrain: 0,
+        },
+      }
+};
+
 //Init the dice results to zero
 var diceResult = {
   success: 0,
@@ -358,6 +369,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
               break;
           }
         }
+        printdestinyBalance();
         break;
       }
 
@@ -370,19 +382,23 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
             face: " ",
           };
       message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
+      printdestinyBalance();
       break;
+
 
     //Use a lightside from the Destiny pool
     case "light":
     case "l":
       if (destinyBalance[channel].light <= 0){
       message.channel.sendMessage("No lightside points available, request will be ignored");
+      printdestinyBalance();
       break;
       } else {
       console.log(message.author.username + " uses a Lightside point");
       destinyBalance[channel].light--;
       destinyBalance[channel].dark++;
       message.channel.sendMessage(message.author.username + " uses a Lightside point");
+      printdestinyBalance();
       break;
       }
 
@@ -391,22 +407,50 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     case "d":
       if (destinyBalance[channel].dark <= 0){
       message.channel.sendMessage("No Darkside points available, request will be ignored");
+      printdestinyBalance();
       break;
       } else {
       console.log(message.author.username + " uses a Darkside point");
       destinyBalance[channel].dark--;
       destinyBalance[channel].light++;
       message.channel.sendMessage(message.author.username + " uses a Darkside point");
+      printdestinyBalance();
       break;
       }
 
+
+    case "roll":
+      var destinyRoll = {
+        light: 0,
+        dark: 0,
+        face: "",
+      };
+      destinyRoll = rollWhite(1);
+      destinyBalance[channel].light = destinyBalance[channel].light + destinyRoll.light;
+      destinyBalance[channel].dark = destinyBalance[channel].dark + destinyRoll.dark;
+      message.channel.sendMessage(message.author.username + " rolls");
+      message.channel.sendMessage(destinyRoll.face);
+      destinyRoll.face = "";
+      for (var i = 1; i <= destinyRoll.light; i++) {
+        	destinyRoll.face += print.ls;
+        	}
+    	for (var i = 1; i <= destinyRoll.dark; i++) {
+        	destinyRoll.face += print.ds;
+      		}
+
+      message.channel.sendMessage("Adding " + destinyRoll.face + " to the Destiny Pool");
+      printdestinyBalance();
+      break;
+
+    case "help":
+      message.channel.sendMessage("```\n!destiny (View the destiny pool) \n!destiny roll (Rolls a Force Die and adds it to the Destiny Pool) \n!destiny l/light (uses light side point) \n!destiny d/dark (uses dark side point) \n!destiny set #l #d (sets destiny pool) \n!destiny set lldd (sets destiny pool) \n!destiny reset (resets the destiny pool) \n```");
+      break;
+
     default:
       console.log("Just printing destinyBalance");
+      printdestinyBalance();
       break;
   }
-
-  //print out destinyBalance
-  printdestinyBalance();
 
   //Prints out destiny pool to channel
 	function printdestinyBalance() {
