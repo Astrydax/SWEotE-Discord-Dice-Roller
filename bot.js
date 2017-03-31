@@ -12,7 +12,7 @@ var print = require("./printValues.json");
 
 bot.login(config.token);
 
-var version = "1.4.0";
+var version = "1.4.1";
 
 //init destinyBalance
 var destinyBalance = {
@@ -100,7 +100,7 @@ bot.on("message", message => {
   }
   //remove the text field arguments from the list of parameters before checking for dice.
   console.log("Beg: " + beg + " End: " + end);
-  for (i = beg; i < end + 1; i++) {
+  for (i = beg; i <= end + 1; i++) {
     console.log(params[i]);
     desc += " " + params[i];
   }
@@ -116,6 +116,10 @@ bot.on("message", message => {
 
 //************************COMMANDS START HERE************************
 
+//Ver command
+if (message.content.toLowerCase().startsWith(config.prefix + "ver")) {
+  message.channel.sendMessage(bot.user.username + ": version: " + version);
+}
 // D100 command
 if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
   d100(params, message);
