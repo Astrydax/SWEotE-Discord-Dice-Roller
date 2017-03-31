@@ -31,16 +31,16 @@ Commands:
 - !d100   (Rolls a d100 with optional modifier and displays result.)
 
   EXAMPLES
-  - !d100 +10
-  - !d100 + 10
-  - !d100 -10
-  - !d100 - 10
-
+  - !d100 +X
+  - !d100 + X
+  - !d100 -X
+  - !d100 - X
 
 - !destiny  (Sets and manages the Destiny Balance for the group)
 
   COMMANDS
   - !destiny            (View the destiny pool)
+  - !destiny rolls      (roll one Force Die and adds it to current destiny pool)
   - !destiny l/light    (uses light side point)
   - !destiny d/dark     (uses dark side point)
   - !destiny set #l #d  (sets destiny pool)
@@ -50,18 +50,24 @@ Commands:
 - !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
 
   EXAMPLES
-  - !crit +10
-  - !crit + 10
-  - !crit -10
-  - !crit - 10
+  - !crit +X
+  - !crit + X
+  - !crit -X
+  - !crit - X
 
 - !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
 
   EXAMPLES
-  - !shipcrit +10
-  - !shipcrit + 10
-  - !shipcrit -10
-  - !shipcrit - 10
+  - !shipcrit +X
+  - !shipcrit + X
+  - !shipcrit -X
+  - !shipcrit - X
+
+- !char   (Simple character stat manager)
+  - !char setup characterName [maxWound] [maxStrain] [credits]  (Setup a new character)
+  - !char wound/w characterName +X/-X                           (Increases/Decreases wounds for characterName by X)
+  - !char strain/s characterName +X/-X                          (Increases/Decreases Strain for characterName by X)
+  - !char credits/c characterName +X/-X                         (Increases/Decreases credit balance for characterName by X)
 
 #Installation and Setup
 
