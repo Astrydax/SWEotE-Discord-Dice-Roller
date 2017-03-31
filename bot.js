@@ -8,17 +8,7 @@ const config = require("./config.json");
 var chalk = require("chalk");
 const bot = new Discord.Client();
 var print = require("./printValues.json");
-var characterStatus = {
-  blankChannel: {
-    blankCharacter: {
-      maxWound: 0,
-      maxStrain: 0,
-      currentWound: 0,
-      currentStrain:  0,
-      credits: 0
-    }
-  }
-};
+
 
 bot.login(config.token);
 
@@ -46,10 +36,23 @@ var diceResult = {
   face: "",
 };
 
+var characterStatus = {
+  blankChannel: {
+    blankCharacter: {
+      maxWound: 0,
+      maxStrain: 0,
+      currentWound: 0,
+      currentStrain:  0,
+      credits: 0
+    }
+  }
+};
+
 //Called When bot becomes functional.
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
+
   if (config.maxRollsPerDie >= 100) {
     console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
   }
@@ -65,7 +68,6 @@ bot.on("ready", () => {
     print = print.text;
   }
 
-  //console.log(chalk.red('Hello', chalk.underline.bgBlue('world') + '!'));
 });
 
 //Called whenever a users send a message to the server
@@ -79,13 +81,40 @@ bot.on("message", message => {
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   const params = message.content.split(" ").slice(1);
 
-  //************************COMMANDS START HERE************************
+  //init the descriptor string to an empty string
+  var desc = "";
+  //var descArr = [];
+  console.log(params);
+  var beg, end = 0;
+  var begF, endF = false;
+  for (var i = 0; i < params.length; i++) {
+    if (params[i].includes('"')) {
+      if (!begF) {
+        beg = i;
+        begF = true;
+      } else if (begF && !endF) {
+        end = i;
+        endF = true;
+      }
+    }
+  }
+  //remove the text field arguments from the list of parameters before checking for dice.
+  console.log("Beg: " + beg + " End: " + end);
+  for (i = beg; i < end + 1; i++) {
+    console.log(params[i]);
+    desc += " " + params[i];
+  }
+  var spliceAmnt = end + 1 - beg;
+  params.splice(beg, spliceAmnt);
+  //remove Quotes from descriptor
+  desc = desc.replace(/['"]+/g, '');
+  //set the rest of params to lowercase
+  if (params != undefined) {
+    for (var i = 0; i < params.length; i++) {
+    params[i] = params[i].toLowerCase();
+  }
 
-  // Command to kill the bot application
-  // if(message.content.startsWith(config.prefix + "kill")){
-  //   console.log("!kill command was called... Now Exiting");
-  //   process.exit();
-  // }
+//************************COMMANDS START HERE************************
 
 // D100 command
 if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
@@ -319,17 +348,12 @@ if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
 if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
   //setting the channel specific variable
   var channel = message.channel.name;
-  if (params != undefined) {
-    for (var i = 0; i < params.length; i++) {
-    params[i] = params[i].toLowerCase();
-  }
   if (destinyBalance[channel] == undefined) {
     destinyBalance[channel] = {
         light: 0,
         dark: 0,
         face: "",
         };
-    console.log("Init " + destinyBalance[channel]);
   }
 
   //!destiny commands
@@ -359,6 +383,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
                 break;
               }
           }
+          printdestinyBalance();
           break;
         } else {
           for(var i = 0; i < params[1].length; i++) {
@@ -376,8 +401,10 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
           }
           printdestinyBalance();
           break;
+          }
         }
-      }
+        printdestinyBalance();
+        break;
 
     //Reset the Destiny pool
     case "reset":
@@ -430,8 +457,8 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         face: "",
       };
       destinyRoll = rollWhite(1);
-      destinyBalance[channel].light = destinyBalance[channel].light + destinyRoll.light;
-      destinyBalance[channel].dark = destinyBalance[channel].dark + destinyRoll.dark;
+      destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
+      destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
       message.channel.sendMessage(message.author.username + " rolls");
       message.channel.sendMessage(destinyRoll.face);
       destinyRoll.face = "";
@@ -444,10 +471,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
 
       message.channel.sendMessage("Adding " + destinyRoll.face + " to the Destiny Pool");
       printdestinyBalance();
-      break;
-
-    case "help":
-      message.channel.sendMessage("```\n!destiny (View the destiny pool) \n!destiny roll (Rolls a Force Die and adds it to the Destiny Pool) \n!destiny l/light (uses light side point) \n!destiny d/dark (uses dark side point) \n!destiny set #l #d (sets destiny pool) \n!destiny set lldd (sets destiny pool) \n!destiny reset (resets the destiny pool) \n```");
       break;
 
     default:
@@ -477,40 +500,33 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
 if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
   //setting the channel specific variables
   var channel = message.channel.name;
+  var characterName = "";
+  var command = params[0];
   if (params[1] != undefined) {
-    var characterName = params[1].toUpperCase();
-  } else {
-    var characterName = "";
-  }
-  if (params[0] != undefined) {
-    var command = params[0].toLowerCase();
-  } else {
-    var command = "";
+    characterName = params[1].toUpperCase();
   }
 
   if (characterStatus[channel] == undefined) {
-        characterStatus[channel] = {
-            blankCharacter: {
-              maxWound: 0,
-              maxStrain: 0,
-              currentWound: 0,
-              currentStrain: 0,
-              credits: 0
-            },
-          };
-        }
-    if (characterStatus[channel][characterName] == undefined && command != "setup") {
-    message.channel.sendMessage(characterName + "has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
-  } else if (command == "") {
-    message.channel.sendMessage("No command detected!");
+    characterStatus[channel] = {
+      blankCharacter: {
+        maxWound: 0,
+        maxStrain: 0,
+        currentWound: 0,
+        currentStrain: 0,
+        credits: 0
+      },
+    };
+  }
+
+  if (command == undefined) {
+    message.channel.sendMessage("Bad Command, !help char for more information");
+  } else if (characterName == "") {
+    message.channel.sendMessage("No characterName, !help char for more information");
+  } else if (characterStatus[channel][characterName] == undefined && command != "setup") {
+    message.channel.sendMessage(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
   } else {
       switch(command) {
         case "setup":
-          for (var i = 0; i < 5; i++) {
-            if (params[i] == undefined) {
-              params[i] = 0;
-            }
-          }
           //init the new characters stats
           console.log("Setting up " + characterName);
           characterStatus[channel][characterName] = {
@@ -520,63 +536,119 @@ if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
             currentStrain: 0,
             credits: 0
           };
-          characterStatus[channel][characterName].maxWound = params[2];
-          characterStatus[channel][characterName].maxStrain = params[3];
-          characterStatus[channel][characterName].credits = params[4];
+          if (params[2] != undefined) {
+            characterStatus[channel][characterName].maxWound = params[2];
+          }
+          if (params[3] != undefined) {
+            characterStatus[channel][characterName].maxStrain = params[3];
+          }
+          if (params[4] != undefined) {
+            characterStatus[channel][characterName].credits = params[4];
+          }
           message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
           break;
-        case "wound":
-          characterStatus[channel][characterName].currentWound = characterStatus[channel][characterName].currentWound + +params[2];
-          message.channel.sendMessage(characterName + " takes " + params[2] + " wounds.");
-          message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
-        break;
 
-        case "strain":
-          characterStatus[channel][characterName].currentStrain = characterStatus[channel][characterName].currentStrain + +params[2];
-          message.channel.sendMessage(characterName + " takes " + params[2] + " strain.");
-          message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
-          break;
-        case "credit":
-        case "credits":
+        case "wound":
+        case "w":
           if (params.length < 3) {
-            message.channel.sendMessage(characterName + " has " + characterStatus[channel][characterName].credits + " credits.");
-            //addition modifer
-            } else if (params.includes("+") || params[2][0] == "+") {
-                console.log(params);
-                console.log(params[params.length - 1]);
-                var modifier = extractNumbers(params[params.length - 1]);
-                characterStatus[channel][characterName].credits = characterStatus[channel][characterName].credits + +modifier;
-                message.channel.sendMessage(characterName + " gets " + modifier + " credits for a total of " + characterStatus[channel][characterName].credits + ".");
-          //subtraction modifier
-        } else if (params.includes("-") || params[2][0] == "-") {
+            message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+          //addition modifier
+          } else if (params.includes("+") || params[params.length - 1][0] == "+") {
               var modifier = extractNumbers(params[params.length - 1]);
-              characterStatus[channel][characterName].credits = characterStatus[channel][characterName].credits - +modifier;
-              message.channel.sendMessage(characterName + " pays " + modifier + " credits for a total of " + characterStatus[channel][characterName].credits + ".");
+              characterStatus[channel][characterName].currentWound = +characterStatus[channel][characterName].currentWound + +modifier;
+              if (+characterStatus[channel][characterName].currentWound > 2 * +characterStatus[channel][characterName].maxWound) {
+                characterStatus[channel][characterName].currentWound = 2 * +characterStatus[channel][characterName].maxWound;
+              }
+              message.channel.sendMessage(characterName + " takes " + modifier + " wounds.");
+              message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+          //subtraction modifier
+          } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+              var modifier = extractNumbers(params[params.length - 1]);
+              characterStatus[channel][characterName].currentWound = +characterStatus[channel][characterName].currentWound - +modifier;
+              message.channel.sendMessage(characterName + " recovers from " + modifier + " wounds.");
+              if (+characterStatus[channel][characterName].currentWound < 0) {
+                characterStatus[channel][characterName].currentWound = 0;
+              }
+              message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+          }
+          if (+characterStatus[channel][characterName].currentWound >= +characterStatus[channel][characterName].maxWound) {
+            message.channel.sendMessage(characterName + " is incapacitated.");
           }
           break;
-        case "heal":
-        case "repair":
-          characterStatus[channel][characterName].currentWound = characterStatus[channel][characterName].currentWound - +params[2];
-          message.channel.sendMessage(characterName + " recovers from " + params[2] + " wounds.");
-          message.channel.sendMessage("\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + ".");
+
+        case "strain":
+        case "s":
+          if (params.length < 3) {
+            message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+          } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+            var modifier = extractNumbers(params[params.length - 1]);
+            characterStatus[channel][characterName].currentStrain = +characterStatus[channel][characterName].currentStrain + +modifier;
+            message.channel.sendMessage(characterName + " takes " + modifier + " strain.");
+            if (+characterStatus[channel][characterName].currentStrain > +characterStatus[channel][characterName].maxStrain) {
+              characterStatus[channel][characterName].currentStrain = characterStatus[channel][characterName].maxStrain;
+            }
+            message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+
+          } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+            var modifier = extractNumbers(params[params.length - 1]);
+            characterStatus[channel][characterName].currentStrain = +characterStatus[channel][characterName].currentStrain - +modifier;
+            message.channel.sendMessage(characterName + " recovers " + modifier + " strain.");
+            if (+characterStatus[channel][characterName].currentStrain < 0) {
+              characterStatus[channel][characterName].currentStrain = 0;
+            }
+            message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+          }
+          if (+characterStatus[channel][characterName].currentStrain >= +characterStatus[channel][characterName].maxStrain) {
+            message.channel.sendMessage(characterName + " is incapacitated.");
+          }
           break;
-        case "rest":
-          characterStatus[channel][characterName].currentStrain = characterStatus[channel][characterName].currentStrain - +params[2];
-          message.channel.sendMessage(characterName + " recovers " + params[2] + " strain.");
-          message.channel.sendMessage("\nWounds: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + ".");
+
+        case "credit":
+        case "credits":
+        case "c":
+          if (params.length < 3) {
+            message.channel.sendMessage(characterName + " has " + characterStatus[channel][characterName].credits + " credits.");
+          //addition modifier
+          } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+              var modifier = extractNumbers(params[params.length - 1]);
+              characterStatus[channel][characterName].credits = +characterStatus[channel][characterName].credits + +modifier;
+              message.channel.sendMessage(characterName + " gets " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
+          //subtraction modifier
+          } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+              var modifier = extractNumbers(params[params.length - 1]);
+              if (modifier > +characterStatus[channel][characterName].credits) {
+                message.channel.sendMessage(characterName + " does not have " + modifier + " credits! " + characterName + " only has " + characterStatus[channel][characterName].credits + " credits.");
+              } else {
+              characterStatus[channel][characterName].credits = +characterStatus[channel][characterName].credits - +modifier;
+              message.channel.sendMessage(characterName + " pays " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
+            }
+          }
           break;
+
         case "status":
           message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
           break;
-        case "help":
-          message.channel.sendMessage("```\n!char characterName ??????? \n!char setup characterName [maxWound] [maxStrain] [credits] (Setup a new character)\n!char wound characterName X (Increases wounds for characterName by X) \n!char strain characterName X (Increases Strain for characterName by X) \n!char heal/repair characterName X (Decreases wounds for characterName by X) \n!char rest characterName (Decreases Strain for characterName by X) \n!char credits characterName (????????) \n```");
-          break;
+
         default:
           message.channel.sendMessage("Bad Command, !help char for more information");
           break;
+
         }
       }
 }
+
+if (message.content.toLowerCase().startsWith(config.prefix + "help")) {
+  switch (topic) {
+    case "destiny":
+    message.channel.sendMessage("```\n!destiny (View the destiny pool) \n!destiny roll (Rolls a Force Die and adds it to the Destiny Pool) \n!destiny l/light (uses light side point) \n!destiny d/dark (uses dark side point) \n!destiny set #l #d (sets destiny pool) \n!destiny set lldd (sets destiny pool) \n!destiny reset (resets the destiny pool) \n```");
+    break;
+    case "char":
+      message.channel.sendMessage("```\n!char characterName ??????? \n!char setup characterName [maxWound] [maxStrain] [credits] (Setup a new character)\n!char wound characterName X (Increases wounds for characterName by X) \n!char strain characterName X (Increases Strain for characterName by X) \n!char heal/repair characterName X (Decreases wounds for characterName by X) \n!char rest characterName (Decreases Strain for characterName by X) \n!char credits characterName (????????) \n```");
+      break;
+    default:
+  }
+}
+
 
 // Roll the dice command
 if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
@@ -595,8 +667,7 @@ if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
   //Switch to abort command if ever turns true
   var abandonShip = false;
 
-  //init the descriptor string to an empty string
-  var desc = "";
+
 
   //init diceResult
   diceResult = {
@@ -610,31 +681,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
     dark: 0,
     face: "",
   };
-
-  //var descArr = [];
-  console.log(params);
-  var beg, end = 0;
-  var begF, endF = false;
-  for (var i = 0; i < params.length; i++) {
-    if (params[i].includes('"')) {
-      if (!begF) {
-        beg = i;
-        begF = true;
-      } else if (begF && !endF) {
-        end = i;
-        endF = true;
-      }
-    }
-  }
-
-  //remove the text field arguments from the list of parameters before checking for dice.
-  console.log("Beg: " + beg + " End: " + end);
-  for (i = beg; i < end + 1; i++) {
-    console.log(params[i]);
-    desc += " " + params[i];
-  }
-  var spliceAmnt = end + 1 - beg;
-  params.splice(beg, spliceAmnt);
 
   //Iterate over the parameters and call the dice roll functions respective to color
   // this allows users to list dice colors in any order
@@ -675,9 +721,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
 
   //Do the cancellations
   if (!abandonShip) {
-
-    //remove Quotes from descriptor
-    desc = desc.replace(/['"]+/g, '');
 
     var response = "";
 
@@ -751,7 +794,7 @@ function randomInteger(num) {
   return result;
 }
 
-//function for rolling a d100 and using a modifer
+//function for rolling a d100 and using a modifier
 function d100(str, message) {
   var total = 0;
   //no modifier
@@ -760,16 +803,16 @@ function d100(str, message) {
       let r = Math.floor(Math.random() * 100) + 1;
       total = +r;
       message.channel.sendMessage(message.author.username + " rolled: " + total);
-  //addition modifer
+  //addition modifier
   } else if (str.includes("+") || str[0][0] == "+") {
-		console.log("+ modifer detected");
+		console.log("+ modifier detected");
         var modifier = extractNumbers(str[str.length - 1]);
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r + +modifier;
         message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
 	//subtraction modifier
 } else if (str.includes("-") ||str[0][0] == "-") {
-    	console.log("- modifer detected");
+    	console.log("- modifier detected");
         var modifier = extractNumbers(str[str.length - 1]);
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r - +modifier;
