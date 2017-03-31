@@ -5,8 +5,7 @@ A Discord Bot Companion for the SW:EotE RPG
 
 #Usage
 Commands:
-
-- !roll   (Rolls any combination of SWRPG dice and returns the canceled results)
+- !roll   rolls any combination of SWRPG dice and returns the cancelled results
 
   - You may add " " at the end of the line to give the roll a name like Initiative
   - Dice results and cancellations are computed by the bot so you don't have to!  
@@ -28,7 +27,7 @@ Commands:
       - !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
       - !roll "Get to the ship" 2y 1g 1r 1p
 
-- !d100   (Rolls a d100 with optional modifier and displays result.)
+- !d100   rolls a d100 with optional modifier and displays result.
 
   EXAMPLES
   - !d100 +X
@@ -36,18 +35,18 @@ Commands:
   - !d100 -X
   - !d100 - X
 
-- !destiny  (Sets and manages the Destiny Balance for the group)
+- !destiny  sets and manages the Destiny Balance for the group
 
   COMMANDS
-  - !destiny            (View the destiny pool)
-  - !destiny rolls      (roll one Force Die and adds it to current destiny pool)
-  - !destiny l/light    (uses light side point)
-  - !destiny d/dark     (uses dark side point)
-  - !destiny set #l #d  (sets destiny pool)
-  - !destiny set lldd   (sets destiny pool)
-  - !destiny reset      (resets the destiny pool)
+  - !destiny            view the destiny pool
+  - !destiny rolls      roll one Force Die and adds it to current destiny pool
+  - !destiny l/light    uses light side point
+  - !destiny d/dark     uses dark side point
+  - !destiny set #l #d  sets destiny pool
+  - !destiny set lldd   sets destiny pool
+  - !destiny reset      resets the destiny pool
 
-- !crit   (Rolls a d100 with optional modifier and displays result of the critical hit.)
+- !crit     rolls a d100 with optional modifier and displays result of the critical hit.
 
   EXAMPLES
   - !crit +X
@@ -55,7 +54,7 @@ Commands:
   - !crit -X
   - !crit - X
 
-- !shipcrit   (Rolls a d100 with optional modifier and displays result of the ship critical hit.)
+- !shipcrit   rolls a d100 with optional modifier and displays result of the ship critical hit.
 
   EXAMPLES
   - !shipcrit +X
@@ -63,11 +62,23 @@ Commands:
   - !shipcrit -X
   - !shipcrit - X
 
-- !char   (Simple character stat manager)
-  - !char setup characterName [maxWound] [maxStrain] [credits]  (Setup a new character)
-  - !char wound/w characterName +X/-X                           (Increases/Decreases wounds for characterName by X)
-  - !char strain/s characterName +X/-X                          (Increases/Decreases Strain for characterName by X)
-  - !char credits/c characterName +X/-X                         (Increases/Decreases credit balance for characterName by X)
+- !char         Simple character stat manager
+  COMMANDS
+  - !char setup characterName [maxWound] [maxStrain] [credits]  Setup a new character
+  - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
+  - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
+  - !char credits/c characterName +X/-X                         dncreases/decreases credit balance for characterName by X
+  - !char status characterName                                  current status for characterName   
+
+-!help          Type '!help [topic] for futher information'
+
+  !roll        rolls any combination of SWRPG dice and returns the canceled results.
+  !d100        rolls a d100 with optional modifier and displays result
+  !destiny     sets and manages the destiny balance for the group
+  !crit        rolls a d100 with optional modifier and displays result of the critical hit
+  !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
+  !char        simple character stat manager.)
+  !help        displays help for topics.)
 
 #Installation and Setup
 
