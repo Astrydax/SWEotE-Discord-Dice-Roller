@@ -12,30 +12,29 @@ Commands:
   - Only the remaining symbols will be displayed.
 
   DICE IDENTIFIERS
-  - y/pro = Yellow/Proficiency
-  - g/a = Green/Ability
-  - b/boo = Blue/Boost
-  - blk/k/sb/s = Black/Setback
-  - r/c = Red/ Challenge
-  - p/diff = Purple/ Difficulty
-  - w/f = White/Force
-
-    - note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
+  - p = Yellow/Proficiency
+  - a = Green/Ability
+  - b = Blue/Boost
+  - c = Black/Setback
+  - c = Red/ Challenge
+  - d = Purple/ Difficulty
+  - f = White/Force
 
   EXAMPLES
-      - !roll yyyggbbd "Blast Him!"
-      - !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
-      - !roll "Get to the ship" 2y 1g 1r 1p
+      - !roll pabcdsf "Blast Him!"
 
 - !d100   rolls a d100 with optional modifier and displays result.
 
   EXAMPLES
+
   - !d100 +X
   - !d100 + X
   - !d100 -X
   - !d100 - X
 
+
 - !destiny  sets and manages the Destiny Balance for the group
+
 
   COMMANDS
   - !destiny            view the destiny pool
@@ -49,14 +48,17 @@ Commands:
 - !crit     rolls a d100 with optional modifier and displays result of the critical hit.
 
   EXAMPLES
+
   - !crit +X
   - !crit + X
   - !crit -X
   - !crit - X
 
+
 - !shipcrit   rolls a d100 with optional modifier and displays result of the ship critical hit.
 
   EXAMPLES
+
   - !shipcrit +X
   - !shipcrit + X
   - !shipcrit -X
@@ -79,6 +81,7 @@ Commands:
   !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
   !char        simple character stat manager.)
   !help        displays help for topics.)
+
 
 #Installation and Setup
 
