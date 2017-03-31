@@ -8,6 +8,17 @@ const config = require("./config.json");
 var chalk = require("chalk");
 const bot = new Discord.Client();
 var print = require("./printValues.json");
+var characterStatus = {
+  blankChannel: {
+    blankCharacter: {
+      maxWound: 0,
+      maxStrain: 0,
+      currentWound: 0,
+      currentStrain:  0,
+      credits: 0
+    }
+  }
+};
 
 bot.login(config.token);
 
@@ -20,17 +31,6 @@ var destinyBalance = {
     dark: 0,
     face: "",
   },
-};
-
-var characterStatus = {
-      blankchannel: {
-        blankcharacter: {
-        maxWound: 0,
-        maxStrain: 0,
-        currentWound: 0,
-        currentStrain: 0,
-        },
-      }
 };
 
 //Init the dice results to zero
@@ -317,8 +317,12 @@ if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
 
 //Destiny Point Module
 if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
-  //setting the channel specific varible
+  //setting the channel specific variable
   var channel = message.channel.name;
+  if (params != undefined) {
+    for (var i = 0; i < params.length; i++) {
+    params[i] = params[i].toLowerCase();
+  }
   if (destinyBalance[channel] == undefined) {
     destinyBalance[channel] = {
         light: 0,
@@ -340,37 +344,39 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
         };
       console.log("Setting current Destiny Balance for " + message.author.username);
       //check if numbers are used
-      if (checkNumbers(params[1]) != null) {
-        for (var i = 0; i < params.length; i++) {
-          var color = params[i].replace(/\d/g, "");
-          switch(color) {
-            case "l":
-              destinyBalance[channel].light = extractNumbers(params[i]);
-              break;
-            case "d":
-              destinyBalance[channel].dark = extractNumbers(params[i]);
-              break;
-            default:
-              break;
-            }
-        }
-        break;
-      } else {
-        for(var i = 0; i < params[1].length; i++) {
-          var color = params[1][i];
-          switch(color) {
-            case "l":
-              destinyBalance[channel].light = destinyBalance[channel].light + 1;
-              break;
-            case "d":
-              destinyBalance[channel].dark = destinyBalance[channel].dark + 1;
-              break;
-            default:
-              break;
+      if (params.length > 1) {
+        if (checkNumbers(params[1]) != null) {
+          for (var i = 0; i < params.length; i++) {
+            var color = params[i].replace(/\d/g, "");
+            switch(color) {
+              case "l":
+                destinyBalance[channel].light = extractNumbers(params[i]);
+                break;
+              case "d":
+                destinyBalance[channel].dark = extractNumbers(params[i]);
+                break;
+              default:
+                break;
+              }
           }
+          break;
+        } else {
+          for(var i = 0; i < params[1].length; i++) {
+            var color = params[1][i];
+            switch(color) {
+              case "l":
+                destinyBalance[channel].light = destinyBalance[channel].light + 1;
+                break;
+              case "d":
+                destinyBalance[channel].dark = destinyBalance[channel].dark + 1;
+                break;
+              default:
+                break;
+            }
+          }
+          printdestinyBalance();
+          break;
         }
-        printdestinyBalance();
-        break;
       }
 
     //Reset the Destiny pool
@@ -384,7 +390,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
       printdestinyBalance();
       break;
-
 
     //Use a lightside from the Destiny pool
     case "light":
@@ -417,7 +422,6 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       printdestinyBalance();
       break;
       }
-
 
     case "roll":
       var destinyRoll = {
@@ -467,67 +471,175 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
     }
   }
 }
+}
 
-  // Roll the dice command
-  if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
-    console.log("Rolling dice for " + message.author.username);
-    /*Sorting the dice types by suffix
-    7 unique dice in total
-    y/pro = Yellow
-    g/a = Green
-    b/boo = Blue
-    blk/sb/k = Black
-    r/c = red
-    p/diff = Purple
-    d/w/f = destiny/white
-    */
+//Character Tracker
+if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
+  //setting the channel specific variables
+  var channel = message.channel.name;
+  if (params[1] != undefined) {
+    var characterName = params[1].toUpperCase();
+  } else {
+    var characterName = "";
+  }
+  if (params[0] != undefined) {
+    var command = params[0].toLowerCase();
+  } else {
+    var command = "";
+  }
 
-    //Switch to abort command if ever turns true
-    var abandonShip = false;
+  if (characterStatus[channel] == undefined) {
+        characterStatus[channel] = {
+            blankCharacter: {
+              maxWound: 0,
+              maxStrain: 0,
+              currentWound: 0,
+              currentStrain: 0,
+              credits: 0
+            },
+          };
+        }
+    if (characterStatus[channel][characterName] == undefined && command != "setup") {
+    message.channel.sendMessage(characterName + "has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
+  } else if (command == "") {
+    message.channel.sendMessage("No command detected!");
+  } else {
+      switch(command) {
+        case "setup":
+          for (var i = 0; i < 5; i++) {
+            if (params[i] == undefined) {
+              params[i] = 0;
+            }
+          }
+          //init the new characters stats
+          console.log("Setting up " + characterName);
+          characterStatus[channel][characterName] = {
+            maxWound: 0,
+            maxStrain: 0,
+            currentWound: 0,
+            currentStrain: 0,
+            credits: 0
+          };
+          characterStatus[channel][characterName].maxWound = params[2];
+          characterStatus[channel][characterName].maxStrain = params[3];
+          characterStatus[channel][characterName].credits = params[4];
+          message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
+          break;
+        case "wound":
+          characterStatus[channel][characterName].currentWound = characterStatus[channel][characterName].currentWound + +params[2];
+          message.channel.sendMessage(characterName + " takes " + params[2] + " wounds.");
+          message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+        break;
 
-    //init the descriptor string to an empty string
-    var desc = "";
-
-    //init diceResult
-    diceResult = {
-      success: 0,
-      failure: 0,
-      advantage: 0,
-      threat: 0,
-      triumph: 0,
-      despair: 0,
-      light: 0,
-      dark: 0,
-      face: "",
-    };
-
-    //var descArr = [];
-    var beg, end = 0;
-    var begF, endF = false;
-    for (var i = 0; i < params.length; i++) {
-      if (params[i].includes('"')) {
-        if (!begF) {
-          beg = i;
-          begF = true;
-        } else if (begF && !endF) {
-          end = i;
-          endF = true;
+        case "strain":
+          characterStatus[channel][characterName].currentStrain = characterStatus[channel][characterName].currentStrain + +params[2];
+          message.channel.sendMessage(characterName + " takes " + params[2] + " strain.");
+          message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+          break;
+        case "credit":
+        case "credits":
+          if (params.length < 3) {
+            message.channel.sendMessage(characterName + " has " + characterStatus[channel][characterName].credits + " credits.");
+            //addition modifer
+            } else if (params.includes("+") || params[2][0] == "+") {
+                console.log(params);
+                console.log(params[params.length - 1]);
+                var modifier = extractNumbers(params[params.length - 1]);
+                characterStatus[channel][characterName].credits = characterStatus[channel][characterName].credits + +modifier;
+                message.channel.sendMessage(characterName + " gets " + modifier + " credits for a total of " + characterStatus[channel][characterName].credits + ".");
+          //subtraction modifier
+        } else if (params.includes("-") || params[2][0] == "-") {
+              var modifier = extractNumbers(params[params.length - 1]);
+              characterStatus[channel][characterName].credits = characterStatus[channel][characterName].credits - +modifier;
+              message.channel.sendMessage(characterName + " pays " + modifier + " credits for a total of " + characterStatus[channel][characterName].credits + ".");
+          }
+          break;
+        case "heal":
+        case "repair":
+          characterStatus[channel][characterName].currentWound = characterStatus[channel][characterName].currentWound - +params[2];
+          message.channel.sendMessage(characterName + " recovers from " + params[2] + " wounds.");
+          message.channel.sendMessage("\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + ".");
+          break;
+        case "rest":
+          characterStatus[channel][characterName].currentStrain = characterStatus[channel][characterName].currentStrain - +params[2];
+          message.channel.sendMessage(characterName + " recovers " + params[2] + " strain.");
+          message.channel.sendMessage("\nWounds: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + ".");
+          break;
+        case "status":
+          message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
+          break;
+        case "help":
+          message.channel.sendMessage("```\n!char characterName ??????? \n!char setup characterName [maxWound] [maxStrain] [credits] (Setup a new character)\n!char wound characterName X (Increases wounds for characterName by X) \n!char strain characterName X (Increases Strain for characterName by X) \n!char heal/repair characterName X (Decreases wounds for characterName by X) \n!char rest characterName (Decreases Strain for characterName by X) \n!char credits characterName (????????) \n```");
+          break;
+        default:
+          message.channel.sendMessage("Bad Command, !help char for more information");
+          break;
         }
       }
+}
+
+// Roll the dice command
+if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
+  console.log("Rolling dice for " + message.author.username);
+  /*Sorting the dice types by suffix
+  7 unique dice in total
+  y/pro = Yellow
+  g/a = Green
+  b/boo = Blue
+  blk/sb/k = Black
+  r/c = red
+  p/diff = Purple
+  d/w/f = destiny/white
+  */
+
+  //Switch to abort command if ever turns true
+  var abandonShip = false;
+
+  //init the descriptor string to an empty string
+  var desc = "";
+
+  //init diceResult
+  diceResult = {
+    success: 0,
+    failure: 0,
+    advantage: 0,
+    threat: 0,
+    triumph: 0,
+    despair: 0,
+    light: 0,
+    dark: 0,
+    face: "",
+  };
+
+  //var descArr = [];
+  console.log(params);
+  var beg, end = 0;
+  var begF, endF = false;
+  for (var i = 0; i < params.length; i++) {
+    if (params[i].includes('"')) {
+      if (!begF) {
+        beg = i;
+        begF = true;
+      } else if (begF && !endF) {
+        end = i;
+        endF = true;
+      }
     }
+  }
 
-    //remove the text field arguments from the list of parameters before checking for dice.
-    console.log("Beg: " + beg + " End: " + end);
-    for (i = beg; i < end + 1; i++) {
-      console.log(params[i]);
-      desc += " " + params[i];
-    }
-    var spliceAmnt = end + 1 - beg;
-    params.splice(beg, spliceAmnt);
+  //remove the text field arguments from the list of parameters before checking for dice.
+  console.log("Beg: " + beg + " End: " + end);
+  for (i = beg; i < end + 1; i++) {
+    console.log(params[i]);
+    desc += " " + params[i];
+  }
+  var spliceAmnt = end + 1 - beg;
+  params.splice(beg, spliceAmnt);
 
-    //Iterate over the parameters and call the dice roll functions respective to color
-    // this allows users to list dice colors in any order
+  //Iterate over the parameters and call the dice roll functions respective to color
+  // this allows users to list dice colors in any order
 
+  if (params.length > 0) {
     if (checkNumbers(params[0]) != null) {
       for (var i = 0; i < params.length; i++) {
         //extracts the number of dice to roll
@@ -540,86 +652,86 @@ if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
       }
     } else {
       for(var i = 0; i < params[0].length; i++) {
-        console.log(params[0][i]);
         var diceQty = 1;
         rollDice(params[0][i], diceQty);
       }
     }
+}
 
-    console.log("\nThe Standing Count is");
-    console.log(diceResult);
+  console.log("\nThe Standing Count is");
+  console.log(diceResult);
 
-    //BEGIN PREPARING THE MESSAGE TO SEND
-    var cancelledDiceResult = {
-      success: 0,
-      failure: 0,
-      advantage: 0,
-      threat: 0,
-      triumph: 0,
-      despair: 0,
-      light: 0,
-      dark: 0
-    };
+  //BEGIN PREPARING THE MESSAGE TO SEND
+  var cancelledDiceResult = {
+    success: 0,
+    failure: 0,
+    advantage: 0,
+    threat: 0,
+    triumph: 0,
+    despair: 0,
+    light: 0,
+    dark: 0
+  };
 
-    //Do the cancellations
-    if (!abandonShip) {
+  //Do the cancellations
+  if (!abandonShip) {
 
-      //remove Quotes from descriptor
-      desc = desc.replace(/['"]+/g, '');
+    //remove Quotes from descriptor
+    desc = desc.replace(/['"]+/g, '');
 
-      var response = "";
+    var response = "";
 
-      //cancel success/failures
-      if (diceResult.success > diceResult.failure) {
-        var successRemaining = diceResult.success - diceResult.failure;
-        cancelledDiceResult.success = successRemaining;
-        response += "   " + print.suc + successRemaining;
-      } else if (diceResult.success < diceResult.failure) {
-        var failureRemaining = diceResult.failure - diceResult.success;
-        cancelledDiceResult.failure = failureRemaining;
-        response += "   " + print.fail + failureRemaining;
-      }
-
-      //cancel Advantage/Threat
-      if (diceResult.advantage > diceResult.threat) {
-        var advantageRemaining = diceResult.advantage - diceResult.threat;
-        cancelledDiceResult.advantage = advantageRemaining;
-        response += "   " + print.adv + advantageRemaining;
-      } else if (diceResult.advantage < diceResult.threat) {
-        var threatRemaining = diceResult.threat - diceResult.advantage;
-        cancelledDiceResult.threat = threatRemaining;
-        response += "   " + print.thr + threatRemaining;
-      }
-      //Check for any Triumphs
-      if (diceResult.triumph != 0) {
-        cancelledDiceResult.triumph = diceResult.triumph;
-        response += "   " + print.tri + diceResult.triumph;
-      }
-      //Check for any Despair
-      if (diceResult.despair != 0) {
-        cancelledDiceResult.despair = diceResult.despair;
-        response += "   " + print.des + diceResult.despair;
-      }
-
-      //check for force
-      if (diceResult.light != 0) {
-        response += "   " + print.ls + diceResult.light;
-      }
-
-      if (diceResult.dark != 0) {
-        response += "   " + print.ds + diceResult.dark;
-      }
-
-      message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
-      if (diceResult.face != "") {
-      message.channel.sendMessage(diceResult.face);
-      }
-      message.channel.sendMessage("Final results: " + response);
-
-    } else if (abandonShip) {
-      message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
+    //cancel success/failures
+    if (diceResult.success > diceResult.failure) {
+      var successRemaining = diceResult.success - diceResult.failure;
+      cancelledDiceResult.success = successRemaining;
+      response += "   " + print.suc + successRemaining;
+    } else if (diceResult.success < diceResult.failure) {
+      var failureRemaining = diceResult.failure - diceResult.success;
+      cancelledDiceResult.failure = failureRemaining;
+      response += "   " + print.fail + failureRemaining;
     }
+
+    //cancel Advantage/Threat
+    if (diceResult.advantage > diceResult.threat) {
+      var advantageRemaining = diceResult.advantage - diceResult.threat;
+      cancelledDiceResult.advantage = advantageRemaining;
+      response += "   " + print.adv + advantageRemaining;
+    } else if (diceResult.advantage < diceResult.threat) {
+      var threatRemaining = diceResult.threat - diceResult.advantage;
+      cancelledDiceResult.threat = threatRemaining;
+      response += "   " + print.thr + threatRemaining;
+    }
+    //Check for any Triumphs
+    if (diceResult.triumph != 0) {
+      cancelledDiceResult.triumph = diceResult.triumph;
+      response += "   " + print.tri + diceResult.triumph;
+    }
+    //Check for any Despair
+    if (diceResult.despair != 0) {
+      cancelledDiceResult.despair = diceResult.despair;
+      response += "   " + print.des + diceResult.despair;
+    }
+
+    //check for force
+    if (diceResult.light != 0) {
+      response += "   " + print.ls + diceResult.light;
+    }
+
+    if (diceResult.dark != 0) {
+      response += "   " + print.ds + diceResult.dark;
+    }
+
+    message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
+    if (diceResult.face != "") {
+    message.channel.sendMessage(diceResult.face);
+    }
+    message.channel.sendMessage("Final results: " + response);
+
+  } else if (abandonShip) {
+    message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
   }
+}
 });
 
 //Function for extracting the number of times to roll a dice from the command string
