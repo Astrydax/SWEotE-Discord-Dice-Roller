@@ -1,0 +1,7 @@
+version 1.4.2
+ -  added/fixed !help
+
+version 1.4.1
+ -  Made a Changelog
+ -  Fixed the one word error in the descriptor
+ -  added !ver command
