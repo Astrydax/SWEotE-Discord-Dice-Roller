@@ -7,7 +7,6 @@ const Discord = require("discord.js");
 const config = require("./config.json");
 var chalk = require("chalk");
 const bot = new Discord.Client();
-
 var print = require("./modules/printValues.js");
 var destiny = require("./modules/destiny.js");
 var crit = require("./modules/crit.js");
@@ -19,7 +18,6 @@ var d100 = require("./modules/d100.js");
 bot.login(config.token);
 
 var version = "1.4.4";
-
 
 //init destinyBalance
 var destinyBalance = {
@@ -134,18 +132,15 @@ if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
 
 //!crit command
 if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
-
   crit.crit(params, message, print);
 }
 //!shipcrit command
 if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
   crit.shipcrit(params, message, print);
-
 }
 
 //Destiny Point Module
 if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
-
   destiny.destiny(params, destinyBalance, message, print);
 }
 
@@ -156,13 +151,10 @@ if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
 
 if (message.content.toLowerCase().startsWith(config.prefix + "help")) {
   help.help(params, message);
-
 }
 // Roll the dice command
 if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
-
   roll.roll(params, diceResult, message, print, config, desc);
 }
 }
 });
-

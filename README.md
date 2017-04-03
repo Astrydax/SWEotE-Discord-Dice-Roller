@@ -12,21 +12,21 @@ Commands:
   - Only the remaining symbols will be displayed.
 
   DICE IDENTIFIERS
-
-  - p = Yellow/Proficiency
-  - a = Green/Ability
-  - b = Blue/Boost
-  - s = Black/Setback
-  - c = Red/ Challenge
-  - d = Purple/ Difficulty
-  - f = White/Force
+  - y/pro = Yellow/Proficiency
+  - g/a = Green/Ability
+  - b/boo = Blue/Boost
+  - blk/k/sb/s = Black/Setback
+  - r/c = Red/ Challenge
+  - p/diff = Purple/ Difficulty
+  - w/f = White/Force
 
     - note: if you use the !roll yyyggbbd method you must use the single character dice identifiers
 
-
   EXAMPLES
-      - !roll ppppaaacccd "Blast Him!"
- 
+      - !roll yyyggbbd "Blast Him!"
+      - !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
+      - !roll "Get to the ship" 2y 1g 1r 1p
+
 - !d100   rolls a d100 with optional modifier and displays result.
 
   EXAMPLES
