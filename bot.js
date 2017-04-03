@@ -836,9 +836,8 @@ function d100(str, message) {
 function rollDice(color, diceQty, message) {
     color = color.replace(/\d/g, "");
     switch(color) {
-      case "y":
-      case "pro":
-      //case "p":
+		    
+      case "p":
         console.log("Rolling " + diceQty + " Proficiency Dice.");
         //Call the function that rolls the yellow dice
         var yellowResult = rollYellow(diceQty, message);
@@ -847,8 +846,8 @@ function rollDice(color, diceQty, message) {
           diceResult[k] += yellowResult[k];
         }
         break;
-      case "g":
-      case "a":
+      
+	case "a":
         console.log("Rolling " + diceQty + " Ability Dice.");
         //Call the function that rolls the green dice
         var greenResult = rollGreen(diceQty, message);
@@ -859,7 +858,6 @@ function rollDice(color, diceQty, message) {
         break;
 
       case "b":
-      case "boo":
         console.log("Rolling " + diceQty + " Boost Dice.");
         //Call the function that rolls the blue dice
         var blueResult = rollBlue(diceQty, message);
@@ -869,10 +867,8 @@ function rollDice(color, diceQty, message) {
         }
         break;
 
-      case "blk":
-      case "sb":
+
       case "s":
-      case "k":
         console.log("Rolling " + diceQty + " Setback Dice.");
         //Call the function that rolls the black dice
         var blackResult = rollBlack(diceQty, message);
@@ -881,8 +877,7 @@ function rollDice(color, diceQty, message) {
           diceResult[k] += blackResult[k];
         }
         break;
-
-      case "r":
+		    
       case "c":
         console.log("Rolling " + diceQty + " Challenge Dice.");
         //Call the function that rolls the red dice
@@ -893,8 +888,6 @@ function rollDice(color, diceQty, message) {
         }
         break;
 
-      case "p":
-      case "diff":
       case "d":
         console.log("Rolling " + diceQty + " Difficulty Dice.");
         //Call the function that rolls the purple dice
@@ -905,7 +898,6 @@ function rollDice(color, diceQty, message) {
         }
         break;
 
-      case "w":
       case "f":
         console.log("Rolling " + diceQty + " Destiny Dice.");
         //Call the function that rolls the white dice
