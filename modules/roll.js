@@ -199,7 +199,7 @@ function rollDice(color, diceQty, message) {
       case "f":
         console.log("Rolling " + diceQty + " Destiny Dice.");
         //Call the function that rolls the white dice
-        var whiteResult = rollWhite(diceQty,message);
+        var whiteResult = rollWhite(diceQty, message);
         //Add the result of all the white dice rolls to the standing count
         for (var k in whiteResult) {
           diceResult[k] += whiteResult[k];
@@ -677,7 +677,7 @@ function rollRed(diceQty, message) {
         break;
     }
   }
-  return diceResult;
+
 }
 //
 function rollWhite(diceQty, message) {
@@ -776,5 +776,6 @@ function rollWhite(diceQty, message) {
         break;
     }
   }
+  return diceResult;
 }
 }
