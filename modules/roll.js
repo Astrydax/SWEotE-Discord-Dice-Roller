@@ -677,7 +677,7 @@ function rollRed(diceQty, message) {
         break;
     }
   }
-
+  return diceResult;
 }
 //
 function rollWhite(diceQty, message) {
