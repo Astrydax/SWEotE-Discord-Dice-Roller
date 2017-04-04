@@ -1,6 +1,8 @@
 /*
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
+  If you would like to join the development discord for this bot
+  you can find us here https://discord.gg/R7Qgbd6
 */
 
 const Discord = require("discord.js");
@@ -14,6 +16,7 @@ var help = require("./modules/help.js");
 var char = require("./modules/char.js");
 var roll = require("./modules/roll.js");
 var d100 = require("./modules/d100.js");
+var emoji = require('./modules/emoji.js');
 
 bot.login(config.token);
 
@@ -122,7 +125,7 @@ bot.on("message", message => {
     //************************COMMANDS START HERE************************
 
     //Ver command
-    if (message.content.toLowerCase().startsWith(config.prefix + "ver")) {
+    if (commanded(message, "ver")) {
       message.channel.sendMessage(bot.user.username + ": version: " + version);
     }
     // D100 command
@@ -148,13 +151,17 @@ bot.on("message", message => {
     if (commanded(message, "char")) {
       char.char(params, characterStatus, message, print);
     }
-
+    //help command
     if (commanded(message, "help")) {
       help.help(params, message);
     }
     // Roll the dice command
-    if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
+    if (commanded(message, "roll")) {
       roll.roll(params, diceResult, message, print, config, desc);
+    }
+
+    if (commanded(message, "emoji")) {
+      emoji.emoji(params, message);
     }
   }
 });
