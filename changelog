@@ -1,3 +1,6 @@
+version 1.4.5
+  - added !char remove, list, and reset
+
 version 1.4.4
   - module-ized the whole monty
 

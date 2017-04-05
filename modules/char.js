@@ -1,8 +1,12 @@
+var characterList = [];
 exports.char = function char(params, characterStatus, message, print) {
   //setting the channel specific variables
   var channel = message.channel.name;
   var characterName = "";
   var command = params[0];
+  var abandonShip = false;
+
+
   if (params[1] != undefined) {
     characterName = params[1].toUpperCase();
   }
@@ -21,13 +25,29 @@ exports.char = function char(params, characterStatus, message, print) {
 
   if (command == undefined) {
     message.channel.sendMessage("Bad Command, !help char for more information");
-  } else if (characterName == "") {
-    message.channel.sendMessage("No characterName, !help char for more information");
-  } else if (characterStatus[channel][characterName] == undefined && command != "setup") {
-    message.channel.sendMessage(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
-  } else {
+    abandonShip = true;
+  } else if (characterStatus[channel][characterName] == undefined) {
+      if (command == "setup" || command == "add") {
+        if (characterName == "") {
+          message.channel.sendMessage("No characterName, !help char for more information");
+          abandonShip = true;
+        } else {
+          console.log ("Setup command detected.");
+        }
+      } else if (command == "list") {
+        console.log("List command detected.")
+      } else if (command == "reset") {
+        console.log("Reset command detected.")
+      } else {
+        message.channel.sendMessage(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
+        abandonShip = true;
+      }
+  }
+
+  if (abandonShip != true) {
       switch(command) {
         case "setup":
+        case "add":
           //init the new characters stats
           console.log("Setting up " + characterName);
           characterStatus[channel][characterName] = {
@@ -37,6 +57,7 @@ exports.char = function char(params, characterStatus, message, print) {
             currentStrain: 0,
             credits: 0
           };
+          characterList.push(characterName);
           if (params[2] != undefined) {
             characterStatus[channel][characterName].maxWound = params[2];
           }
@@ -130,10 +151,32 @@ exports.char = function char(params, characterStatus, message, print) {
           message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
           break;
 
+        case "remove":
+          delete characterStatus[channel][characterName];
+          characterList.splice(characterList.indexOf(characterName), 1);
+          message.channel.sendMessage(characterName + " has been removed.");
+          break;
+
+        case "list":
+          if (characterList.length < 1) {
+            message.channel.sendMessage("No characters.");
+          } else {
+            for (var i = 0; i < characterList.length; i++) {
+            characterName = characterList[i];
+            message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
+            }
+          }
+          break;
+
+        case "reset":
+          message.channel.sendMessage("Deleting all the characters.");
+          delete characterStatus[channel];
+          characterList = [];
+          break;
+
         default:
           message.channel.sendMessage("Bad Command, !help char for more information");
           break;
-
         }
       }
       return characterStatus;
