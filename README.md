@@ -67,19 +67,22 @@ Commands:
   - !char setup characterName [maxWound] [maxStrain] [credits]  Setup a new character
   - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
-  - !char credits/c characterName +X/-X                         dncreases/decreases credit balance for characterName by X
+  - !char credits/c characterName +X/-X                         increases/decreases credit balance for characterName by X
   - !char status characterName                                  current status for characterName   
+  - !char remove characterName                                  removes characterName
+  - !char list                                                  lists all characters
+  - !char reset                                                 resets all characters
 
--!help          Type '!help [topic] for futher information'
+- !help          Type '!help [topic] for further information'
 
-  !roll        rolls any combination of SWRPG dice and returns the canceled results.
-  !d100        rolls a d100 with optional modifier and displays result
-  !destiny     sets and manages the destiny balance for the group
-  !crit        rolls a d100 with optional modifier and displays result of the critical hit
-  !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
-  !char        simple character stat manager.
-  !help        displays help for topics.
-  !ver         displays bot version
+  - !roll        rolls any combination of SWRPG dice and returns the canceled results.
+  - !d100        rolls a d100 with optional modifier and displays result
+  - !destiny     sets and manages the destiny balance for the group
+  - !crit        rolls a d100 with optional modifier and displays result of the critical hit
+  - !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
+  - !char        simple character stat manager.
+  - !help        displays help for topics.
+  - !ver         displays bot version
 
 #Installation and Setup
 
@@ -95,7 +98,7 @@ Commands:
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
-4. Open Config.json with a text editor program of your choice.
+4. Open config.json with a text editor program of your choice.
 5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
 6. Your bot is now configured and ready to launch.
 
@@ -134,8 +137,10 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
   1.  Connect to your ubuntu Linux instance using SSH.
 
   2.  Install node  
-      curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-      sudo apt-get install -y nodejs
+
+    -  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+
+    -  sudo apt-get install -y nodejs
 
   3.  Download and unzip lastest build
       wget https://github.com/Astrydax/SWEotE-Discord-Dice-Roller/archive/master.zip
