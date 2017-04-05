@@ -23,6 +23,10 @@ exports.char = function char(params, characterStatus, message, print) {
     };
   }
 
+  if (characterList[channel] == undefined) {
+    characterList[channel] = [];
+  }
+
   if (command == undefined) {
     message.channel.sendMessage("Bad Command, !help char for more information");
     abandonShip = true;
@@ -57,7 +61,7 @@ exports.char = function char(params, characterStatus, message, print) {
             currentStrain: 0,
             credits: 0
           };
-          characterList.push(characterName);
+          characterList[channel].push(characterName);
           if (params[2] != undefined) {
             characterStatus[channel][characterName].maxWound = params[2];
           }
@@ -153,16 +157,16 @@ exports.char = function char(params, characterStatus, message, print) {
 
         case "remove":
           delete characterStatus[channel][characterName];
-          characterList.splice(characterList.indexOf(characterName), 1);
+          characterList[channel].splice(characterList[channel].indexOf(characterName), 1);
           message.channel.sendMessage(characterName + " has been removed.");
           break;
 
         case "list":
-          if (characterList.length < 1) {
+          if (characterList[channel].length < 1) {
             message.channel.sendMessage("No characters.");
           } else {
-            for (var i = 0; i < characterList.length; i++) {
-            characterName = characterList[i];
+            for (var i = 0; i < characterList[channel].length; i++) {
+            characterName = characterList[channel][i];
             message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
             }
           }
@@ -171,7 +175,7 @@ exports.char = function char(params, characterStatus, message, print) {
         case "reset":
           message.channel.sendMessage("Deleting all the characters.");
           delete characterStatus[channel];
-          characterList = [];
+          characterList[channel] = [];
           break;
 
         default:
