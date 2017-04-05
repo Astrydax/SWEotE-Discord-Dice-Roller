@@ -1,5 +1,5 @@
 var characterList = [];
-exports.char = function char(params, characterStatus, message, print) {
+exports.char = function char(params, characterStatus, message) {
   //setting the channel specific variables
   var channel = message.channel.name;
   var characterName = "";
