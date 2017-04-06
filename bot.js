@@ -17,7 +17,7 @@ var d100 = require("./modules/d100.js");
 
 bot.login(config.token);
 
-var version = "1.4.4";
+var version = "1.4.5";
 
 //init destinyBalance
 var destinyBalance = {
@@ -79,7 +79,7 @@ bot.on("ready", () => {
 bot.on("message", message => {
   //Ignore messages sent by the bot
   if (message.author.bot) return;
-
+  console.log("@" + message.author.username);
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
 
@@ -121,40 +121,49 @@ bot.on("message", message => {
 
 //************************COMMANDS START HERE************************
 
-//Ver command
-if (message.content.toLowerCase().startsWith(config.prefix + "ver")) {
-  message.channel.sendMessage(bot.user.username + ": version: " + version);
-}
-// D100 command
-if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
-  d100.d100(params, message);
+if (message.channel.type == "dm" || message.channel.type == "text") {
+
+  //Ver command
+  if (message.content.toLowerCase().startsWith(config.prefix + "ver")) {
+    message.channel.sendMessage(bot.user.username + ": version: " + version);
+  }
+
+  //Character Tracker
+  if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
+    char.char(params, characterStatus, message);
+  }
+
+  // help module
+  if (message.content.toLowerCase().startsWith(config.prefix + "help")) {
+    help.help(params, message);
+  }
 }
 
-//!crit command
-if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
-  crit.crit(params, message, print);
-}
-//!shipcrit command
-if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
-  crit.shipcrit(params, message, print);
-}
+if (message.channel.type == "text") {
 
-//Destiny Point Module
-if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
-  destiny.destiny(params, destinyBalance, message, print);
-}
+  // D100 command
+  if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
+    d100.d100(params, message);
+  }
 
-//Character Tracker
-if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
-  char.char(params, characterStatus, message, print);
-}
+  //!crit command
+  if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
+    crit.crit(params, message, print);
+  }
+  //!shipcrit command
+  if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
+    crit.shipcrit(params, message, print);
+  }
 
-if (message.content.toLowerCase().startsWith(config.prefix + "help")) {
-  help.help(params, message);
-}
-// Roll the dice command
-if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
-  roll.roll(params, diceResult, message, print, config, desc);
+  //Destiny Point Module
+  if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
+    destiny.destiny(params, destinyBalance, message, print);
+  }
+
+  // Roll the dice command
+  if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
+    roll.roll(params, diceResult, message, print, config, desc);
+  }
 }
 }
 });
