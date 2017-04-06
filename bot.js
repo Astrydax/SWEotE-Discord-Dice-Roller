@@ -79,7 +79,7 @@ bot.on("ready", () => {
 bot.on("message", message => {
   //Ignore messages sent by the bot
   if (message.author.bot) return;
-  console.log("@" + message.author.username + " on " + message.guild.name);
+  console.log("@" + message.author.username);
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
 
