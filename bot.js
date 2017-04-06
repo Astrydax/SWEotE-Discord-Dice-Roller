@@ -79,7 +79,6 @@ bot.on("ready", () => {
 bot.on("message", message => {
   //Ignore messages sent by the bot
   if (message.author.bot) return;
-  console.log("@" + message.author.username);
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
 
@@ -122,6 +121,7 @@ bot.on("message", message => {
 //************************COMMANDS START HERE************************
 
 if (message.channel.type == "dm" || message.channel.type == "text") {
+  console.log("@" + message.author.username + " " + message.createdAt);
 
   //Ver command
   if (message.content.toLowerCase().startsWith(config.prefix + "ver")) {
@@ -140,6 +140,7 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
 }
 
 if (message.channel.type == "text") {
+  console.log("@" + message.author.username + " " + message.createdAt);
 
   // D100 command
   if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {

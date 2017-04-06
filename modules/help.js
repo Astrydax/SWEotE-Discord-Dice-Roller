@@ -1,4 +1,5 @@
 exports.help = function help(params, message) {
+  console.log ("!help command");
 if (params == "") {
   message.channel.sendMessage("```Type '!help [topic] for futher information'\n\n\t!roll\t\trolls any combination of SWRPG dice and returns the cancelled results.\n\t!d100\t\trolls a d100 with optional modifier and displays result.\n\t!destiny\t sets and manages the Destiny Balance for the group.\n\t!crit\t\trolls a d100 with optional modifier and displays result of the critical hit.\n\t!shipcrit\trolls a d100 with optional modifier and displays result of the ship critical hit.\n\t!char\t\tsimple character stat manager.\n\t!ver\t\t displays bot version\n\t!help\t\tdisplays help for topics.\n```");
 } else {

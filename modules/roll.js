@@ -12,7 +12,7 @@ exports.roll = function roll(params, diceResult, message, print, config, desc) {
     p/diff = Purple
     d/w/f = destiny/white
     */
-
+    console.log ("!roll command");
     //Switch to abort command if ever turns true
     var abandonShip = false;
 
