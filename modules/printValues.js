@@ -53,6 +53,10 @@ exports.text = function text(str, message) {
 }
 
 exports.emoji = function emoji(str, message) {
-  var final = message.guild.emojis.find('name', str).toString();
+  if (message.guild.emojis.find('name', str) != null) {
+    var final = message.guild.emojis.find('name', str).toString();
+  } else {
+    var final = str + " custom emoji not installed on this server.  Please upload.\n";
+  }
   return final;
 }

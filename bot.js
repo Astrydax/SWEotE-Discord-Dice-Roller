@@ -17,7 +17,7 @@ var d100 = require("./modules/d100.js");
 
 bot.login(config.token);
 
-var version = "1.4.5";
+var version = "1.4.6";
 
 //init destinyBalance
 var destinyBalance = {
