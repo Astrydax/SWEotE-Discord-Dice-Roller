@@ -1,3 +1,6 @@
+version 1.4.7
+  - fixed formatting in !help
+
 version 1.4.6
   - added warning if server doesn't have the correct custom emoji
 
