@@ -1,3 +1,6 @@
+version 1.4.7.1
+  - add !r and !d for shorter !roll and !destiny
+
 version 1.4.7
   - fixed formatting in !help
 

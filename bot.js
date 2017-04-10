@@ -17,7 +17,7 @@ var d100 = require("./modules/d100.js");
 
 bot.login(config.token);
 
-var version = "1.4.7";
+var version = "1.4.7.1";
 
 //init destinyBalance
 var destinyBalance = {
@@ -85,11 +85,12 @@ bot.on("message", message => {
 
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   const params = message.content.split(" ").slice(1);
-
+  //create command
+  const command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
   //init the descriptor string to an empty string
   var desc = "";
   //var descArr = [];
-  console.log(params);
+  console.log(command + " " + params);
   var beg, end = 0;
   var begF, endF = false;
   for (var i = 0; i < params.length; i++) {
@@ -124,48 +125,49 @@ bot.on("message", message => {
 if (message.channel.type == "dm" || message.channel.type == "text") {
   console.log("@" + message.author.username + " " + message.createdAt);
 
-  //Ver command
-  if (message.content.toLowerCase().startsWith(config.prefix + "ver")) {
-    message.channel.sendMessage(bot.user.username + ": version: " + version);
+  switch (command) {
+    //Ver command
+    case "ver":
+      message.channel.sendMessage(bot.user.username + ": version: " + version);
+      break;
+    //Character Tracker
+    case "char":
+      char.char(params, characterStatus, message);
+      break;
+    // help module
+    case "help":
+      help.help(params, message);
+      break;
+    }
   }
-
-  //Character Tracker
-  if (message.content.toLowerCase().startsWith(config.prefix + "char")) {
-    char.char(params, characterStatus, message);
-  }
-
-  // help module
-  if (message.content.toLowerCase().startsWith(config.prefix + "help")) {
-    help.help(params, message);
-  }
-}
 
 if (message.channel.type == "text") {
   console.log("@" + message.author.username + " " + message.createdAt);
 
-  // D100 command
-  if (message.content.toLowerCase().startsWith(config.prefix + "d100")) {
-    d100.d100(params, message);
+  switch (command) {
+    // D100 command
+    case "d100":
+      d100.d100(params, message);
+      break;
+    //!crit command
+    case "crit":
+      crit.crit(params, message, print);
+      break;
+    //!shipcrit command
+    case "shipcrit":
+      crit.shipcrit(params, message, print);
+      break;
+    //Destiny Point Module
+    case "destiny":
+    case "d":
+      destiny.destiny(params, destinyBalance, message, print);
+      break;
+      // Roll the dice command
+    case "roll":
+    case "r":
+      roll.roll(params, diceResult, message, print, config, desc);
+      break;
+    }
   }
-
-  //!crit command
-  if (message.content.toLowerCase().startsWith(config.prefix + "crit")) {
-    crit.crit(params, message, print);
-  }
-  //!shipcrit command
-  if (message.content.toLowerCase().startsWith(config.prefix + "shipcrit")) {
-    crit.shipcrit(params, message, print);
-  }
-
-  //Destiny Point Module
-  if (message.content.toLowerCase().startsWith(config.prefix + "destiny")) {
-    destiny.destiny(params, destinyBalance, message, print);
-  }
-
-  // Roll the dice command
-  if (message.content.toLowerCase().startsWith(config.prefix + "roll")) {
-    roll.roll(params, diceResult, message, print, config, desc);
-  }
-}
 }
 });

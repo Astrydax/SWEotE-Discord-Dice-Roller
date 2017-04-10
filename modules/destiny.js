@@ -1,7 +1,6 @@
 var chalk = require("chalk");
 
 exports.destiny = function destiny(params, destinyBalance, message, print) {
-  console.log ("!destiny command");
 //setting the channel specific variable
 var channel = message.channel.id;
 if (destinyBalance[channel] == undefined) {

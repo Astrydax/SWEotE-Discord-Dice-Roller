@@ -1,7 +1,6 @@
 var d100 = require("./d100.js");
 
 exports.crit = function crit(params, message, print) {
-  console.log ("!crit command");
   var total = d100.d100(params, message);
   var crit  = {
     option1: print("pb", message) + "Minor Nick: The target suffers 1 strain.",
@@ -133,7 +132,6 @@ exports.crit = function crit(params, message, print) {
 }
 
 exports.shipcrit = function shipcrit(params, message, print) {
-    console.log ("!shipcrit command");
     var total = d100.d100(params, message);
   	var crit  = {
         option1: print("pb", message) + "Mechanical Stress: The ship or vehicle suffers one point of system strain.",
