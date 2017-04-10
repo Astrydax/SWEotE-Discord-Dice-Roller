@@ -14,10 +14,11 @@ var help = require("./modules/help.js");
 var char = require("./modules/char.js");
 var roll = require("./modules/roll.js");
 var d100 = require("./modules/d100.js");
+var admin = require("./modules/admin.js");
 
 bot.login(config.token);
 
-var version = "1.4.7.1";
+var version = "1.4.8";
 
 //init destinyBalance
 var destinyBalance = {
@@ -82,7 +83,6 @@ bot.on("message", message => {
   if (message.author.bot) return;
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
-
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   const params = message.content.split(" ").slice(1);
   //create command
@@ -168,6 +168,10 @@ if (message.channel.type == "text") {
       roll.roll(params, diceResult, message, print, config, desc);
       break;
     }
+  }
+  if (message.author.id == config.adminID) {
+    console.log("Master command");
+    admin.admin(command, message, bot);
   }
 }
 });

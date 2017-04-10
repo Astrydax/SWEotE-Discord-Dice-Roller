@@ -84,6 +84,9 @@ Commands:
   - !help        displays help for topics.
   - !ver         displays bot version
 
+- ADMIN ONLY
+  - !servers     Displays # of servers bot is currently on.
+  
 #Installation and Setup
 
 1. First you will need to have NodeJS installed on your machine. You can find the latest version [here](https://nodejs.org/en/)
@@ -98,9 +101,11 @@ Commands:
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
-4. Open config.json with a text editor program of your choice.
-5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
-6. Your bot is now configured and ready to launch.
+4. Type \@<username> into your channel to get you userID
+5. Open config.json with a text editor program of your choice.
+6. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
+6. Replace "ADMIN_ID" with the NUMBERS of your userID.
+7. Your bot is now configured and ready to launch.
 
 #Running the bot
 
