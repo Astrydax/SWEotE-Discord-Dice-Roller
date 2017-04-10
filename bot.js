@@ -57,7 +57,7 @@ var characterStatus = {
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
-  console.log(`Currently on ${Object.keys(bot.channels).length} servers!`)
+  console.log(`Currently on ${bot.guilds.size} servers!`);
 
   if (config.maxRollsPerDie >= 100) {
     console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
