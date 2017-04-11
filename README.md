@@ -86,6 +86,7 @@ Commands:
 
 - ADMIN ONLY
   - !servers     Displays # of servers bot is currently on.
+  - !users       Displays # users that currently have access to bot
   
 #Installation and Setup
 
