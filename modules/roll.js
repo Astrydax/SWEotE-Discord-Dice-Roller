@@ -111,7 +111,7 @@ exports.roll = function roll(params, diceResult, message, print, config, desc) {
         response += "   " + print("ds", message) + diceResult.dark;
       }
 
-      message.channel.sendMessage(message.author.username + " roll results: " + config.descriptorPrepend + " " + desc);
+      message.reply(" roll results: " + config.descriptorPrepend + " " + desc);
       if (diceResult.face != "") {
       message.channel.sendMessage(diceResult.face);
       }

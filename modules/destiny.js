@@ -69,7 +69,7 @@ switch(command) {
           dark: 0,
           face: " ",
         };
-    message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
+    message.reply(" resets the Destiny Pool");
     printdestinyBalance();
     break;
 
@@ -84,7 +84,7 @@ switch(command) {
     console.log(message.author.username + " uses a Lightside point");
     destinyBalance[channel].light--;
     destinyBalance[channel].dark++;
-    message.channel.sendMessage(message.author.username + " uses a Lightside point");
+    message.reply(" uses a Lightside point");
     printdestinyBalance();
     break;
     }
@@ -100,7 +100,7 @@ switch(command) {
     console.log(message.author.username + " uses a Darkside point");
     destinyBalance[channel].dark--;
     destinyBalance[channel].light++;
-    message.channel.sendMessage(message.author.username + " uses a Darkside point");
+    message.reply(" uses a Darkside point");
     printdestinyBalance();
     break;
     }
@@ -114,7 +114,7 @@ switch(command) {
     destinyRoll = rollWhite(1, message);
     destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
     destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
-    message.channel.sendMessage(message.author.username + " rolls");
+    message.reply(" rolls");
     message.channel.sendMessage(destinyRoll.face);
     destinyRoll.face = "";
     for (var i = 1; i <= destinyRoll.light; i++) {
