@@ -16,6 +16,7 @@ var command = params[0];
 switch(command) {
   //Sets Denstiny balance per color
   case "set":
+  case "s":
     destinyBalance[channel] = {
       light: 0,
       dark: 0,
@@ -106,6 +107,7 @@ switch(command) {
     }
 
   case "roll":
+    console.log("Rolling Destiny for " + message.author.username);
     var destinyRoll = {
       light: 0,
       dark: 0,

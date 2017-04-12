@@ -117,9 +117,11 @@ exports.roll = function roll(params, diceResult, message, print, config, desc) {
       }
       message.channel.sendMessage("Final results: " + response);
 
-    } else if (abandonShip) {
+      } else if (abandonShip) {
       message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
       }
+      return diceResult;
+
 
 //uses the current params to roll dice and adds result to diceResult
 function rollDice(color, diceQty, message) {

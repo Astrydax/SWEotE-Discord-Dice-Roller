@@ -1,6 +1,6 @@
 exports.help = function help(params, message) {
 if (params == "") {
-  message.channel.sendMessage("```prolog\ntype '!Help [topic]' for futher information\n!Roll: rolls any combination of swrpg dice\n!D100: rolls a d100 with optional modifier\n!Destiny: manages the destiny balance\n!Crit: rolls and displays the critical hit\n!Shipcrit: rolls and displays the ship critical hit\n!Char: simple character stat manager\n!Ver: displays bot version\n!Help: displays help for topics\n\nfor more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'\n```");
+  message.channel.sendMessage("```prolog\ntype '!Help [topic]' for futher information\n!Roll: rolls any combination of swrpg dice\n!D100: rolls a d100 with optional modifier\n!Destiny: manages the destiny balance\n!Crit: rolls and displays the critical hit\n!Shipcrit: rolls and displays the ship critical hit\n!Char: simple character stat manager\n!Ver: displays bot version\n!Init: initiative tracker and roller\n!Help: displays help for topics\n\nfor more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'\n```");
 } else {
   var topic = params[0];
   switch (topic) {
@@ -13,6 +13,8 @@ if (params == "") {
     case "roll":
       message.channel.sendMessage("```prolog\n!Roll: rolls any combination of swrpg dice and returns the canceled results\n\nyou may add \" \" in the line to give the roll a label\n\nDICE IDENTIFIERS\n\n\tY/Pro = yellow/proficiency\n\tG/A = green/ability\n\tB/Boo = blue/boost\n\tBlk/K/Sb/S = black/setback\n\tR/C = red/challenge\n\tP/Diff = purple/difficulty\n\tW/F = white/worce\n\nNote: if you use the !roll yyyggbbd method you must use the single character dice identifiers\n```");
       break;
+    case "init":
+    message.channel.sendMessage("```prolog\n!Init: shows current initiative order\n!Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order\n!Init Next: moves to next initiative slot\n!Init Previous: moves to previous initiative slot\n!Init Set: manually set initiative order before any turns occur\n!Init Modify: manually alter initiative order mid-round\n!Init Reset: resets the initiative order\n```");
     default:
       break;
     }

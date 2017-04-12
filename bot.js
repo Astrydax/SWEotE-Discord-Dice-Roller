@@ -2,7 +2,6 @@
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
-
 const Discord = require("discord.js");
 const config = require("./config.json");
 var chalk = require("chalk");
@@ -15,44 +14,22 @@ var char = require("./modules/char.js");
 var roll = require("./modules/roll.js");
 var d100 = require("./modules/d100.js");
 var admin = require("./modules/admin.js");
-
+var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.4.8";
+var version = "1.5.0";
 
 //init destinyBalance
-var destinyBalance = {
-  blankchannel: {
-    light: 0,
-    dark: 0,
-    face: "",
-  },
-};
+var destinyBalance = {};
 
-//Init the dice results to zero
-var diceResult = {
-  success: 0,
-  failure: 0,
-  advantage: 0,
-  threat: 0,
-  triumph: 0,
-  despair: 0,
-  light: 0,
-  dark: 0,
-  face: "",
-};
+//Init the diceResult
+var diceResult = {};
 
-var characterStatus = {
-  blankChannel: {
-    blankCharacter: {
-      maxWound: 0,
-      maxStrain: 0,
-      currentWound: 0,
-      currentStrain:  0,
-      credits: 0
-    }
-  }
-};
+//init characterStatus
+var characterStatus = {};
+
+//init initiativeOrder
+var initiativeOrder = {};
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
@@ -165,6 +142,10 @@ if (message.channel.type == "text") {
     case "roll":
     case "r":
       roll.roll(params, diceResult, message, print, config, desc);
+      break;
+    case "init":
+    case "i":
+      init.init(params, initiativeOrder, message, diceResult, print, config, desc);
       break;
     }
   }

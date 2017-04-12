@@ -28,16 +28,12 @@ Commands:
       - !roll "Get to the ship" 2y 1g 1r 1p
 
 - !d100   rolls a d100 with optional modifier and displays result.
-
-  EXAMPLES
   - !d100 +X
   - !d100 + X
   - !d100 -X
   - !d100 - X
 
 - !destiny  sets and manages the Destiny Balance for the group
-
-  COMMANDS
   - !destiny            view the destiny pool
   - !destiny rolls      roll one Force Die and adds it to current destiny pool
   - !destiny l/light    uses light side point
@@ -47,23 +43,18 @@ Commands:
   - !destiny reset      resets the destiny pool
 
 - !crit     rolls a d100 with optional modifier and displays result of the critical hit.
-
-  EXAMPLES
   - !crit +X
   - !crit + X
   - !crit -X
   - !crit - X
 
 - !shipcrit   rolls a d100 with optional modifier and displays result of the ship critical hit.
-
-  EXAMPLES
   - !shipcrit +X
   - !shipcrit + X
   - !shipcrit -X
   - !shipcrit - X
 
 - !char         Simple character stat manager
-  COMMANDS
   - !char setup characterName [maxWound] [maxStrain] [credits]  Setup a new character
   - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
@@ -73,21 +64,31 @@ Commands:
   - !char list                                                  lists all characters
   - !char reset                                                 resets all characters
 
+- !Init initiative tracker and roller
+  - !Init: shows current initiative order
+  - !Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order
+  - !Init Next: moves to next initiative slot
+  - !Init Previous: moves to previous initiative slot
+  - !Init Set: manually set initiative order before any turns occur
+  - !Init Modify: manually alter initiative order mid-round
+  - !Init Reset: resets the initiative order
+
 - !help          Type '!help [topic] for further information'
 
-  - !roll        rolls any combination of SWRPG dice and returns the canceled results.
+  - !roll        rolls any combination of SWRPG dice and returns the canceled results
   - !d100        rolls a d100 with optional modifier and displays result
   - !destiny     sets and manages the destiny balance for the group
   - !crit        rolls a d100 with optional modifier and displays result of the critical hit
   - !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
-  - !char        simple character stat manager.
-  - !help        displays help for topics.
+  - !char        simple character stat manager
+  - !help        displays help for topics
+  - !init        initiative tracker and roller
   - !ver         displays bot version
 
 - ADMIN ONLY
   - !servers     Displays # of servers bot is currently on.
   - !users       Displays # users that currently have access to bot
-  
+
 #Installation and Setup
 
 1. First you will need to have NodeJS installed on your machine. You can find the latest version [here](https://nodejs.org/en/)
