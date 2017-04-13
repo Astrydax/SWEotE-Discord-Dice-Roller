@@ -20,50 +20,16 @@ bot.login(config.token);
 var version = "1.5.0";
 
 //init destinyBalance
-var destinyBalance = {
-  blankchannel: {
-    light: 0,
-    dark: 0,
-    face: "",
-  },
-};
+var destinyBalance = {};
 
 //Init the diceResult
-var diceResult = {
-  success: 0,
-  failure: 0,
-  advantage: 0,
-  threat: 0,
-  triumph: 0,
-  despair: 0,
-  light: 0,
-  dark: 0,
-  face: "",
-};
+var diceResult = {};
 
 //init characterStatus
-var characterStatus = {
-  blankChannel: {
-    blankCharacter: {
-      maxWound: 0,
-      maxStrain: 0,
-      currentWound: 0,
-      currentStrain:  0,
-      credits: 0
-    }
-  }
-};
+var characterStatus = {};
 
 //init initiativeOrder
-var initiativeOrder = {
-  blankChannel: {
-  order: [],
-  face: "",
-  total: 0,
-  turn: 1,
-  round: 1,
-  }
-};
+var initiativeOrder = {};
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
@@ -72,17 +38,6 @@ bot.on("ready", () => {
 
   if (config.maxRollsPerDie >= 100) {
     console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
-  }
-
-  //Point print out to print or text
-  if (config.emoji == true) {
-    console.log("emoji set to true");
-    print = print.emoji;
-  }
-
-  if (config.emoji == false) {
-    console.log("emoji set to false");
-    print = print.text;
   }
 
 });
@@ -159,25 +114,25 @@ if (message.channel.type == "text") {
       break;
     //!crit command
     case "crit":
-      crit.crit(params, message, print);
+      crit.crit(params, message);
       break;
     //!shipcrit command
     case "shipcrit":
-      crit.shipcrit(params, message, print);
+      crit.shipcrit(params, message);
       break;
     //Destiny Point Module
     case "destiny":
     case "d":
-      destiny.destiny(params, destinyBalance, message, print);
+      destiny.destiny(params, destinyBalance, message);
       break;
       // Roll the dice command
     case "roll":
     case "r":
-      roll.roll(params, diceResult, message, print, config, desc);
+      roll.roll(params, diceResult, message, config, desc);
       break;
     case "init":
     case "i":
-      init.init(params, initiativeOrder, message, diceResult, print, config, desc);
+      init.init(params, initiativeOrder, message, diceResult, config, desc);
       break;
     }
   }

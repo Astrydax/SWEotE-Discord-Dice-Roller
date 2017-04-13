@@ -129,14 +129,12 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
     Astrydax roll results:    Success: 1   Threat: 1
   4. maxRollsPerDie
     - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
-  5.  emoji
-    - set to 'true' to enable custom emoji
 
 #CUSTOM emoji
 
   1. Follow instructions here https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic to add emoji from /dice to your discord server
 
-  2. Set "emoji": true in config.json
+  - NOTE: To disable emoji rename printValues_NO_EMOJI.js to printValues.js, replacing existing file.
 
 
 #Amazon EC2 install

@@ -1,8 +1,9 @@
 var roll = require("./roll.js");
+var print = require("./printValues.js");
 var initiativeRolls = {};
 var r = 0;
 
-exports.init = function init(params, initiativeOrder, message, diceResult, print, config, desc) {
+exports.init = function init(params, initiativeOrder, message, diceResult, config, desc) {
   var channel = message.channel.id;
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
@@ -38,7 +39,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, print
         return;
       }
       var pass = params.slice(1);
-      diceResult[channel] = roll.roll(pass, diceResult[channel], message, print, config, desc);
+      diceResult[channel] = roll.roll(pass, diceResult[channel], message, config, desc);
       initiativeRolls[channel].push([diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]);
       initiativeRolls[channel].sort();
       initiativeOrder[channel].order = [];
