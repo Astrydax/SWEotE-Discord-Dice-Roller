@@ -20,16 +20,50 @@ bot.login(config.token);
 var version = "1.5.0";
 
 //init destinyBalance
-var destinyBalance = {};
+var destinyBalance = {
+  blankchannel: {
+    light: 0,
+    dark: 0,
+    face: "",
+  },
+};
 
 //Init the diceResult
-var diceResult = {};
+var diceResult = {
+  success: 0,
+  failure: 0,
+  advantage: 0,
+  threat: 0,
+  triumph: 0,
+  despair: 0,
+  light: 0,
+  dark: 0,
+  face: "",
+};
 
 //init characterStatus
-var characterStatus = {};
+var characterStatus = {
+  blankChannel: {
+    blankCharacter: {
+      maxWound: 0,
+      maxStrain: 0,
+      currentWound: 0,
+      currentStrain:  0,
+      credits: 0
+    }
+  }
+};
 
 //init initiativeOrder
-var initiativeOrder = {};
+var initiativeOrder = {
+  blankChannel: {
+  order: [],
+  face: "",
+  total: 0,
+  turn: 1,
+  round: 1,
+  }
+};
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
