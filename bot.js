@@ -115,9 +115,7 @@ bot.on("message", message => {
     }
   }
   //remove the text field arguments from the list of parameters before checking for dice.
-  console.log("Beg: " + beg + " End: " + end);
   for (i = beg; i <= end + 1; i++) {
-    console.log("params: " + params[i]);
     desc += " " + params[i];
   }
   var spliceAmnt = end + 1 - beg;

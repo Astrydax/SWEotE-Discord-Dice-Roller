@@ -116,16 +116,7 @@ switch(command) {
     destinyRoll = rollWhite(1, message);
     destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
     destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
-    message.reply(" rolls");
-    message.channel.sendMessage(destinyRoll.face);
-    destinyRoll.face = "";
-    for (var i = 1; i <= destinyRoll.light; i++) {
-        destinyRoll.face += print("ls", message);
-        }
-    for (var i = 1; i <= destinyRoll.dark; i++) {
-        destinyRoll.face += print("ds", message);
-        }
-
+    message.reply(" rolls for the destiny pool");
     message.channel.sendMessage("Adding " + destinyRoll.face + " to the Destiny Pool");
     printdestinyBalance();
     break;
@@ -136,6 +127,7 @@ switch(command) {
     break;
 }
 return destinyBalance;
+
 //Prints out destiny pool to channel
 function printdestinyBalance() {
     destinyBalance[channel].face = "";
