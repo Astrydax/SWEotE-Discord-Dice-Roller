@@ -3,6 +3,5 @@
   "adminID": "ADMIN_ID",
   "prefix": "!",
   "maxRollsPerDie": 20,
-  "descriptorPrepend": "",
-  "emoji": false
+  "descriptorPrepend": ""
 }
