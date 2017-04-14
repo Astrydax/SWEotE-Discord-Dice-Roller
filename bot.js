@@ -17,7 +17,7 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.5.1";
+var version = "1.5.2";
 
 //init destinyBalance
 var destinyBalance = {};

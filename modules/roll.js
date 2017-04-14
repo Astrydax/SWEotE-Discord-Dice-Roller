@@ -112,6 +112,10 @@ exports.roll = function roll(params, diceResult, message, config, desc) {
       if (diceResult.dark != 0) {
         response += "   " + print.results("ds", message) + diceResult.dark;
       }
+      //if all the dice cancel out, response filled with this
+      if (response == "") {
+        response += "All dice have cancelled out";
+      }
 
       message.reply(" roll results: " + config.descriptorPrepend + " " + desc);
       if (diceResult.face != "") {
