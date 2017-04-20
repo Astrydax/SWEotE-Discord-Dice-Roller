@@ -1,6 +1,8 @@
 {
+
   "token": "BOT TOKEN",
   "adminID": "ADMIN_ID",
+
   "prefix": "!",
   "maxRollsPerDie": 20,
   "descriptorPrepend": ""

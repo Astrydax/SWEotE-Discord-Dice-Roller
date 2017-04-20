@@ -1,6 +1,8 @@
 /*
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
+  If you would like to join the development discord for this bot
+  you can find us here https://discord.gg/R7Qgbd6
 */
 const Discord = require("discord.js");
 const config = require("./config.json");
@@ -13,8 +15,10 @@ var help = require("./modules/help.js");
 var char = require("./modules/char.js");
 var roll = require("./modules/roll.js");
 var d100 = require("./modules/d100.js");
+
 var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
+
 bot.login(config.token);
 
 var version = "1.5.2";
@@ -30,6 +34,7 @@ var characterStatus = {};
 
 //init initiativeOrder
 var initiativeOrder = {};
+
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
@@ -80,10 +85,10 @@ bot.on("message", message => {
   //set the rest of params to lowercase
   if (params != undefined) {
     for (var i = 0; i < params.length; i++) {
-    params[i] = params[i].toLowerCase();
-  }
+      params[i] = params[i].toLowerCase();
+    }
 
-//************************COMMANDS START HERE************************
+    //************************COMMANDS START HERE************************
 
 if (message.channel.type == "dm" || message.channel.type == "text") {
   console.log("@" + message.author.username + " " + message.createdAt);
@@ -141,4 +146,10 @@ if (message.channel.type == "text") {
     admin.admin(command, message, bot);
   }
 }
+
+
 });
+
+function commanded(message, command) {
+  return (message.content.toLowerCase().startsWith(config.prefix + command));
+}
