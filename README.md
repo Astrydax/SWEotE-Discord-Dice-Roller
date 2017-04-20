@@ -28,16 +28,12 @@ Commands:
       - !roll "Get to the ship" 2y 1g 1r 1p
 
 - !d100   rolls a d100 with optional modifier and displays result.
-
-  EXAMPLES
   - !d100 +X
   - !d100 + X
   - !d100 -X
   - !d100 - X
 
 - !destiny  sets and manages the Destiny Balance for the group
-
-  COMMANDS
   - !destiny            view the destiny pool
   - !destiny rolls      roll one Force Die and adds it to current destiny pool
   - !destiny l/light    uses light side point
@@ -47,39 +43,51 @@ Commands:
   - !destiny reset      resets the destiny pool
 
 - !crit     rolls a d100 with optional modifier and displays result of the critical hit.
-
-  EXAMPLES
   - !crit +X
   - !crit + X
   - !crit -X
   - !crit - X
 
 - !shipcrit   rolls a d100 with optional modifier and displays result of the ship critical hit.
-
-  EXAMPLES
   - !shipcrit +X
   - !shipcrit + X
   - !shipcrit -X
   - !shipcrit - X
 
 - !char         Simple character stat manager
-  COMMANDS
   - !char setup characterName [maxWound] [maxStrain] [credits]  Setup a new character
   - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
-  - !char credits/c characterName +X/-X                         dncreases/decreases credit balance for characterName by X
+  - !char credits/c characterName +X/-X                         increases/decreases credit balance for characterName by X
   - !char status characterName                                  current status for characterName   
+  - !char remove characterName                                  removes characterName
+  - !char list                                                  lists all characters
+  - !char reset                                                 resets all characters
 
--!help          Type '!help [topic] for futher information'
+- !Init initiative tracker and roller
+  - !Init: shows current initiative order
+  - !Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order
+  - !Init Next: moves to next initiative slot
+  - !Init Previous: moves to previous initiative slot
+  - !Init Set: manually set initiative order before any turns occur
+  - !Init Modify: manually alter initiative order mid-round
+  - !Init Reset: resets the initiative order
 
-  !roll        rolls any combination of SWRPG dice and returns the canceled results.
-  !d100        rolls a d100 with optional modifier and displays result
-  !destiny     sets and manages the destiny balance for the group
-  !crit        rolls a d100 with optional modifier and displays result of the critical hit
-  !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
-  !char        simple character stat manager.
-  !help        displays help for topics.
-  !ver         displays bot version
+- !help          Type '!help [topic] for further information'
+
+  - !roll        rolls any combination of SWRPG dice and returns the canceled results
+  - !d100        rolls a d100 with optional modifier and displays result
+  - !destiny     sets and manages the destiny balance for the group
+  - !crit        rolls a d100 with optional modifier and displays result of the critical hit
+  - !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
+  - !char        simple character stat manager
+  - !help        displays help for topics
+  - !init        initiative tracker and roller
+  - !ver         displays bot version
+
+- ADMIN ONLY
+  - !servers     Displays # of servers bot is currently on.
+  - !users       Displays # users that currently have access to bot
 
 #Installation and Setup
 
@@ -95,9 +103,11 @@ Commands:
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
-4. Open Config.json with a text editor program of your choice.
-5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
-6. Your bot is now configured and ready to launch.
+4. Type \@<username> into your channel to get you userID
+5. Open config.json with a text editor program of your choice.
+6. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
+6. Replace "ADMIN_ID" with the NUMBERS of your userID.
+7. Your bot is now configured and ready to launch.
 
 #Running the bot
 
@@ -119,14 +129,12 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
     Astrydax roll results:    Success: 1   Threat: 1
   4. maxRollsPerDie
     - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
-  5.  emoji
-    - set to 'true' to enable custom emoji
 
 #CUSTOM emoji
 
   1. Follow instructions here https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic to add emoji from /dice to your discord server
 
-  2. Set "emoji": true in config.json
+  - NOTE: To disable emoji rename printValues_NO_EMOJI.js to printValues.js, replacing existing file.
 
 
 #Amazon EC2 install
@@ -134,8 +142,10 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
   1.  Connect to your ubuntu Linux instance using SSH.
 
   2.  Install node  
-      curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-      sudo apt-get install -y nodejs
+
+    -  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+
+    -  sudo apt-get install -y nodejs
 
   3.  Download and unzip lastest build
       wget https://github.com/Astrydax/SWEotE-Discord-Dice-Roller/archive/master.zip

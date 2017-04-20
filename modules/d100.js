@@ -6,21 +6,21 @@ exports.d100 = function d100(str, message) {
     console.log("No modifier, straight d100 roll");
       let r = Math.floor(Math.random() * 100) + 1;
       total = +r;
-      message.channel.sendMessage(message.author.username + " rolled: " + total);
+      message.reply(" rolled: " + total);
   //addition modifier
   } else if (str.includes("+") || str[0][0] == "+") {
 		console.log("+ modifier detected");
         var modifier = (str[str.length - 1]).replace(/\D/g, "");
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r + +modifier;
-        message.channel.sendMessage(message.author.username + " rolled: " + r + " + " + modifier + " " + "for a total of " + total);
+        message.reply(" rolled: " + r + " + " + modifier + " " + "for a total of " + total);
 	//subtraction modifier
 } else if (str.includes("-") ||str[0][0] == "-") {
     	console.log("- modifier detected");
         var modifier = (str[str.length - 1]).replace(/\D/g, "");
         let r = Math.floor(Math.random() * 100) + 1;
         total = +r - +modifier;
-        message.channel.sendMessage(message.author.username + " rolled: " + r + " - " + modifier + " " + "for a total of " + total);
+        message.reply(" rolled: " + r + " - " + modifier + " " + "for a total of " + total);
     }
     return (total);
 }

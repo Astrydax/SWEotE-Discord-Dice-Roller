@@ -4,7 +4,6 @@
   If you would like to join the development discord for this bot
   you can find us here https://discord.gg/R7Qgbd6
 */
-
 const Discord = require("discord.js");
 const config = require("./config.json");
 var chalk = require("chalk");
@@ -16,45 +15,26 @@ var help = require("./modules/help.js");
 var char = require("./modules/char.js");
 var roll = require("./modules/roll.js");
 var d100 = require("./modules/d100.js");
-var emoji = require('./modules/emoji.js');
+
+var admin = require("./modules/admin.js");
+var init = require("./modules/init.js");
 
 bot.login(config.token);
 
-var version = "1.4.4";
+var version = "1.5.2";
 
 //init destinyBalance
-var destinyBalance = {
-  blankchannel: {
-    light: 0,
-    dark: 0,
-    face: "",
-  },
-};
+var destinyBalance = {};
 
-//Init the dice results to zero
-var diceResult = {
-  success: 0,
-  failure: 0,
-  advantage: 0,
-  threat: 0,
-  triumph: 0,
-  despair: 0,
-  light: 0,
-  dark: 0,
-  face: "",
-};
+//Init the diceResult
+var diceResult = {};
 
-var characterStatus = {
-  blankChannel: {
-    blankCharacter: {
-      maxWound: 0,
-      maxStrain: 0,
-      currentWound: 0,
-      currentStrain: 0,
-      credits: 0
-    }
-  }
-};
+//init characterStatus
+var characterStatus = {};
+
+//init initiativeOrder
+var initiativeOrder = {};
+
 
 //Called When bot becomes functional.
 bot.on("ready", () => {
@@ -65,34 +45,22 @@ bot.on("ready", () => {
     console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
   }
 
-  //Point print out to print or text
-  if (config.emoji == true) {
-    console.log("emoji set to true");
-    print = print.emoji;
-  }
-
-  if (config.emoji == false) {
-    console.log("emoji set to false");
-    print = print.text;
-  }
-
 });
 
 //Called whenever a users send a message to the server
 bot.on("message", message => {
   //Ignore messages sent by the bot
   if (message.author.bot) return;
-
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
-
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   const params = message.content.split(" ").slice(1);
-
+  //create command
+  const command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
   //init the descriptor string to an empty string
   var desc = "";
   //var descArr = [];
-  console.log(params);
+  console.log(command + " " + params);
   var beg, end = 0;
   var begF, endF = false;
   for (var i = 0; i < params.length; i++) {
@@ -107,9 +75,7 @@ bot.on("message", message => {
     }
   }
   //remove the text field arguments from the list of parameters before checking for dice.
-  console.log("Beg: " + beg + " End: " + end);
   for (i = beg; i <= end + 1; i++) {
-    console.log("params: " + params[i]);
     desc += " " + params[i];
   }
   var spliceAmnt = end + 1 - beg;
@@ -124,46 +90,64 @@ bot.on("message", message => {
 
     //************************COMMANDS START HERE************************
 
+if (message.channel.type == "dm" || message.channel.type == "text") {
+  console.log("@" + message.author.username + " " + message.createdAt);
+
+  switch (command) {
     //Ver command
-    if (commanded(message, "ver")) {
+    case "ver":
       message.channel.sendMessage(bot.user.username + ": version: " + version);
-    }
-    // D100 command
-    if (commanded(message, "d100")) {
-      d100.d100(params, message);
-    }
-
-    //!crit command
-    if (commanded(message, "crit")) {
-      crit.crit(params, message, print);
-    }
-    //!shipcrit command
-    if (commanded(message, "shipcrit")) {
-      crit.shipcrit(params, message, print);
-    }
-
-    //Destiny Point Module
-    if (commanded(message, "destiny")) {
-      destiny.destiny(params, destinyBalance, message, print);
-    }
-
+      break;
     //Character Tracker
-    if (commanded(message, "char")) {
-      char.char(params, characterStatus, message, print);
-    }
-    //help command
-    if (commanded(message, "help")) {
+    case "char":
+      char.char(params, characterStatus, message);
+      break;
+    // help module
+    case "help":
       help.help(params, message);
-    }
-    // Roll the dice command
-    if (commanded(message, "roll")) {
-      roll.roll(params, diceResult, message, print, config, desc);
-    }
-
-    if (commanded(message, "emoji")) {
-      emoji.emoji(params, message);
+      break;
     }
   }
+
+if (message.channel.type == "text") {
+  console.log("@" + message.author.username + " " + message.createdAt);
+
+  switch (command) {
+    // D100 command
+    case "d100":
+      d100.d100(params, message);
+      break;
+    //!crit command
+    case "crit":
+      crit.crit(params, message);
+      break;
+    //!shipcrit command
+    case "shipcrit":
+      crit.shipcrit(params, message);
+      break;
+    //Destiny Point Module
+    case "destiny":
+    case "d":
+      destiny.destiny(params, destinyBalance, message);
+      break;
+      // Roll the dice command
+    case "roll":
+    case "r":
+      roll.roll(params, diceResult, message, config, desc);
+      break;
+    case "init":
+    case "i":
+      init.init(params, initiativeOrder, message, diceResult, config, desc);
+      break;
+    }
+  }
+  if (message.author.id == config.adminID) {
+    console.log("Master command");
+    admin.admin(command, message, bot);
+  }
+}
+
+
 });
 
 function commanded(message, command) {

@@ -1,7 +1,9 @@
 {
-  "token": "Mjk4NjYxMDAwMTk3MDQ2Mjcy.C8SlbQ.-rrm4WX211L46KvRamRnM6Nvs04",
+
+  "token": "BOT TOKEN",
+  "adminID": "ADMIN_ID",
+
   "prefix": "!",
   "maxRollsPerDie": 20,
-  "descriptorPrepend": "",
-  "emoji": false
+  "descriptorPrepend": ""
 }

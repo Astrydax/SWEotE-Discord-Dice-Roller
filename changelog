@@ -1,3 +1,28 @@
+ver 1.5.2
+  - added "All dice have cancelled out" result
+
+ver 1.5.1
+  - emoji defaults to on, new emoji disable instructions
+
+ver 1.5.0
+  -added !init module
+
+ver 1.4.8
+  - added some simple admin commands
+  - added @reply to rolls and stuff
+
+version 1.4.7.1
+  - add !r and !d for shorter !roll and !destiny
+
+version 1.4.7
+  - fixed formatting in !help
+
+version 1.4.6
+  - added warning if server doesn't have the correct custom emoji
+
+version 1.4.5
+  - added !char remove, list, and reset
+
 version 1.4.4
   - module-ized the whole monty
 

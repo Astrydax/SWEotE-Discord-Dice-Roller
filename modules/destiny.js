@@ -1,8 +1,10 @@
 var chalk = require("chalk");
+var print = require("./printValues.js");
 
-exports.destiny = function destiny(params, destinyBalance, message, print) {
+
+exports.destiny = function destiny(params, destinyBalance, message) {
 //setting the channel specific variable
-var channel = message.channel.name;
+var channel = message.channel.id;
 if (destinyBalance[channel] == undefined) {
   destinyBalance[channel] = {
       light: 0,
@@ -16,6 +18,7 @@ var command = params[0];
 switch(command) {
   //Sets Denstiny balance per color
   case "set":
+  case "s":
     destinyBalance[channel] = {
       light: 0,
       dark: 0,
@@ -69,7 +72,7 @@ switch(command) {
           dark: 0,
           face: " ",
         };
-    message.channel.sendMessage(message.author.username + " resets the Destiny Pool");
+    message.reply(" resets the Destiny Pool");
     printdestinyBalance();
     break;
 
@@ -84,7 +87,7 @@ switch(command) {
     console.log(message.author.username + " uses a Lightside point");
     destinyBalance[channel].light--;
     destinyBalance[channel].dark++;
-    message.channel.sendMessage(message.author.username + " uses a Lightside point");
+    message.reply(" uses a Lightside point");
     printdestinyBalance();
     break;
     }
@@ -100,12 +103,13 @@ switch(command) {
     console.log(message.author.username + " uses a Darkside point");
     destinyBalance[channel].dark--;
     destinyBalance[channel].light++;
-    message.channel.sendMessage(message.author.username + " uses a Darkside point");
+    message.reply(" uses a Darkside point");
     printdestinyBalance();
     break;
     }
 
   case "roll":
+    console.log("Rolling Destiny for " + message.author.username);
     var destinyRoll = {
       light: 0,
       dark: 0,
@@ -114,16 +118,7 @@ switch(command) {
     destinyRoll = rollWhite(1, message);
     destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
     destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
-    message.channel.sendMessage(message.author.username + " rolls");
-    message.channel.sendMessage(destinyRoll.face);
-    destinyRoll.face = "";
-    for (var i = 1; i <= destinyRoll.light; i++) {
-        destinyRoll.face += print("ls", message);
-        }
-    for (var i = 1; i <= destinyRoll.dark; i++) {
-        destinyRoll.face += print("ds", message);
-        }
-
+    message.reply(" rolls for the destiny pool");
     message.channel.sendMessage("Adding " + destinyRoll.face + " to the Destiny Pool");
     printdestinyBalance();
     break;
@@ -134,14 +129,15 @@ switch(command) {
     break;
 }
 return destinyBalance;
+
 //Prints out destiny pool to channel
 function printdestinyBalance() {
     destinyBalance[channel].face = "";
   for (var i = 1; i <= destinyBalance[channel].light; i++) {
-      destinyBalance[channel].face += print("ls", message);
+      destinyBalance[channel].face += print.results("ls", message);
       }
   for (var i = 1; i <= destinyBalance[channel].dark; i++) {
-      destinyBalance[channel].face += print("ds", message);
+      destinyBalance[channel].face += print.results("ds", message);
       }
   message.channel.sendMessage("Destiny Pool: ")
   if (destinyBalance[channel].face != "") {
@@ -186,62 +182,62 @@ function rollWhite(diceQty, message) {
       case 1:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += print("wl", message);
+        diceResult.face += print.results("wl", message);
         break;
       case 2:
         console.log(chalk.black.bgWhite("Light"));
         diceResult.light = diceResult.light + 1;
-        diceResult.face += print("wl", message);
+        diceResult.face += print.results("wl", message);
         break;
       case 3:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += print("wll", message);
+        diceResult.face += print.results("wll", message);
         break;
       case 4:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += print("wll", message);
+        diceResult.face += print.results("wll", message);
         break;
       case 5:
         console.log(chalk.black.bgWhite("Light x2"));
         diceResult.light = diceResult.light + 2;
-        diceResult.face += print("wll", message);
+        diceResult.face += print.results("wll", message);
         break;
       case 6:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print("wd", message);
+        diceResult.face += print.results("wd", message);
         break;
       case 7:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print("wd", message);
+        diceResult.face += print.results("wd", message);
         break;
       case 8:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print("wd", message);
+        diceResult.face += print.results("wd", message);
         break;
       case 9:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print("wd", message);
+        diceResult.face += print.results("wd", message);
         break;
       case 10:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print("wd", message);
+        diceResult.face += print.results("wd", message);
         break;
       case 11:
         console.log(chalk.black.bgWhite("Dark"));
         diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print("wd", message);
+        diceResult.face += print.results("wd", message);
         break;
       case 12:
         console.log(chalk.black.bgWhite("Dark x2"));
         diceResult.dark = diceResult.dark + 2;
-        diceResult.face += print("wdd", message);
+        diceResult.face += print.results("wdd", message);
         break;
     }
   }
