@@ -1,3 +1,6 @@
+ver 1.6
+  - added restart memory.  !destiny, !Char, !init no longer reset after crash or restart.
+
 ver 1.5.2
   - added "All dice have cancelled out" result
 
