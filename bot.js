@@ -4,7 +4,9 @@
 */
 const Discord = require("discord.js");
 const config = require("./config.json");
-var chalk = require("chalk");
+const fs = require('fs');
+const jsonfile = require('jsonfile');
+const chalk = require("chalk");
 const bot = new Discord.Client();
 var print = require("./modules/printValues.js");
 var destiny = require("./modules/destiny.js");
@@ -17,21 +19,22 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.5.2";
+var version = "1.6";
 
 //init destinyBalance
-var destinyBalance = {};
+var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
 
 //Init the diceResult
 var diceResult = {};
 
 //init characterStatus
-var characterStatus = {};
+var characterStatus = jsonfile.readFileSync('data/characterStatus.json');
+var characterList = jsonfile.readFileSync('data/characterList.json');
 
 //init initiativeOrder
-var initiativeOrder = {};
+var initiativeOrder = jsonfile.readFileSync('data/initiativeOrder.json');
 
-//Called When bot becomes functional.
+//Called When bot becomes functional
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
@@ -95,7 +98,7 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
       break;
     //Character Tracker
     case "char":
-      char.char(params, characterStatus, message);
+      char.char(params, characterStatus, characterList, message);
       break;
     // help module
     case "help":

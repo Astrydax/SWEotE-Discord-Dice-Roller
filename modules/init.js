@@ -1,10 +1,12 @@
 var roll = require("./roll.js");
 var print = require("./printValues.js");
+const jsonfile = require('jsonfile');
 var initiativeRolls = {};
 var r = 0;
 
 exports.init = function init(params, initiativeOrder, message, diceResult, config, desc) {
   var channel = message.channel.id;
+  var file = "data/initiativeOrder.json";
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
       order: [],
@@ -180,6 +182,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         initiativeOrder[channel].face += ":slight_smile: ";
       }
     }
+    jsonfile.writeFile("data/initiativeOrder.json", initiativeOrder);
     message.channel.sendMessage("Round: " + initiativeOrder[channel].round + " Turn: " + initiativeOrder[channel].turn + "\nInitiative Order: ");
     if (initiativeOrder[channel].face == "") {
       return;

@@ -1,6 +1,6 @@
 var chalk = require("chalk");
 var print = require("./printValues.js");
-
+const jsonfile = require('jsonfile');
 
 exports.destiny = function destiny(params, destinyBalance, message) {
 //setting the channel specific variable
@@ -139,6 +139,7 @@ function printdestinyBalance() {
   for (var i = 1; i <= destinyBalance[channel].dark; i++) {
       destinyBalance[channel].face += print.results("ds", message);
       }
+  jsonfile.writeFile("data/destinyBalance.json", destinyBalance);
   message.channel.sendMessage("Destiny Pool: ")
   if (destinyBalance[channel].face != "") {
   message.channel.sendMessage(destinyBalance[channel].face);

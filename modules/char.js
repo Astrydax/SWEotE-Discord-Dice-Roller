@@ -1,5 +1,6 @@
-var characterList = [];
-exports.char = function char(params, characterStatus, message) {
+const jsonfile = require('jsonfile');
+
+exports.char = function char(params, characterStatus, characterList, message) {
   //setting the channel specific variables
   var channel = message.channel.id;
   var characterName = "";
@@ -183,5 +184,7 @@ exports.char = function char(params, characterStatus, message) {
           break;
         }
       }
+      jsonfile.writeFile("data/characterStatus.json", characterStatus);
+      jsonfile.writeFile("data/characterList.json", characterList);
       return characterStatus;
     }
