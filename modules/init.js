@@ -13,6 +13,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
       turn: 1,
       round: 1,
       rolls: [],
+      newslot: [],
     };
   }
 
@@ -39,25 +40,21 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
       var pass = params.slice(1);
       diceResult[channel] = roll.roll(pass, diceResult[channel], message, config, desc);
       var rollResult = [diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]
-      initiativeOrder[channel].rolls.push(rollResult);
-      initiativeOrder[channel].rolls.sort().reverse();
-      initiativeOrder[channel].order = [];
-      console.log(initiativeOrder[channel].rolls);
-      for(var i = 0; i < initiativeOrder[channel].rolls.length; i++) {
-        var mob = initiativeOrder[channel].rolls[i][1];
-        switch(mob) {
-          case "npc":
-            initiativeOrder[channel].order.push("NPC");
-            break;
-          case "pc":
-            initiativeOrder[channel].order.push("PC");
-            break;
-          default:
-            break;
-          }
+      //console.log(rollResult[0] + " " + initiativeOrder[channel].rolls[initiativeOrder[channel].turn - 1][0]);
+      if (initiativeOrder[channel].turn != 1) {
+        initiativeOrder[channel].newslot.push(rollResult);
+        console.log(initiativeOrder[channel].newslot);
+        if (params[2] == "npc") {
+        message.channel.sendMessage(":smiling_imp: will be added to the initiative order in the next round");
         }
-      initiativeOrder[channel].total = initiativeOrder[channel].order.length;
-      printinitiativeOrder();
+        if (params[2] == "pc") {
+        message.channel.sendMessage(":slight_smile: will be added to the initiative order in the next round");
+        }
+      } else {
+        initiativeOrder[channel].rolls.push(rollResult);
+        addtoinitiativeOrder();
+        printinitiativeOrder();
+      }
       break;
     //manually set initiativeOrder
     case "set":
@@ -68,6 +65,8 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         total: 0,
         turn: 1,
         round: 1,
+        rolls: [],
+        newslot: [],
       };
       console.log("Setting current initiativeOrder for " + message.author.username);
       if (params[1] == undefined) {
@@ -101,6 +100,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         turn: 1,
         round: 1,
         rolls: [],
+        newslot: [],
       };
       message.reply(" resets the Initiative Order");
       printinitiativeOrder();
@@ -112,6 +112,13 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         initiativeOrder[channel].turn = 1;
         initiativeOrder[channel].round++;
         message.channel.sendMessage("New Round!");
+        console.log(initiativeOrder[channel].newslot);
+        console.log(initiativeOrder[channel].rolls);
+        initiativeOrder[channel].rolls = initiativeOrder[channel].rolls.concat(initiativeOrder[channel].newslot);
+        addtoinitiativeOrder();
+        initiativeOrder[channel].newslot = [];
+        console.log(initiativeOrder[channel].newslot);
+        console.log(initiativeOrder[channel].rolls);
       } else {
         initiativeOrder[channel].turn++;
       }
@@ -161,6 +168,26 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
       break;
   }
   return initiativeOrder;
+
+  //Adds a roll to the order and sorts it
+  function addtoinitiativeOrder() {
+    initiativeOrder[channel].rolls.sort().reverse();
+    initiativeOrder[channel].order = [];
+    for(var i = 0; i < initiativeOrder[channel].rolls.length; i++) {
+      var mob = initiativeOrder[channel].rolls[i][1];
+      switch(mob) {
+        case "npc":
+          initiativeOrder[channel].order.push("NPC");
+          break;
+        case "pc":
+          initiativeOrder[channel].order.push("PC");
+          break;
+        default:
+          break;
+        }
+      }
+    initiativeOrder[channel].total = initiativeOrder[channel].order.length;
+  }
 
   //Prints out Initiative Order to channel
   function printinitiativeOrder() {
