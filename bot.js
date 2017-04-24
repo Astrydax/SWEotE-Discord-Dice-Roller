@@ -19,7 +19,7 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.6.2";
+var version = "1.6.3";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
@@ -64,6 +64,7 @@ bot.on("message", message => {
     if (params[i].includes('"')) {
       if (!begF) {
         beg = i;
+        end = i;
         begF = true;
       } else if (begF && !endF) {
         end = i;

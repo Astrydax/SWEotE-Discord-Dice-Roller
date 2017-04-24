@@ -1,6 +1,9 @@
+ver 1.6.4
+  - fixed desc (for reals)
+
 ver 1.6.3
   - added mid round roll for !init
-  
+
 ver 1.6.2
   - fixed an init error with the offline memory
 
