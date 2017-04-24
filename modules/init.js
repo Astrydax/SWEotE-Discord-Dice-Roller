@@ -1,12 +1,10 @@
 var roll = require("./roll.js");
 var print = require("./printValues.js");
 const jsonfile = require('jsonfile');
-var initiativeRolls = {};
 var r = 0;
 
 exports.init = function init(params, initiativeOrder, message, diceResult, config, desc) {
   var channel = message.channel.id;
-  var file = "data/initiativeOrder.json";
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
       order: [],
@@ -14,6 +12,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
       total: 0,
       turn: 1,
       round: 1,
+      rolls: [],
     };
   }
 
@@ -25,9 +24,6 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
       if (diceResult[channel] == undefined) {
         diceResult[channel] = {};
       }
-      if (initiativeRolls[channel] == undefined) {
-        initiativeRolls[channel] = [];
-      }
       if (params[1] == undefined) {
         message.channel.sendMessage("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
@@ -36,17 +32,19 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      if (initiativeOrder[channel].turn != 1) {
+      /*if (initiativeOrder[channel].turn != 1) {
         message.channel.sendMessage("You can only add Init slots on turn 1 (Start of a new Round)");
         return;
-      }
+      }*/
       var pass = params.slice(1);
       diceResult[channel] = roll.roll(pass, diceResult[channel], message, config, desc);
-      initiativeRolls[channel].push([diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]);
-      initiativeRolls[channel].sort();
+      var rollResult = [diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]
+      initiativeOrder[channel].rolls.push(rollResult);
+      initiativeOrder[channel].rolls.sort().reverse();
       initiativeOrder[channel].order = [];
-      for(var i = initiativeRolls[channel].length; i > 0; i--) {
-        var mob = initiativeRolls[channel][i-1][1];
+      console.log(initiativeOrder[channel].rolls);
+      for(var i = 0; i < initiativeOrder[channel].rolls.length; i++) {
+        var mob = initiativeOrder[channel].rolls[i][1];
         switch(mob) {
           case "npc":
             initiativeOrder[channel].order.push("NPC");
@@ -102,8 +100,8 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         total: 0,
         turn: 1,
         round: 1,
+        rolls: [],
       };
-      initiativeRolls[channel] = [];
       message.reply(" resets the Initiative Order");
       printinitiativeOrder();
       break;
