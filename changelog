@@ -1,3 +1,6 @@
+ver 1.6.2
+  - fixed an init error with the offline memory
+
 ver 1.6.1
   - fixed desc
 
