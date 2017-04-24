@@ -1,3 +1,6 @@
+ver 1.6.1
+  - fixed desc
+
 ver 1.6
   - added restart memory.  !destiny, !Char, !init no longer reset after crash or restart.
 

@@ -19,7 +19,7 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.6";
+var version = "1.6.1";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
@@ -52,12 +52,11 @@ bot.on("message", message => {
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
-  const params = message.content.split(" ").slice(1);
+  var params = message.content.split(" ").slice(1);
   //create command
   const command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
   //init the descriptor string to an empty string
   var desc = "";
-  //var descArr = [];
   console.log(command + " " + params);
   var beg, end = 0;
   var begF, endF = false;
@@ -73,19 +72,21 @@ bot.on("message", message => {
     }
   }
   //remove the text field arguments from the list of parameters before checking for dice.
-  for (i = beg; i <= end + 1; i++) {
+  for (i = beg; i <= end; i++) {
     desc += " " + params[i];
   }
   var spliceAmnt = end + 1 - beg;
   params.splice(beg, spliceAmnt);
   //remove Quotes from descriptor
   desc = desc.replace(/['"]+/g, '');
+
   //set the rest of params to lowercase
   if (params != undefined) {
+    params = params.filter(Boolean);
     for (var i = 0; i < params.length; i++) {
     params[i] = params[i].toLowerCase();
   }
-
+  console.log(beg + " " + end + " " + command + " " + params + " " + desc);
 //************************COMMANDS START HERE************************
 
 if (message.channel.type == "dm" || message.channel.type == "text") {
