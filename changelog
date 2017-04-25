@@ -1,3 +1,7 @@
+ver 1.6.5
+  -cleaned up console.log
+  -slimmed down !roll
+
 ver 1.6.4
   - fixed desc (for reals)
 

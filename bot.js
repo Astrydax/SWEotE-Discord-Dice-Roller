@@ -19,7 +19,7 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.6.4";
+var version = "1.6.5";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
@@ -38,11 +38,6 @@ var initiativeOrder = jsonfile.readFileSync('data/initiativeOrder.json');
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
-
-  if (config.maxRollsPerDie >= 100) {
-    console.warn(chalk.white.bgRed("!!!WARNING!!! maxRollsPerDie in config.json must be set between 1-99 otherwise errors may occur in rolls"));
-  }
-
 });
 
 //Called whenever a users send a message to the server
@@ -57,7 +52,6 @@ bot.on("message", message => {
   const command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
   //init the descriptor string to an empty string
   var desc = "";
-  console.log(command + " " + params);
   var beg, end = 0;
   var begF, endF = false;
   for (var i = 0; i < params.length; i++) {
@@ -87,11 +81,11 @@ bot.on("message", message => {
     for (var i = 0; i < params.length; i++) {
     params[i] = params[i].toLowerCase();
   }
-  console.log(beg + " " + end + " " + command + " " + params + " " + desc);
+  console.log("@" + message.author.username + " " + message.createdAt);
+  console.log(command + " " + params + " " + desc);
 //************************COMMANDS START HERE************************
 
 if (message.channel.type == "dm" || message.channel.type == "text") {
-  console.log("@" + message.author.username + " " + message.createdAt);
 
   switch (command) {
     //Ver command
@@ -110,7 +104,6 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
   }
 
 if (message.channel.type == "text") {
-  console.log("@" + message.author.username + " " + message.createdAt);
 
   switch (command) {
     // D100 command
@@ -142,8 +135,10 @@ if (message.channel.type == "text") {
     }
   }
   if (message.author.id == config.adminID) {
-    console.log("Master command");
     admin.admin(command, message, bot);
   }
 }
+process.on("unhandledRejection", err => {
+  console.error("Uncaught Promise Error: \n" + err.stack);
+});
 });

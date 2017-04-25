@@ -43,7 +43,6 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
       //console.log(rollResult[0] + " " + initiativeOrder[channel].rolls[initiativeOrder[channel].turn - 1][0]);
       if (initiativeOrder[channel].turn != 1) {
         initiativeOrder[channel].newslot.push(rollResult);
-        console.log(initiativeOrder[channel].newslot);
         if (params[2] == "npc") {
         message.channel.sendMessage(":smiling_imp: will be added to the initiative order in the next round");
         }
@@ -112,13 +111,9 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         initiativeOrder[channel].turn = 1;
         initiativeOrder[channel].round++;
         message.channel.sendMessage("New Round!");
-        console.log(initiativeOrder[channel].newslot);
-        console.log(initiativeOrder[channel].rolls);
         initiativeOrder[channel].rolls = initiativeOrder[channel].rolls.concat(initiativeOrder[channel].newslot);
         addtoinitiativeOrder();
         initiativeOrder[channel].newslot = [];
-        console.log(initiativeOrder[channel].newslot);
-        console.log(initiativeOrder[channel].rolls);
       } else {
         initiativeOrder[channel].turn++;
       }

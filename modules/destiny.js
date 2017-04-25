@@ -173,11 +173,8 @@ function rollWhite(diceQty, message) {
     face: ""
   };
 
-
   for (var i = 1; i <= diceQty; i++) {
-
     roll = Math.floor(Math.random() * 12) + 1;
-
 
     switch (roll) {
       case 1:
