@@ -70,35 +70,35 @@ exports.roll = function roll(params, diceResult, message, config, desc) {
   //cancel success/failures
   if (diceResult[channel].success > diceResult[channel].failure) {
     cancelledDiceResult[channel].success =  diceResult[channel].success - diceResult[channel].failure;
-    response += " " + print.results("suc", message) + cancelledDiceResult[channel].success;
+    response += "  " + print.results("suc", message) + cancelledDiceResult[channel].success;
   } else if (diceResult[channel].success < diceResult[channel].failure) {
     cancelledDiceResult[channel].failure = diceResult[channel].failure - diceResult[channel].success;
-    response += " " + print.results("fail", message) + cancelledDiceResult[channel].failure ;
+    response += "  " + print.results("fail", message) + cancelledDiceResult[channel].failure ;
   }
   //cancel Advantage/Threat
   if (diceResult[channel].advantage > diceResult[channel].threat) {
     cancelledDiceResult[channel].advantage = diceResult[channel].advantage - diceResult[channel].threat;
-    response += " " + print.results("adv", message) + cancelledDiceResult[channel].advantage;
+    response += "  " + print.results("adv", message) + cancelledDiceResult[channel].advantage;
   } else if (diceResult[channel].advantage < diceResult[channel].threat) {
     cancelledDiceResult[channel].threat = diceResult[channel].threat - diceResult[channel].advantage;
-    response += " " + print.results("thr", message) + cancelledDiceResult[channel].threat;
+    response += "  " + print.results("thr", message) + cancelledDiceResult[channel].threat;
   }
   //Check for any Triumphs
   if (diceResult[channel].triumph != 0) {
     cancelledDiceResult[channel].triumph = diceResult[channel].triumph;
-    response += " " + print.results("tri", message) + diceResult[channel].triumph;
+    response += "  " + print.results("tri", message) + diceResult[channel].triumph;
   }
   //Check for any Despair
   if (diceResult[channel].despair != 0) {
     cancelledDiceResult[channel].despair = diceResult[channel].despair;
-    response += " " + print.results("des", message) + diceResult[channel].despair;
+    response += "  " + print.results("des", message) + diceResult[channel].despair;
   }
   //check for force
   if (diceResult[channel].light != 0) {
-    response += " " + print.results("ls", message) + diceResult[channel].light;
+    response += "  " + print.results("ls", message) + diceResult[channel].light;
   }
   if (diceResult[channel].dark != 0) {
-    response += " " + print.results("ds", message) + diceResult[channel].dark;
+    response += "  " + print.results("ds", message) + diceResult[channel].dark;
   }
   //if all the dice cancel out, response filled with this
   if (response == "") {
