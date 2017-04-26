@@ -1,8 +1,9 @@
 var chalk = require("chalk");
 var print = require("./printValues.js");
+var roll = require("./roll.js");
 const jsonfile = require('jsonfile');
 
-exports.destiny = function destiny(params, destinyBalance, message) {
+exports.destiny = function destiny(params, destinyBalance, message, config) {
 //setting the channel specific variable
 var channel = message.channel.id;
 if (destinyBalance[channel] == undefined) {
@@ -109,17 +110,17 @@ switch(command) {
     }
 
   case "roll":
+  case "r":
     console.log("Rolling Destiny for " + message.author.username);
     var destinyRoll = {
       light: 0,
       dark: 0,
       face: "",
     };
-    destinyRoll = rollWhite(1, message);
+    //destinyRoll = rollWhite(1, message);
+    destinyRoll = roll.roll(["w"], destinyRoll, message, config, "Destiny roll");
     destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
     destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
-    message.reply(" rolls for the destiny pool");
-    message.channel.sendMessage("Adding " + destinyRoll.face + " to the Destiny Pool");
     printdestinyBalance();
     break;
 
@@ -132,7 +133,7 @@ return destinyBalance;
 
 //Prints out destiny pool to channel
 function printdestinyBalance() {
-    destinyBalance[channel].face = "";
+  destinyBalance[channel].face = "";
   for (var i = 1; i <= destinyBalance[channel].light; i++) {
       destinyBalance[channel].face += print.results("ls", message);
       }
@@ -145,101 +146,4 @@ function printdestinyBalance() {
   message.channel.sendMessage(destinyBalance[channel].face);
   }
 }
-
-function rollWhite(diceQty, message) {
-  //White "Force" die (d12)
-  //1 Light
-  //2 Light
-  //3 Light + Light
-  //4 Light + Light
-  //5 Light + Light
-  //6 Dark
-  //7 Dark
-  //8 Dark
-  //9 Dark
-  //10 Dark
-  //11 Dark
-  //12 Dark + Dark
-  var roll = 0;
-  var diceResult = {
-    success: 0,
-    failure: 0,
-    advantage: 0,
-    threat: 0,
-    triumph: 0,
-    despair: 0,
-    light: 0,
-    dark: 0,
-    face: ""
-  };
-
-  for (var i = 1; i <= diceQty; i++) {
-    roll = Math.floor(Math.random() * 12) + 1;
-
-    switch (roll) {
-      case 1:
-        console.log(chalk.black.bgWhite("Light"));
-        diceResult.light = diceResult.light + 1;
-        diceResult.face += print.results("wl", message);
-        break;
-      case 2:
-        console.log(chalk.black.bgWhite("Light"));
-        diceResult.light = diceResult.light + 1;
-        diceResult.face += print.results("wl", message);
-        break;
-      case 3:
-        console.log(chalk.black.bgWhite("Light x2"));
-        diceResult.light = diceResult.light + 2;
-        diceResult.face += print.results("wll", message);
-        break;
-      case 4:
-        console.log(chalk.black.bgWhite("Light x2"));
-        diceResult.light = diceResult.light + 2;
-        diceResult.face += print.results("wll", message);
-        break;
-      case 5:
-        console.log(chalk.black.bgWhite("Light x2"));
-        diceResult.light = diceResult.light + 2;
-        diceResult.face += print.results("wll", message);
-        break;
-      case 6:
-        console.log(chalk.black.bgWhite("Dark"));
-        diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print.results("wd", message);
-        break;
-      case 7:
-        console.log(chalk.black.bgWhite("Dark"));
-        diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print.results("wd", message);
-        break;
-      case 8:
-        console.log(chalk.black.bgWhite("Dark"));
-        diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print.results("wd", message);
-        break;
-      case 9:
-        console.log(chalk.black.bgWhite("Dark"));
-        diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print.results("wd", message);
-        break;
-      case 10:
-        console.log(chalk.black.bgWhite("Dark"));
-        diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print.results("wd", message);
-        break;
-      case 11:
-        console.log(chalk.black.bgWhite("Dark"));
-        diceResult.dark = diceResult.dark + 1;
-        diceResult.face += print.results("wd", message);
-        break;
-      case 12:
-        console.log(chalk.black.bgWhite("Dark x2"));
-        diceResult.dark = diceResult.dark + 2;
-        diceResult.face += print.results("wdd", message);
-        break;
-    }
-  }
-  return diceResult;
-}
-
 }

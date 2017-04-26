@@ -110,7 +110,7 @@ exports.roll = function roll(params, diceResult, message, config, desc) {
   }
   if (diceResult[channel].face != "") {
     message.channel.sendMessage(diceResult[channel].face);
-    message.reply(desc + " results:  " + "\n\n     " + response);
+    message.reply(desc + " results:" + "\n\n\t" + response);
   } else {
     message.reply("No dice rolled.");
   }
@@ -155,7 +155,7 @@ function rollDice(color, diceQty, message) {
         break;
       case "w":
       case "f":
-        console.log("Rolling " + diceQty + " Destiny Dice.");
+        console.log("Rolling " + diceQty + " Force Dice.");
         rollWhite(diceQty, message);
         break;
     }

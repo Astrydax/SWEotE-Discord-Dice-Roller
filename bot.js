@@ -19,7 +19,7 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.6.5";
+var version = "1.6.6";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
@@ -121,7 +121,7 @@ if (message.channel.type == "text") {
     //Destiny Point Module
     case "destiny":
     case "d":
-      destiny.destiny(params, destinyBalance, message);
+      destiny.destiny(params, destinyBalance, message, config);
       break;
       // Roll the dice command
     case "roll":

@@ -3,7 +3,7 @@ var print = require("./printValues.js");
 const jsonfile = require('jsonfile');
 var r = 0;
 
-exports.init = function init(params, initiativeOrder, message, diceResult, config, desc) {
+exports.init = function init(params, initiativeOrder, message, diceResult, config) {
   var channel = message.channel.id;
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
@@ -21,11 +21,12 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
   switch(command) {
     //roll for initiativeOrder
     case "roll":
+    case "r":
       console.log("Rolling initiativeOrder for " + message.author.username);
       if (diceResult[channel] == undefined) {
         diceResult[channel] = {};
       }
-      if (params[1] == undefined) {
+      if (params[1] == undefined || params[1] == "npc" || params[1] == "pc") {
         message.channel.sendMessage("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
       }
@@ -33,12 +34,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      /*if (initiativeOrder[channel].turn != 1) {
-        message.channel.sendMessage("You can only add Init slots on turn 1 (Start of a new Round)");
-        return;
-      }*/
-      var pass = params.slice(1);
-      diceResult[channel] = roll.roll(pass, diceResult[channel], message, config, desc);
+      diceResult[channel] = roll.roll([params[1]], diceResult[channel], message, config, "Initiative roll");
       var rollResult = [diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]
       //console.log(rollResult[0] + " " + initiativeOrder[channel].rolls[initiativeOrder[channel].turn - 1][0]);
       if (initiativeOrder[channel].turn != 1) {
