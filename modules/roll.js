@@ -108,8 +108,8 @@ exports.roll = function roll(params, diceResult, message, config, desc) {
     diceResult[channel].face = "Too many dice to display.";
   }
   if (diceResult[channel].face != "") {
-    message.reply(" roll results: " + response + "   " + desc);
     message.channel.sendMessage(diceResult[channel].face);
+    message.reply(desc + " results:  " + "\n\n     " + response);
   } else {
     message.reply("No dice rolled.");
   }
