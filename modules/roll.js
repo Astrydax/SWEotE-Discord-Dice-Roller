@@ -40,9 +40,12 @@ exports.roll = function roll(params, diceResult, message, config, desc) {
           rollDice(params[i], diceQty, message);
         }
       } else {
-        for(var i = 0; i < params[0].length; i++) {
+        console.log(params);
+        params = params.join('');
+        console.log(params);
+        for(var i = 0; i < params.length; i++) {
           var diceQty = 1;
-          rollDice(params[0][i], diceQty, message);
+          rollDice(params[i], diceQty, message);
         }
       }
     } else {
