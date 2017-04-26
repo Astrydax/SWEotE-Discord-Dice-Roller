@@ -19,7 +19,7 @@ var admin = require("./modules/admin.js");
 var init = require("./modules/init.js");
 bot.login(config.token);
 
-var version = "1.6.6";
+var version = "1.6.7";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');

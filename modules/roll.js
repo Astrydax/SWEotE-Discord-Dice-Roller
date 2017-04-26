@@ -158,6 +158,51 @@ function rollDice(color, diceQty, message) {
         console.log("Rolling " + diceQty + " Force Dice.");
         rollWhite(diceQty, message);
         break;
+      case "success":
+      case "*":
+        diceResult[channel].face += print.results("suc", message);
+        diceResult[channel].success += 1;
+        break;
+      case "advantage":
+      case "adv":
+      case "v":
+        diceResult[channel].face += print.results("adv", message);
+        diceResult[channel].advantage += 1;
+        break;
+      case "triumph":
+      case "tri":
+      case "!":
+        diceResult[channel].face += print.results("tri", message);
+        diceResult[channel].triumph += 1;
+        break;
+      case "failure":
+      case "fail":
+      case "-":
+        diceResult[channel].face += print.results("fail", message);
+        diceResult[channel].failure += 1;
+        break;
+      case "threat":
+      case "thr":
+      case "t":
+        diceResult[channel].face += print.results("thr", message);
+        diceResult[channel].threat += 1;
+        break;
+      case "despair":
+      case "des":
+      case "$":
+        diceResult[channel].face += print.results("des", message);
+        diceResult[channel].despair += 1;
+        break;
+      case "light":
+      case "l":
+        diceResult[channel].face += print.results("ls", message);
+        diceResult[channel].light += 1;
+        break;
+      case "dark":
+      case "n":
+        diceResult[channel].face += print.results("ds", message);
+        diceResult[channel].dark += 1;
+        break;
     }
 }
 function rollBlue(diceQty, message) {

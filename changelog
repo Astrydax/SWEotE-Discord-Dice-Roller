@@ -1,3 +1,14 @@
+ver 1.6.7
+  - added result symbols to DiceIdentifiers in rolls
+      Success/Suc/ *  = success
+      Advantage/Adv/V = advantage
+      Triumph/Tri/! = triumph
+      Failure/Fail/- = failure
+      Threat/Thr/T = threat
+      Despair/Des/$ = despair
+      Light/L = lightside point
+      Dark/N = darkside point
+
 ver 1.6.6
   - destiny roll now uses !roll module.
   - space fix: !roll yyy ggg rr now rolls all dice
