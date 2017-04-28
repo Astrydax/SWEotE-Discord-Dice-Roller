@@ -1,4 +1,4 @@
-exports.results = function results(str, message) {
+function print(str, message) {
   if (message.guild.emojis.find('name', str) != null) {
     var final = message.guild.emojis.find('name', str).toString();
   } else {
@@ -6,3 +6,7 @@ exports.results = function results(str, message) {
   }
   return final;
 }
+
+module.exports = {
+    print: print,
+};

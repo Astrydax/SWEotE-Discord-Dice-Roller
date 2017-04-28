@@ -1,4 +1,4 @@
-exports.results = function results(str, message) {
+function print(str, message) {
   var text = {
     suc:  "Success:",
     adv:  "Advantage:",
@@ -50,3 +50,7 @@ exports.results = function results(str, message) {
   var final = text[str];
   return final;
 }
+
+module.exports = {
+    print: print,
+};

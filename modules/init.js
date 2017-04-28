@@ -1,9 +1,8 @@
-var roll = require("./roll.js");
-var print = require("./printValues.js");
+var roll = require("./roll.js").roll;
 const jsonfile = require('jsonfile');
 var r = 0;
 
-exports.init = function init(params, initiativeOrder, message, diceResult, config) {
+function init(params, initiativeOrder, message, diceResult, config) {
   var channel = message.channel.id;
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
@@ -34,7 +33,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
         message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      diceResult[channel] = roll.roll([params[1]], diceResult[channel], message, config, "Initiative roll");
+      diceResult[channel] = roll([params[1]], diceResult[channel], message, config, "Initiative roll");
       var rollResult = [diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]
       //console.log(rollResult[0] + " " + initiativeOrder[channel].rolls[initiativeOrder[channel].turn - 1][0]);
       if (initiativeOrder[channel].turn != 1) {
@@ -206,3 +205,7 @@ exports.init = function init(params, initiativeOrder, message, diceResult, confi
     message.channel.sendMessage(initiativeOrder[channel].face);
   }
 }
+
+module.exports = {
+    init: init,
+};

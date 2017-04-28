@@ -8,24 +8,27 @@ const fs = require('fs');
 const jsonfile = require('jsonfile');
 const chalk = require("chalk");
 const bot = new Discord.Client();
-var print = require("./modules/printValues.js");
-var destiny = require("./modules/destiny.js");
-var crit = require("./modules/crit.js");
-var help = require("./modules/help.js");
-var char = require("./modules/char.js");
-var roll = require("./modules/roll.js");
-var d100 = require("./modules/d100.js");
-var admin = require("./modules/admin.js");
-var init = require("./modules/init.js");
+var print = require("./modules/printValues.js").print;
+var destiny = require("./modules/destiny.js").destiny;
+var crit = require("./modules/crit.js").crit;
+var shipcrit = require("./modules/crit.js").shipcrit;
+var help = require("./modules/help.js").help;
+var char = require("./modules/char.js").char;
+var roll = require("./modules/roll.js").roll;
+var polyhedral = require("./modules/dice.js").polyhedral;
+var admin = require("./modules/admin.js").admin;
+var init = require("./modules/init.js").init;
+var reroll = require("./modules/reroll.js").reroll;
+
 bot.login(config.token);
 
-var version = "1.6.7";
+var version = "1.7.0";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
 
 //Init the diceResult
-var diceResult = {};
+var diceResult = jsonfile.readFileSync('data/diceResult.json');
 
 //init characterStatus
 var characterStatus = jsonfile.readFileSync('data/characterStatus.json');
@@ -81,6 +84,7 @@ bot.on("message", message => {
     for (var i = 0; i < params.length; i++) {
     params[i] = params[i].toLowerCase();
   }
+
   console.log("@" + message.author.username + " " + message.createdAt);
   console.log(command + " " + params + " " + desc);
 //************************COMMANDS START HERE************************
@@ -94,11 +98,11 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
       break;
     //Character Tracker
     case "char":
-      char.char(params, characterStatus, characterList, message);
+      char(params, characterStatus, characterList, message);
       break;
     // help module
     case "help":
-      help.help(params, message);
+      help(params, message);
       break;
     }
   }
@@ -106,36 +110,63 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
 if (message.channel.type == "text") {
 
   switch (command) {
-    // D100 command
-    case "d100":
-      d100.d100(params, message);
+      case "d100":
+      polyhedral(100, params, message);
+      break;
+    case "d50":
+      polyhedral(50, params, message);
+      break;
+    case "d20":
+      polyhedral(20, params, message);
+      break;
+    case "d12":
+      polyhedral(12, params, message);
+      break;
+    case "d10":
+      polyhedral(10, params, message);
+      break;
+    case "d8":
+      polyhedral(8, params, message);
+      break;
+    case "d6":
+      polyhedral(6, params, message);
+      break;
+    case "d4":
+      polyhedral(4, params, message);
+      break;
+    case "d2":
+      polyhedral(2, params, message);
       break;
     //!crit command
     case "crit":
-      crit.crit(params, message);
+      crit(params, message);
       break;
     //!shipcrit command
     case "shipcrit":
-      crit.shipcrit(params, message);
+      shipcrit(params, message);
       break;
     //Destiny Point Module
     case "destiny":
     case "d":
-      destiny.destiny(params, destinyBalance, message, config);
+      destiny(params, destinyBalance, message, config);
       break;
       // Roll the dice command
     case "roll":
     case "r":
-      roll.roll(params, diceResult, message, config, desc);
+      roll(params, diceResult, message, config, desc);
+      break;
+    case "reroll":
+    case "rr":
+      reroll(params, diceResult, message, config, desc);
       break;
     case "init":
     case "i":
-      init.init(params, initiativeOrder, message, diceResult, config, desc);
+      init(params, initiativeOrder, message, diceResult, config, desc);
       break;
     }
   }
   if (message.author.id == config.adminID) {
-    admin.admin(command, message, bot);
+    admin(command, message, bot);
   }
 }
 process.on("unhandledRejection", err => {

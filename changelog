@@ -1,3 +1,9 @@
+ver 1.7.0
+  - recoded !roll into functions
+  - redid modules
+  - added polyhedral
+  - added !reroll
+
 ver 1.6.7
   - added result symbols to DiceIdentifiers in rolls
       Success/Suc/ *  = success
