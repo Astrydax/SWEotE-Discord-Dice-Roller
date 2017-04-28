@@ -47,10 +47,9 @@ function reroll(params, diceResult, message, config, desc) {
       roll.printDice(message, diceResult, desc, channel);
       break;
     case "select":
+      var removeDice = [];
         for (var i = 1; i < params.length; i++) {
-          roll.initdiceResult(diceResult, channel);
           var color = params[i].replace(/\d/g, "")
-          console.log("diceResult[channel].rolls: " + diceResult[channel].rolls);
           var location = params[i].replace(/\D/g, "")
           var positions = [];
           for (var j = 0; j < previousRolls.length; j++) {
@@ -62,11 +61,21 @@ function reroll(params, diceResult, message, config, desc) {
             message.reply("No \"" + color + "\" dice to remove");
             break;
           }
-          console.log(previousRolls);
-          previousRolls.splice(positions[location-1], 1)
-          roll.rollDice(color, diceResult, message, channel);
+          removeDice.push([color, positions[location-1]])
+        }
+        for (var i = 0; i < removeDice.length; i++) {
+          previousRolls[removeDice[i][1]] = "";
+        }
+        var temp = [];
+        for (let i of previousRolls) {
+          i && temp.push(i);
+          }
+        previousRolls = temp;
+        delete temp;
+        for (var i = 0; i < removeDice.length; i++) {
+          roll.initdiceResult(diceResult, channel);
+          roll.rollDice(removeDice[i][0], diceResult, message, channel);
           previousRolls = previousRolls.concat(diceResult[channel].rolls)
-          console.log(previousRolls);
         }
         roll.initdiceResult(diceResult, channel);
         for (var k = 0; k < previousRolls.length; k++) {
