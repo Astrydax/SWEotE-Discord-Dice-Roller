@@ -106,9 +106,12 @@ function init(params, initiativeOrder, message, diceResult, config) {
         initiativeOrder[channel].turn = 1;
         initiativeOrder[channel].round++;
         message.channel.sendMessage("New Round!");
-        initiativeOrder[channel].rolls = initiativeOrder[channel].rolls.concat(initiativeOrder[channel].newslot);
-        addtoinitiativeOrder();
-        initiativeOrder[channel].newslot = [];
+        console.log(initiativeOrder[channel].newslot.length);
+        if (initiativeOrder[channel].newslot.length > 0) {
+          initiativeOrder[channel].rolls = initiativeOrder[channel].rolls.concat(initiativeOrder[channel].newslot);
+          addtoinitiativeOrder();
+          initiativeOrder[channel].newslot = [];
+        }
       } else {
         initiativeOrder[channel].turn++;
       }
