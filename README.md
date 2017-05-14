@@ -39,7 +39,7 @@ Commands:
 
   COMMANDS
   - !destiny            view the destiny pool
-  - !destiny rolls      roll one Force Die and adds it to current destiny pool
+  - !destiny roll       rolls one Force Die and adds it to current destiny pool
   - !destiny l/light    uses light side point
   - !destiny d/dark     uses dark side point
   - !destiny set #l #d  sets destiny pool
