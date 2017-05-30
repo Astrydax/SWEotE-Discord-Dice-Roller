@@ -1,6 +1,6 @@
 function help(params, message) {
   if (params == "") {
-    message.channel.sendMessage("```prolog\ntype '!Help [topic]' for futher information\n!Roll: rolls any combination of swrpg dice\n!Reroll: modifies the previous roll\n!DX: rolls a polyhedral die (d100, d50, d20, d12, d10, d8, d6, d4, d2) with optional modifier\n!Destiny: manages the destiny balance\n!Crit: rolls and displays the critical hit\n!Shipcrit: rolls and displays the ship critical hit\n!Char: simple character stat manager\n!Ver: displays bot version\n!Init: initiative tracker and roller\n!Help: displays help for topics\n\nfor more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'\n```");
+    message.channel.sendMessage("```prolog\ntype '!Help [topic]' for futher information\n!Roll: rolls any combination of swrpg dice\n!Reroll: modifies the previous roll\n!DX: rolls a polyhedral die (x = any number) with optional modifier\n!Destiny: manages the destiny balance\n!Crit: rolls and displays the critical hit\n!Shipcrit: rolls and displays the ship critical hit\n!Char: simple character stat manager\n!Ver: displays bot version\n!Init: initiative tracker and roller\n!Help: displays help for topics\n\nfor more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'\n```");
   } else {
     var topic = params[0];
     switch (topic) {

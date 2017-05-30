@@ -148,6 +148,7 @@ function rollDice(color, diceResult, message, channel, number) {
         console.log(`Adding ${color} to the roll results`);
         diceResult[channel].face += print("tri", message);
         diceResult[channel].triumph += 1;
+        diceResult[channel].success += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
       case "failure":
@@ -172,6 +173,7 @@ function rollDice(color, diceResult, message, channel, number) {
         console.log(`Adding ${color} to the roll results`);
         diceResult[channel].face += print("des", message);
         diceResult[channel].despair += 1;
+        diceResult[channel].failure += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
       case "light":

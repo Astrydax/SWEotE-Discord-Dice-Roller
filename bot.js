@@ -22,7 +22,7 @@ var reroll = require("./modules/reroll.js").reroll;
 
 bot.login(config.token);
 
-var version = "1.7.2";
+var version = "1.7.3";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
@@ -52,7 +52,13 @@ bot.on("message", message => {
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   var params = message.content.split(" ").slice(1);
   //create command
-  const command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
+  var command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
+
+
+  if (command.startsWith('d') && (command.length > 1) && (command != 'destiny')) {
+    var sides = command.replace(/\D/g, "");
+    command = 'polyhedral';
+  }
   //init the descriptor string to an empty string
   var desc = "";
   var beg, end = 0;
@@ -110,32 +116,8 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
 if (message.channel.type == "text") {
 
   switch (command) {
-      case "d100":
-      polyhedral(100, params, message);
-      break;
-    case "d50":
-      polyhedral(50, params, message);
-      break;
-    case "d20":
-      polyhedral(20, params, message);
-      break;
-    case "d12":
-      polyhedral(12, params, message);
-      break;
-    case "d10":
-      polyhedral(10, params, message);
-      break;
-    case "d8":
-      polyhedral(8, params, message);
-      break;
-    case "d6":
-      polyhedral(6, params, message);
-      break;
-    case "d4":
-      polyhedral(4, params, message);
-      break;
-    case "d2":
-      polyhedral(2, params, message);
+      case "polyhedral":
+      polyhedral(sides, params, message);
       break;
     //!crit command
     case "crit":
