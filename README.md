@@ -55,7 +55,7 @@ Commands:
   - !shipcrit - X
 
 - !char         Simple character stat manager
-  - !char setup characterName [maxWound] [maxStrain] [credits]  Setup a new character
+  - !char setup characterName maxWound maxStrain credits  Setup a new character
   - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
   - !char credits/c characterName +X/-X                         increases/decreases credit balance for characterName by X
