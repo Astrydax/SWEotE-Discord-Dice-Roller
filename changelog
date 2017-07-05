@@ -1,3 +1,5 @@
+  - added !char remove to help command
+
 1.7.3
   - Polyhedral die rolls are now anything !dXXX
   - fixed triumph and despairs
