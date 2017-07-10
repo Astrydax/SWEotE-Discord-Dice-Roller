@@ -1,4 +1,6 @@
+1.7.4
   - added !char remove to help command
+  - added stop for trying to add 2 characters named the same
 
 1.7.3
   - Polyhedral die rolls are now anything !dXXX

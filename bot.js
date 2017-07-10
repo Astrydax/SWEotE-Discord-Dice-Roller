@@ -22,7 +22,7 @@ var reroll = require("./modules/reroll.js").reroll;
 
 bot.login(config.token);
 
-var version = "1.7.3";
+var version = "1.7.4";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');

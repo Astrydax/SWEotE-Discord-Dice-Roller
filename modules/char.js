@@ -53,6 +53,10 @@ function char(params, characterStatus, characterList, message) {
       switch(command) {
         case "setup":
         case "add":
+          if (characterStatus[channel][characterName] != undefined) {
+            message.channel.sendMessage(characterName + " already exists!");
+            return;
+          }
           //init the new characters stats
           console.log("Setting up " + characterName);
           characterStatus[channel][characterName] = {
