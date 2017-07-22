@@ -14,9 +14,11 @@ function help(params, message) {
         message.channel.sendMessage("```prolog\nCOMMAND\n\n\t!Roll DiceIdentifiers \"TEXT\"\n\nDICE IDENTIFIERS\n\n\tY/Pro = yellow/proficiency\n\tG/A = green/ability\n\tB/Boo = blue/boost\n\tBlk/K/Sb/S = black/setback\n\tR/C = red/challenge\n\tP/Diff/D = purple/difficulty\n\tW/F = white/force\n\tSuccess/Suc/ *  = success\n\tAdvantage/Adv/V = advantage\n\tTriumph/Tri/! = triumph\n\tFailure/Fail/- = failure\n\tThreat/Thr/T = threat\n\tDespair/Des/$ = despair\n\tLight/L = lightside point\n\tDark/N = darkside point\n\n\"TEXT\" assigns a label to the roll. (optional)\n\nExamples:\n\t!roll yyyggbbd (must use single character identifiers)\n\t!roll 1g 1p 1adv (must specify a number before each identifier)\n\t```");
         break;
       case "init":
-      message.channel.sendMessage("```prolog\n!Init: shows current initiative order\n!Init Roll DiceIdentifiers NPC/PC: rolls your initiative dice and adds character to the order\n!Init Next: moves to next initiative slot\n!Init Previous: moves to previous initiative slot\n!Init Set: manually set initiative order before any turns occur\n!Init Modify: manually alter initiative order mid-round\n!Init Reset: resets the initiative order\n```");
+        message.channel.sendMessage("```prolog\n!Init: shows current initiative order\n!Init Roll DiceIdentifiers NPC/PC: rolls your initiative dice and adds character to the order\n!Init Next: moves to next initiative slot\n!Init Previous: moves to previous initiative slot\n!Init Set: manually set initiative order before any turns occur\n!Init Modify: manually alter initiative order mid-round\n!Init Reset: resets the initiative order\n```");
+        break;
       case "reroll":
-      message.channel.sendMessage("```prolog\n!Reroll Same: rolls the same pool again\n\n!Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool\n\n!Reroll Remove DiceIdentifiers: remove random dice of the designated color\n\n!Reroll Select DiceColor/DicePositon: rerolls specified dice\n\n\tie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool\n```")
+        message.channel.sendMessage("```prolog\n!Reroll Same: rolls the same pool again\n\n!Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool\n\n!Reroll Remove DiceIdentifiers: remove random dice of the designated color\n\n!Reroll Select DiceColor/DicePositon: rerolls specified dice\n\n\tie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool\n```")
+        break;
       default:
         break;
       }
