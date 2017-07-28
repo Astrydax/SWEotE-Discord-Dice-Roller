@@ -1,3 +1,9 @@
+1.7.5
+ - fixed a help file break
+ - changed admin command to !stats
+ - fixed the wound/strain incap to OVER threshold.
+ - moved version number to JUST package.json
+
 1.7.4
   - added !char remove to help command
   - added stop for trying to add 2 characters named the same

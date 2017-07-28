@@ -102,7 +102,7 @@ function char(params, characterStatus, characterList, message) {
               }
               message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
           }
-          if (+characterStatus[channel][characterName].currentWound >= +characterStatus[channel][characterName].maxWound) {
+          if (+characterStatus[channel][characterName].currentWound > +characterStatus[channel][characterName].maxWound) {
             message.channel.sendMessage(characterName + " is incapacitated.");
           }
           break;
@@ -129,7 +129,7 @@ function char(params, characterStatus, characterList, message) {
             }
             message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
           }
-          if (+characterStatus[channel][characterName].currentStrain >= +characterStatus[channel][characterName].maxStrain) {
+          if (+characterStatus[channel][characterName].currentStrain > +characterStatus[channel][characterName].maxStrain) {
             message.channel.sendMessage(characterName + " is incapacitated.");
           }
           break;

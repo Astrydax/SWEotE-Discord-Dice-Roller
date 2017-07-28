@@ -19,10 +19,9 @@ var polyhedral = require("./modules/dice.js").polyhedral;
 var admin = require("./modules/admin.js").admin;
 var init = require("./modules/init.js").init;
 var reroll = require("./modules/reroll.js").reroll;
+var version = require("./package.json").version;
 
 bot.login(config.token);
-
-var version = "1.7.4";
 
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
