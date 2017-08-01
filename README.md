@@ -59,6 +59,7 @@ Commands:
   - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
   - !char credits/c characterName +X/-X                         increases/decreases credit balance for characterName by X
+  - !Char Crit CharacterName +X/-X:                             adds/removes critical injuries for characterName
   - !char status characterName                                  current status for characterName   
   - !char remove characterName                                  removes characterName
   - !char list                                                  lists all characters
@@ -86,8 +87,7 @@ Commands:
   - !ver         displays bot version
 
 - ADMIN ONLY
-  - !servers     Displays # of servers bot is currently on.
-  - !users       Displays # users that currently have access to bot
+  - !stats     Displays # of servers/users bot is currently has.
 
 #Installation and Setup
 

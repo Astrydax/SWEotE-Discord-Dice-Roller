@@ -1,4 +1,5 @@
 const jsonfile = require('jsonfile');
+var textCrit = require("./crit.js").textCrit;
 
 function char(params, characterStatus, characterList, message) {
   //setting the channel specific variables
@@ -19,7 +20,8 @@ function char(params, characterStatus, characterList, message) {
         maxStrain: 0,
         currentWound: 0,
         currentStrain: 0,
-        credits: 0
+        credits: 0,
+        crit: []
       },
     };
   }
@@ -64,7 +66,8 @@ function char(params, characterStatus, characterList, message) {
             maxStrain: 0,
             currentWound: 0,
             currentStrain: 0,
-            credits: 0
+            credits: 0,
+            crit: []
           };
           characterList[channel].push(characterName);
           if (params[2] != undefined) {
@@ -134,6 +137,35 @@ function char(params, characterStatus, characterList, message) {
           }
           break;
 
+          case "crit":
+            if (params.length < 3) {
+              if (characterStatus[channel][characterName].crit.length == 0) message.channel.sendMessage(characterName + " has no Critical Injuries.");
+              else {
+                message.channel.sendMessage(characterName + " has the following Critial Injuries.");
+                characterStatus[channel][characterName].crit.forEach((eachCrit)=>{
+                message.channel.sendMessage("Crit " + eachCrit + ": " + textCrit(eachCrit, message));
+                })
+              }
+            //addition modifier
+            } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+                var modifier = (params[params.length - 1]).replace(/\D/g, "");
+                characterStatus[channel][characterName].crit.push(modifier);
+                message.channel.sendMessage(characterName + " has added " + "Crit " + modifier + ": " + " to his Critical Injuries.\n" +textCrit(modifier, message));
+            //subtraction modifier
+            } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+                var modifier = (params[params.length - 1]).replace(/\D/g, "");
+                if (characterStatus[channel][characterName].crit.length == 0) {
+                  message.channel.sendMessage(characterName + " does not currently have any Critical Injuries.");
+                } else {
+                  for (let i = 0; characterStatus[channel][characterName].crit.length > i; i++) {
+                    if (modifier == characterStatus[channel][characterName].crit[i]) characterStatus[channel][characterName].crit.splice(i, 1);
+                    message.channel.sendMessage(characterName + " has removed " + "Crit " + modifier + ": " + " from his Critical Injuries.\n"+ textCrit(modifier, message));
+                    return;
+                  }
+              }
+            }
+            break;
+
         case "credit":
         case "credits":
         case "c":
@@ -172,7 +204,7 @@ function char(params, characterStatus, characterList, message) {
           } else {
             for (var i = 0; i < characterList[channel].length; i++) {
             characterName = characterList[channel][i];
-            message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
+            message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit);
             }
           }
           break;
