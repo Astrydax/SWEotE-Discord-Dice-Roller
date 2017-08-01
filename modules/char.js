@@ -138,6 +138,7 @@ function char(params, characterStatus, characterList, message) {
           break;
 
           case "crit":
+            if (characterStatus[channel][characterName].crit == undefined) characterStatus[channel][characterName].crit = [];
             if (params.length < 3) {
               if (characterStatus[channel][characterName].crit.length == 0) message.channel.sendMessage(characterName + " has no Critical Injuries.");
               else {
