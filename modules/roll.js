@@ -11,6 +11,7 @@ function roll(params, diceResult, message, config, desc) {
   }
   initdiceResult(diceResult, channel)
   var diceOrder = processType(params, diceResult, config, message, channel);
+  if (diceOrder == 0) return;
   for (var i = 0; i < diceOrder.length; i++) {
     rollDice(diceOrder[i], diceResult, message, channel);
   }
@@ -46,7 +47,7 @@ function processType(params, diceResult, config, message, channel) {
           var color = params[i].replace(/\d/g, "");
           if (diceQty > config.maxRollsPerDie) {
             message.reply("Roll exceeds max roll per die limit of " + config.maxRollsPerDie + " . Please try again.");
-            return;
+            return 0;
           }
           for (var j = 0; j < diceQty; j++) {
             diceOrder.push(color);
@@ -60,7 +61,7 @@ function processType(params, diceResult, config, message, channel) {
         }
     } else {
     message.reply("No dice rolled.");
-    return;
+    return 0;
   }
   return diceOrder;
 }
