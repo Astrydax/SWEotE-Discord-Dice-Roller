@@ -4,7 +4,10 @@ function admin(command, message, bot) {
       message.author.sendMessage(`Currently on ${bot.guilds.size} servers!`);
       message.author.sendMessage(`Currently assisting ${bot.guilds.reduce((a, b) => a + b.memberCount, 0)} users!`);
       break;
-    Default:
+    case "logout":
+      bot.logout();
+      break;
+    default:
       break;
   }
 }
