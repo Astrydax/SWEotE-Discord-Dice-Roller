@@ -1,7 +1,10 @@
+1.7.7
+  -added !poly
+
 1.7.6
   -added !char crit
   -reformated crit module to allow use of crit table elsewhere
-  
+
 1.7.4
   - added !char remove to help command
   - added stop for trying to add 2 characters named the same

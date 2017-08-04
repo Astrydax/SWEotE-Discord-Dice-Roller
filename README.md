@@ -27,6 +27,11 @@ Commands:
       - !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
       - !roll "Get to the ship" 2y 1g 1r 1p
 
+-  !Poly: rolls any combination of polyhedral dice with modifier
+
+  EXAMPLES
+      - !poly 1d4 2d6+1 1d100-60
+
 - !d100   rolls a d100 with optional modifier and displays result.
   - !d100 +X
   - !d100 + X

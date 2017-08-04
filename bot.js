@@ -20,6 +20,8 @@ var admin = require("./modules/admin.js").admin;
 var init = require("./modules/init.js").init;
 var reroll = require("./modules/reroll.js").reroll;
 var version = require("./package.json").version;
+var poly = require("./modules/poly.js").poly;
+
 
 bot.login(config.token);
 
@@ -117,6 +119,9 @@ if (message.channel.type == "text") {
   switch (command) {
       case "polyhedral":
       polyhedral(sides, params, message);
+      break;
+      case "poly":
+      poly(params, message);
       break;
     //!crit command
     case "crit":
