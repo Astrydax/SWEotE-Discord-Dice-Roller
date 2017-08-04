@@ -1,9 +1,10 @@
 var dice = require("./dice.js").dice;
 
 function poly (params, message) {
-  let text = 'rolled:';
+  let text = 'rolled: ';
   params.forEach((unit)=>{
     let modifier = 0;
+    text += "\n`" + unit + "`" + ": (";
 
     if (unit.includes("+")) {
       for (k = 0; k<unit.length; k++) {
@@ -33,21 +34,25 @@ function poly (params, message) {
         break;
       }
     }
+
     let dieAmount = unit.slice(0, position);
     let dieType = unit.slice(position+1);
     let total = 0;
-    text += "\n" + dieAmount + "d" + dieType + ":";
+    let rolls = [];
 
     for (j = 0; j<dieAmount; j++) {
-      let r = dice(dieType);
-      text += " " + r + " +";
-      total += r;
+      rolls.push(dice(dieType));
     }
 
+    rolls.forEach((roll)=> {
+      text += roll + " + ";
+      total += roll;
+    })
+
     total += modifier
-    text = text.slice(0, -1);
-    if (modifier > 0) text += "+ " + modifier;
-    if (modifier < 0) text += "- " + Math.abs(modifier);
+    text = text.slice(0, -3) + ")";
+    if (modifier > 0) text += " + " + modifier;
+    if (modifier < 0) text += " - " + Math.abs(modifier);
     text += " = " + total;
   })
 
