@@ -94,7 +94,7 @@ if (message.guild.id == 281223108323704833) {
       str = "Forc1L";
       break;
     case "wdd":
-      str = "Forc2L";
+      str = "Forc2D";
       break;
     case "wll":
       str = "Forc2L";
