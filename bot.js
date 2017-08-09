@@ -21,6 +21,7 @@ var init = require("./modules/init.js").init;
 var reroll = require("./modules/reroll.js").reroll;
 var version = require("./package.json").version;
 var poly = require("./modules/poly.js").poly;
+var gleepglop = require("./modules/misc.js").gleepglop;
 
 
 bot.login(config.token);
@@ -110,6 +111,10 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
     // help module
     case "help":
       help(params, message);
+      break;
+    case "gleepglop":
+    case "species":
+      gleepglop(message);
       break;
     }
   }
