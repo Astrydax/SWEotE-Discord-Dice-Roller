@@ -1,6 +1,6 @@
 function help(params, message) {
   if (params == "") {
-    message.channel.sendMessage("```prolog\ntype '!Help [topic]' for futher information\n!Roll: rolls any combination of swrpg dice\n!Poly: rolls any combination of polyhedral dice\n!Reroll: modifies the previous roll\n!DX: rolls a polyhedral die (x = any number) with optional modifier\n!Destiny: manages the destiny balance\n!Crit: rolls and displays the critical hit\n!Shipcrit: rolls and displays the ship critical hit\n!Char: simple character stat manager\n!Ver: displays bot version\n!Init: initiative tracker and roller\n!Help: displays help for topics\n\nfor more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'\n```");
+    message.channel.sendMessage("```prolog\ntype '!Help [topic]' for futher information\n!Roll: rolls any combination of swrpg dice\n!Poly: rolls any combination of polyhedral dice\n!Reroll: modifies the previous roll\n!DX: rolls a polyhedral die (x = any number) with optional modifier\n!Destiny: manages the destiny balance\n!Crit: rolls and displays the critical hit\n!Shipcrit: rolls and displays the ship critical hit\n!Char: simple character stat manager\n!Ver: displays bot version\n!Init: initiative tracker and roller\n!Species/!Gleepglop: picks a random species\n!Help: displays help for topics\n\nfor more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'\n```");
   } else {
     var topic = params[0];
     switch (topic) {
@@ -21,6 +21,10 @@ function help(params, message) {
         break;
       case "poly":
         message.channel.sendMessage("```prolog\n!Poly: rolls any combination of polyhedral dice with modifier\n\nExamples:\n\t!poly 1d4 2d6+1 1d100-60 ```");
+        break;
+      case "crit":
+      case "shipcrit":
+        message.channel.sendMessage("```prolog\n!Crit and !Shipcrit: rolls a d100 and matches the roll to the appropriate critical injury table then prints the result\n\n!Crit +10: automatically add 10 to the roll (any number can be used)\n\n!Crit -10: automatically subtract 10 to the roll (any number can be used)\n\n!Crit 54?: look up crit by number (any number can be used)```");
         break;
       default:
         break;

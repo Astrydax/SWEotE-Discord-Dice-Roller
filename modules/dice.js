@@ -14,7 +14,7 @@ function polyhedral(sides, str, message) {
         total = +r + +modifier;
         message.reply(" rolled a d" + sides + ": " + r + " + " + modifier + " " + "for a total of " + total);
 	//subtraction modifier
-} else if (str.includes("-") ||str[0][0] == "-") {
+  } else if (str.includes("-") || str[0][0] == "-") {
     	console.log("- modifier detected");
         var modifier = (str[str.length - 1]).replace(/\D/g, "");
         let r = dice(sides);

@@ -79,7 +79,9 @@ Commands:
   - !Init Modify: manually alter initiative order mid-round
   - !Init Reset: resets the initiative order
 
-- !help          Type '!help [topic] for further information'
+- !Species/!Gleepglop: picks a random species
+
+- !help          Type '!help topic for further information'
 
   - !roll        rolls any combination of SWRPG dice and returns the canceled results
   - !d100        rolls a d100 with optional modifier and displays result

@@ -2,11 +2,26 @@ var d100 = require("./dice.js").polyhedral;
 var print = require("./printValues.js").print;
 
 function crit(params, message) {
+  if (params.length > 0) {
+    if (params[0].includes("?")) {
+      let query = params[0].replace(/\D/g, "");
+      message.channel.sendMessage("Crit " + query + ": " + textCrit(query, message));
+      return;
+    }
+  }
+
   var total = d100(100,params, message);
   message.channel.sendMessage("Crit " + total + ": " + textCrit(total, message));
 }
 
 function shipcrit(params, message) {
+    if (params.length > 0) {
+      if (params[0].includes("?")) {
+        let query = params[0].replace(/\D/g, "");
+        message.channel.sendMessage("Ship Crit " + query + ": " + textShipCrit(query, message));
+        return;
+      }
+    }
     var total = d100(100, params, message);
   	message.channel.sendMessage("Ship Crit " + total + ": " + textShipCrit(total, message));
 }
