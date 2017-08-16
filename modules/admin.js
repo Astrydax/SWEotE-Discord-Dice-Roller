@@ -1,7 +1,7 @@
 const jsonfile = require('jsonfile');
 
 
-function admin(command, message, bot, characterStatus) {
+function admin(command, message, bot, characterStatus, params, shitList) {
   switch (command) {
     case "stats":
       message.author.sendMessage(`Currently on ${bot.guilds.size} servers!`);
@@ -19,7 +19,19 @@ function admin(command, message, bot, characterStatus) {
       })
       jsonfile.writeFile("data/characterStatus.json", characterStatus);
       break;
-
+    case "shitlist":
+      if (params[0] == "add") {
+        shitList.push(params[1]);
+        message.channel.sendMessage(params[1] + " added to the shit list.");
+      }
+      if (params[0] == "remove") {
+        var index = shitList.indexOf(params[1]);
+        shitList.splice(index, 1)
+        message.channel.sendMessage(params[1] + " removed from the shit list.");
+      }
+      if (params[0] == "list") message.channel.sendMessage("The Shit List: " + shitList);
+      return shitList;
+      break;
     default:
       break;
   }

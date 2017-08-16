@@ -39,6 +39,8 @@ var characterList = jsonfile.readFileSync('data/characterList.json');
 //init initiativeOrder
 var initiativeOrder = jsonfile.readFileSync('data/initiativeOrder.json');
 
+var shitList = [];
+
 //Called When bot becomes functional
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
@@ -51,6 +53,12 @@ bot.on("message", message => {
   if (message.author.bot) return;
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
+
+  if (shitList.includes(message.author.id.toString())) {
+    message.author.sendMessage(":middle_finger:");
+    return;
+  }
+
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   var params = message.content.split(" ").slice(1);
   //create command
@@ -95,6 +103,8 @@ bot.on("message", message => {
 
   console.log("@" + message.author.username + " " + message.createdAt);
   console.log(command + " " + params + " " + desc);
+
+
 //************************COMMANDS START HERE************************
 
 if (message.channel.type == "dm" || message.channel.type == "text") {
@@ -157,7 +167,10 @@ if (message.channel.type == "text") {
     }
   }
   if (message.author.id == config.adminID) {
-    admin(command, message, bot, characterStatus);
+    if (command == "shitlist") {
+      shitList = admin(command, message, bot, characterStatus, params, shitList)
+    }
+    else admin(command, message, bot, characterStatus, params);
   }
 }
 process.on("unhandledRejection", err => {
