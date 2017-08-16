@@ -2,6 +2,7 @@
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
+require('events').EventEmitter.prototype._maxListeners = 100;
 const Discord = require("discord.js");
 const config = require("./config.json");
 const fs = require('fs');
@@ -22,6 +23,7 @@ var reroll = require("./modules/reroll.js").reroll;
 var version = require("./package.json").version;
 var poly = require("./modules/poly.js").poly;
 var gleepglop = require("./modules/misc.js").gleepglop;
+var obligation = require("./modules/obligation.js").obligation;
 
 
 bot.login(config.token);
@@ -34,7 +36,6 @@ var diceResult = jsonfile.readFileSync('data/diceResult.json');
 
 //init characterStatus
 var characterStatus = jsonfile.readFileSync('data/characterStatus.json');
-var characterList = jsonfile.readFileSync('data/characterList.json');
 
 //init initiativeOrder
 var initiativeOrder = jsonfile.readFileSync('data/initiativeOrder.json');
@@ -53,13 +54,6 @@ bot.on("message", message => {
   if (message.author.bot) return;
   //Ignore messages that dont start with the command symbol
   if (!message.content.startsWith(config.prefix)) return;
-
-  if (shitList.includes(message.author.id.toString())) {
-    console.log(message.author.username + " shitlisted.")
-    message.author.sendMessage(":middle_finger:");
-    return;
-  }
-
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   var params = message.content.split(" ").slice(1);
   //create command
@@ -117,7 +111,7 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
       break;
     //Character Tracker
     case "char":
-      char(params, characterStatus, characterList, message);
+      char(params, characterStatus, message);
       break;
     // help module
     case "help":
@@ -165,13 +159,14 @@ if (message.channel.type == "text") {
     case "i":
       init(params, initiativeOrder, message, diceResult, config, desc);
       break;
+    case "obligation":
+    case "o":
+      obligation(params, characterStatus, message);
+      break;
     }
   }
   if (message.author.id == config.adminID) {
-    if (command == "shitlist") {
-      shitList = admin(command, message, bot, characterStatus, params, shitList)
-    }
-    else admin(command, message, bot, characterStatus, params);
+    admin(command, message, bot, characterStatus, params);
   }
 }
 process.on("unhandledRejection", err => {

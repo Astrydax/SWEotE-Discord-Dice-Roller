@@ -1,7 +1,7 @@
 const jsonfile = require('jsonfile');
 var textCrit = require("./crit.js").textCrit;
 
-function char(params, characterStatus, characterList, message) {
+function char(params, characterStatus, message) {
   //setting the channel specific variables
   var channel = message.channel.id;
   var characterName = "";
@@ -17,21 +17,7 @@ function char(params, characterStatus, characterList, message) {
   }
 
   if (characterStatus[channel] == undefined) {
-    characterStatus[channel] = {
-      blankCharacter: {
-        maxWound: 0,
-        maxStrain: 0,
-        currentWound: 0,
-        currentStrain: 0,
-        credits: 0,
-        crit: [],
-        obligation: {},
-      },
-    };
-  }
-
-  if (characterList[channel] == undefined) {
-    characterList[channel] = [];
+    characterStatus[channel] = {};
   }
 
   if (command == undefined) {
@@ -75,7 +61,6 @@ function char(params, characterStatus, characterList, message) {
           crit: [],
           obligation: {},
         };
-        characterList[channel].push(characterName);
         if (params[2] != undefined) {
           characterStatus[channel][characterName].maxWound = params[2];
         }
@@ -242,29 +227,26 @@ function char(params, characterStatus, characterList, message) {
 
       case "remove":
         delete characterStatus[channel][characterName];
-        characterList[channel].splice(characterList[channel].indexOf(characterName), 1);
         message.channel.sendMessage(characterName + " has been removed.");
         break;
 
       case "list":
-        if (characterList[channel].length < 1) {
+        if (Object.keys(characterStatus[channel]).length < 1) {
           message.channel.sendMessage("No characters.");
         } else {
-          for (var i = 0; i < characterList[channel].length; i++) {
-          characterName = characterList[channel][i];
-          let obliagtionText = "Obligations:\n";
-          Object.keys(characterStatus[channel][characterName].obligation).forEach((eachOb)=> {
-            obliagtionText += eachOb + ": " + characterStatus[channel][characterName].obligation[eachOb] + "\n";
-          })
-          message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit + "\n" + obliagtionText);
-          }
+          Object.keys(characterStatus[channel]).forEach((characterName)=> {
+            let obliagtionText = "Obligations:\n";
+            Object.keys(characterStatus[channel][characterName].obligation).forEach((eachOb)=> {
+              obliagtionText += eachOb + ": " + characterStatus[channel][characterName].obligation[eachOb] + "\n";
+            });
+            message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit + "\n" + obliagtionText);
+          });
         }
         break;
 
       case "reset":
         message.channel.sendMessage("Deleting all the characters.");
         delete characterStatus[channel];
-        characterList[channel] = [];
         break;
 
       default:
@@ -273,7 +255,6 @@ function char(params, characterStatus, characterList, message) {
       }
 
       jsonfile.writeFile("data/characterStatus.json", characterStatus);
-      jsonfile.writeFile("data/characterList.json", characterList);
       return;
     }
 

@@ -81,6 +81,7 @@ Commands:
   - !Init Reset: resets the initiative order
 
 - !Species/!Gleepglop: picks a random species
+- !Obligation: gathers all the obligations entered with !Char and rolls to trigger
 
 - !help          Type '!help topic for further information'
 
