@@ -92,8 +92,9 @@ function char(params, characterStatus, characterList, message) {
       case "w":
         if (params.length < 3) {
           message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+          return;
         //addition modifier
-        } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+      } else if (params.includes("+") || params[2][0] == "+") {
             characterStatus[channel][characterName].currentWound = +characterStatus[channel][characterName].currentWound + +modifier;
             if (+characterStatus[channel][characterName].currentWound > 2 * +characterStatus[channel][characterName].maxWound) {
               characterStatus[channel][characterName].currentWound = 2 * +characterStatus[channel][characterName].maxWound;
@@ -101,7 +102,7 @@ function char(params, characterStatus, characterList, message) {
             message.channel.sendMessage(characterName + " takes " + modifier + " wounds.");
             message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
         //subtraction modifier
-        } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+      } else if (params.includes("-") || params[2][0] == "-") {
             characterStatus[channel][characterName].currentWound = +characterStatus[channel][characterName].currentWound - +modifier;
             message.channel.sendMessage(characterName + " recovers from " + modifier + " wounds.");
             if (+characterStatus[channel][characterName].currentWound < 0) {
@@ -118,7 +119,8 @@ function char(params, characterStatus, characterList, message) {
       case "s":
         if (params.length < 3) {
           message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
-        } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+          return;
+        } else if (params.includes("+") || params[2][0] == "+") {
           characterStatus[channel][characterName].currentStrain = +characterStatus[channel][characterName].currentStrain + +modifier;
           message.channel.sendMessage(characterName + " takes " + modifier + " strain.");
           if (+characterStatus[channel][characterName].currentStrain > +characterStatus[channel][characterName].maxStrain) {
@@ -126,7 +128,7 @@ function char(params, characterStatus, characterList, message) {
           }
           message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
 
-        } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+        } else if (params.includes("-") || params[2][0] == "-") {
           characterStatus[channel][characterName].currentStrain = +characterStatus[channel][characterName].currentStrain - +modifier;
           message.channel.sendMessage(characterName + " recovers " + modifier + " strain.");
           if (+characterStatus[channel][characterName].currentStrain < 0) {
@@ -141,25 +143,29 @@ function char(params, characterStatus, characterList, message) {
 
         case "crit":
           if (params.length < 3) {
-            if (characterStatus[channel][characterName].crit.length == 0) message.channel.sendMessage(characterName + " has no Critical Injuries.");
+            if (characterStatus[channel][characterName].crit.length == 0) {
+              message.channel.sendMessage(characterName + " has no Critical Injuries.");
+              return;
+            }
             else {
               message.channel.sendMessage(characterName + " has the following Critial Injuries.");
               characterStatus[channel][characterName].crit.forEach((eachCrit)=>{
               message.channel.sendMessage("Crit " + eachCrit + ": " + textCrit(eachCrit, message));
               })
+              return;
             }
           //addition modifier
-          } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+          } else if (params.includes("+") || params[2][0] == "+") {
               characterStatus[channel][characterName].crit.push(modifier);
-              message.channel.sendMessage(characterName + " has added " + "Crit " + modifier + ": " + " to his Critical Injuries.\n" +textCrit(modifier, message));
+              message.channel.sendMessage(characterName + " has added " + "Crit " + modifier + ": " + " to their Critical Injuries.\n" +textCrit(modifier, message));
           //subtraction modifier
-          } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+          } else if (params.includes("-") || params[2][0] == "-") {
               if (characterStatus[channel][characterName].crit.length == 0) {
                 message.channel.sendMessage(characterName + " does not currently have any Critical Injuries.");
               } else {
                 for (let i = 0; characterStatus[channel][characterName].crit.length > i; i++) {
                   if (modifier == characterStatus[channel][characterName].crit[i]) characterStatus[channel][characterName].crit.splice(i, 1);
-                  message.channel.sendMessage(characterName + " has removed " + "Crit " + modifier + ": " + " from his Critical Injuries.\n"+ textCrit(modifier, message));
+                  message.channel.sendMessage(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message));
                   return;
                 }
             }
@@ -170,12 +176,9 @@ function char(params, characterStatus, characterList, message) {
         case "o":
         if (params[3] != undefined) {
           var Ob = params[3].toUpperCase();
-        } else {
-          message.channel.sendMessage("Please define an obiliagtion ie !char " + command + " " + characterName + " +" + modifier + " BOUNTY.\n");
-          return;
         }
           if (params.length < 3) {
-            if (Object.keys(characterStatus[channel][characterName].obligation).length == 0) message.channel.sendMessage(characterName + " has no Obligations.");
+            if (Object.keys(characterStatus[channel][characterName].obligation).length == 0 ) message.channel.sendMessage(characterName + " has no Obligations.");
             else {
               message.channel.sendMessage(characterName + " has the following Obligations.\n");
               Object.keys(characterStatus[channel][characterName].obligation).forEach((eachOb)=>{
@@ -184,25 +187,25 @@ function char(params, characterStatus, characterList, message) {
               return;
             }
           //addition modifier
-          } else if (params.includes("+") || params[params.length - 2][0] == "+") {
+          } else if (params.includes("+") || params[2][0] == "+") {
               if (characterStatus[channel][characterName].obligation[Ob] == undefined) {
                 characterStatus[channel][characterName].obligation[Ob] = +modifier;
               } else {
                 characterStatus[channel][characterName].obligation[Ob] += +modifier;
               }
-              message.channel.sendMessage(characterName + " has added " + modifier + " to thier " + Ob + " obilgation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
+              message.channel.sendMessage(characterName + " has added " + modifier + " to their " + Ob + " obilgation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
           //subtraction modifier
-          } else if (params.includes("-") || params[params.length - 2][0] == "-") {
+          } else if (params.includes("-") || params[2][0] == "-") {
             if (characterStatus[channel][characterName].obligation[Ob] == undefined) {
                 message.channel.sendMessage(characterName + " does not currently have any " + Ob + " obligation.");
               } else {
                 characterStatus[channel][characterName].obligation[Ob] -= +modifier;
                 if (characterStatus[channel][characterName].obligation[Ob] <= 0) {
-                  message.channel.sendMessage(characterName + " has removed all of his " + Ob + " obligation.\n");
+                  message.channel.sendMessage(characterName + " has removed all of their " + Ob + " obligation.\n");
                   delete characterStatus[channel][characterName].obligation[Ob]
                   return;
                 }
-                message.channel.sendMessage(characterName + " has removed " + modifier + " from his " + Ob + " obligation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
+                message.channel.sendMessage(characterName + " has removed " + modifier + " from their " + Ob + " obligation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
                 return;
                 }
             }
@@ -213,12 +216,13 @@ function char(params, characterStatus, characterList, message) {
       case "c":
         if (params.length < 3) {
           message.channel.sendMessage(characterName + " has " + characterStatus[channel][characterName].credits + " credits.");
+          return;
         //addition modifier
-        } else if (params.includes("+") || params[params.length - 1][0] == "+") {
+        } else if (params.includes("+") || params[2][0] == "+") {
             characterStatus[channel][characterName].credits = +characterStatus[channel][characterName].credits + +modifier;
             message.channel.sendMessage(characterName + " gets " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
         //subtraction modifier
-        } else if (params.includes("-") || params[params.length - 1][0] == "-") {
+        } else if (params.includes("-") || params[2][0] == "-") {
             if (modifier > +characterStatus[channel][characterName].credits) {
               message.channel.sendMessage(characterName + " does not have " + modifier + " credits! " + characterName + " only has " + characterStatus[channel][characterName].credits + " credits.");
             } else {
