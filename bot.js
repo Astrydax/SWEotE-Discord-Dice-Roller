@@ -55,6 +55,7 @@ bot.on("message", message => {
   if (!message.content.startsWith(config.prefix)) return;
 
   if (shitList.includes(message.author.id.toString())) {
+    console.log(message.author.username + " shitlisted.")
     message.author.sendMessage(":middle_finger:");
     return;
   }
