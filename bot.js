@@ -2,7 +2,6 @@
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
-require('events').EventEmitter.prototype._maxListeners = 100;
 const Discord = require("discord.js");
 const config = require("./config.json");
 const fs = require('fs');
@@ -27,7 +26,7 @@ var obligation = require("./modules/obligation.js").obligation;
 
 
 bot.login(config.token);
-
+require('events').EventEmitter.defaultMaxListeners = 20;
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
 
