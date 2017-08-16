@@ -140,7 +140,6 @@ function char(params, characterStatus, characterList, message) {
         break;
 
         case "crit":
-          if (characterStatus[channel][characterName].crit == undefined) characterStatus[channel][characterName].crit = [];
           if (params.length < 3) {
             if (characterStatus[channel][characterName].crit.length == 0) message.channel.sendMessage(characterName + " has no Critical Injuries.");
             else {
@@ -175,7 +174,6 @@ function char(params, characterStatus, characterList, message) {
           message.channel.sendMessage("Please define an obiliagtion ie !char " + command + " " + characterName + " +" + modifier + " BOUNTY.\n");
           return;
         }
-          if (characterStatus[channel][characterName].obligation == undefined) characterStatus[channel][characterName].obligation = {};
           if (params.length < 3) {
             if (Object.keys(characterStatus[channel][characterName].obligation).length == 0) message.channel.sendMessage(characterName + " has no Obligations.");
             else {

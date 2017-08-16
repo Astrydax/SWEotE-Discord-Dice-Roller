@@ -157,7 +157,7 @@ if (message.channel.type == "text") {
     }
   }
   if (message.author.id == config.adminID) {
-    admin(command, message, bot);
+    admin(command, message, bot, characterStatus);
   }
 }
 process.on("unhandledRejection", err => {
