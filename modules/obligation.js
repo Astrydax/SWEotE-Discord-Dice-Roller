@@ -16,7 +16,7 @@ function obligation(params, characterStatus, message) {
     return a.value - b.value;
   });
   let roll = dice(100);
-  let target = 1;
+  let target = 0;
   let obTotal = 0;
   obList.forEach((ob)=> {
     obTotal += ob.value;
