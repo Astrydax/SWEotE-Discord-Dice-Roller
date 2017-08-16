@@ -65,6 +65,7 @@ Commands:
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
   - !char credits/c characterName +X/-X                         increases/decreases credit balance for characterName by X
   - !Char Crit CharacterName +X/-X:                             adds/removes critical injuries for characterName
+  - !Char obligation/o CharacterName +X/-X obligationName:      adds/removes obligations for characterName
   - !char status characterName                                  current status for characterName   
   - !char remove characterName                                  removes characterName
   - !char list                                                  lists all characters
