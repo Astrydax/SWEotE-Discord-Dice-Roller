@@ -52,12 +52,24 @@ bot.on("message", message => {
   //Ignore messages sent by the bot
   if (message.author.bot) return;
   //Ignore messages that dont start with the command symbol
-  if (!message.content.startsWith(config.prefix)) return;
+  if (!message.content.includes(config.prefix)) return;
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
-  var params = message.content.split(" ").slice(1);
-  //create command
-  var command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
 
+  if (!message.content.startsWith(config.prefix)) {
+    var params = message.content.split(" ");
+    console.log(params);
+    for (var i=0; params.length>i; i++) {
+      if (params[i].startsWith(config.prefix)) break;
+    }
+    params = params.slice(i);
+  } else var params = message.content.split(" ");
+
+  //create command
+  //var command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
+  if (params.length == 0) return;
+
+  var command = params[0].toLowerCase().toString().slice(1);
+  params = params.slice(1);
 
   if (command.startsWith('d') && (command.length > 1) && (command != 'destiny')) {
     var sides = command.replace(/\D/g, "");
