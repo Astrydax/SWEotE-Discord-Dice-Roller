@@ -26,7 +26,7 @@ function init(params, initiativeOrder, message, diceResult, config) {
         message.channel.sendMessage("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      if (params[params.length - 1] == undefined) {
+      if (params[params.length - 1] != "npc" || params[params.length - 1] != "pc") {
         message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
