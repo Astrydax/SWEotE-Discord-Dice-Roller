@@ -22,11 +22,12 @@ function init(params, initiativeOrder, message, diceResult, config) {
       if (diceResult[channel] == undefined) {
         diceResult[channel] = {};
       }
+      console.log(params);
       if (params[0] == undefined || params[0] == "npc" || params[0] == "pc") {
         message.channel.sendMessage("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      if (params[params.length - 1] != "npc" || params[params.length - 1] != "pc") {
+      if (!(params[params.length - 1] == "npc" || params[params.length - 1] == "pc")) {
         message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
