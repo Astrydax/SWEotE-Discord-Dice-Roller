@@ -71,6 +71,7 @@ function rollDice(color, diceResult, message, channel, number) {
     switch(color) {
       case "y":
       case "pro":
+      case "proficiency":
         if (number == undefined) {
           number = dice(12);
         }
@@ -79,6 +80,7 @@ function rollDice(color, diceResult, message, channel, number) {
         break;
       case "g":
       case "a":
+      case "ability":
         if (number == undefined) {
           number = dice(8);
         }
@@ -87,6 +89,7 @@ function rollDice(color, diceResult, message, channel, number) {
         break;
       case "b":
       case "boo":
+      case "boost":
         if (number == undefined) {
           number = dice(6);
         }
@@ -97,6 +100,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "sb":
       case "s":
       case "k":
+      case "setback":
         if (number == undefined) {
           number = dice(6);
         }
@@ -105,6 +109,7 @@ function rollDice(color, diceResult, message, channel, number) {
         break;
       case "r":
       case "c":
+      case "challenge":
         if (number == undefined) {
           number = dice(12);
         }
@@ -114,6 +119,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "p":
       case "diff":
       case "d":
+      case "difficulty":
         if (number == undefined) {
           number = dice(8);
         }
@@ -122,6 +128,7 @@ function rollDice(color, diceResult, message, channel, number) {
         break;
       case "w":
       case "f":
+      case "force":
         if (number == undefined) {
           number = dice(12);
         }
