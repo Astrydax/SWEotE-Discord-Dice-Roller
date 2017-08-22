@@ -26,7 +26,7 @@ var obligation = require("./modules/obligation.js").obligation;
 
 
 bot.login(config.token);
-require('events').EventEmitter.defaultMaxListeners = 20;
+require('events').EventEmitter.defaultMaxListeners = 30;
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
 

@@ -6,17 +6,14 @@ function init(params, initiativeOrder, message, diceResult, config) {
   var channel = message.channel.id;
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
-      order: [],
-      face: "",
-      total: 0,
       turn: 1,
       round: 1,
-      rolls: [],
-      newslot: [],
+      slots: [],
+      newslots: [],
     };
   }
 
-  var command = params[0];
+  var command = params.shift();
   switch(command) {
     //roll for initiativeOrder
     case "roll":
@@ -25,27 +22,27 @@ function init(params, initiativeOrder, message, diceResult, config) {
       if (diceResult[channel] == undefined) {
         diceResult[channel] = {};
       }
-      if (params[1] == undefined || params[1] == "npc" || params[1] == "pc") {
+      if (params[0] == undefined || params[0] == "npc" || params[0] == "pc") {
         message.channel.sendMessage("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      if (params[2] == undefined) {
+      if (params[params.length - 1] == undefined) {
         message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
-      diceResult[channel] = roll([params[1]], diceResult[channel], message, config, "Initiative roll");
-      var rollResult = [diceResult[channel].success.toString() + diceResult[channel].advantage.toString() + diceResult[channel].triumph.toString(), params[2]]
-      //console.log(rollResult[0] + " " + initiativeOrder[channel].rolls[initiativeOrder[channel].turn - 1][0]);
+      let type = params.pop();
+      diceResult[channel] = roll(params, diceResult[channel], message, config, "Initiative roll");
+      var rollResult = {success: diceResult[channel].success, advantage: diceResult[channel].advantage, triumph: diceResult[channel].triumph, type: type};
       if (initiativeOrder[channel].turn != 1) {
-        initiativeOrder[channel].newslot.push(rollResult);
-        if (params[2] == "npc") {
+        initiativeOrder[channel].newslots.push(rollResult);
+        if (type == "npc") {
         message.channel.sendMessage(":smiling_imp: will be added to the initiative order in the next round");
         }
-        if (params[2] == "pc") {
+        if (type == "pc") {
         message.channel.sendMessage(":slight_smile: will be added to the initiative order in the next round");
         }
       } else {
-        initiativeOrder[channel].rolls.push(rollResult);
+        initiativeOrder[channel].slots.push(rollResult);
         addtoinitiativeOrder();
         printinitiativeOrder();
       }
@@ -54,33 +51,29 @@ function init(params, initiativeOrder, message, diceResult, config) {
     case "set":
     case "s":
       initiativeOrder[channel] = {
-        order: [],
-        face: "",
-        total: 0,
         turn: 1,
         round: 1,
-        rolls: [],
-        newslot: [],
+        slots: [],
+        newslots: [],
       };
       console.log("Setting current initiativeOrder for " + message.author.username);
-      if (params[1] == undefined) {
+      if (params[0] == undefined) {
         message.channel.sendMessage("No Initiative Order defined.  ie '!init set nppnn'");
         return;
       }
-      for(var i = 0; i < params[1].length; i++) {
-        var mob = params[1][i];
+      for(var i = 0; i < params[0].length; i++) {
+        var mob = params[0][i];
         switch(mob) {
           case "n":
-            initiativeOrder[channel].order.push("NPC");
+            initiativeOrder[channel].slots.push({type: "npc"});
             break;
           case "p":
-            initiativeOrder[channel].order.push("PC");
+            initiativeOrder[channel].slots.push({type: "pc"});
             break;
           default:
             break;
         }
       }
-      initiativeOrder[channel].total = initiativeOrder[channel].order.length;
       printinitiativeOrder();
       break;
 
@@ -88,13 +81,10 @@ function init(params, initiativeOrder, message, diceResult, config) {
     case "reset":
       console.log(message.author.username + " resets the Initiative Order");
       initiativeOrder[channel] = {
-        order: [],
-        face: "",
-        total: 0,
         turn: 1,
         round: 1,
-        rolls: [],
-        newslot: [],
+        slots: [],
+        newslots: [],
       };
       message.reply(" resets the Initiative Order");
       printinitiativeOrder();
@@ -102,15 +92,14 @@ function init(params, initiativeOrder, message, diceResult, config) {
     //advance to next Initiative slot
     case "next":
     case "n":
-      if (initiativeOrder[channel].turn + 1 > initiativeOrder[channel].total) {
+      if (initiativeOrder[channel].turn + 1 > initiativeOrder[channel].slots.length) {
         initiativeOrder[channel].turn = 1;
         initiativeOrder[channel].round++;
         message.channel.sendMessage("New Round!");
-        console.log(initiativeOrder[channel].newslot.length);
-        if (initiativeOrder[channel].newslot.length > 0) {
-          initiativeOrder[channel].rolls = initiativeOrder[channel].rolls.concat(initiativeOrder[channel].newslot);
+        if (initiativeOrder[channel].newslots.length > 0) {
+          initiativeOrder[channel].slots = initiativeOrder[channel].slots.concat(initiativeOrder[channel].newslots);
           addtoinitiativeOrder();
-          initiativeOrder[channel].newslot = [];
+          initiativeOrder[channel].newslots = [];
         }
       } else {
         initiativeOrder[channel].turn++;
@@ -120,8 +109,10 @@ function init(params, initiativeOrder, message, diceResult, config) {
     //previous Initiative slot
     case "previous":
     case "p":
-      if (initiativeOrder[channel].turn - 1 < 1) {
-        initiativeOrder[channel].turn = initiativeOrder[channel].total;
+      if (initiativeOrder[channel].turn == 1 && initiativeOrder[channel].round == 1) {
+        message.channel.sendMessage("Initiative is already at the starting turn!");
+      } else if (initiativeOrder[channel].turn - 1 < 1) {
+        initiativeOrder[channel].turn = initiativeOrder[channel].slots.length;
         initiativeOrder[channel].round--;
         message.channel.sendMessage("Previous Round!");
       } else {
@@ -133,25 +124,24 @@ function init(params, initiativeOrder, message, diceResult, config) {
     case "modify":
       console.log("Modifiying current initiativeOrder for " + message.author.username);
       //check if numbers are used
-      if (params[1] == undefined) {
+      if (params[0] == undefined) {
         message.channel.sendMessage("No Initiative Order defined.  ie '!init set nppnn'");
         return;
       }
       initiativeOrder[channel].order = [];
-      for(var i = 0; i < params[1].length; i++) {
-        var mob = params[1][i];
+      for(var i = 0; i < params[0].length; i++) {
+        var mob = params[0][i];
         switch(mob) {
           case "n":
-            initiativeOrder[channel].order.push("NPC");
+            initiativeOrder[channel].slots.push({type: "npc"});
             break;
           case "p":
-            initiativeOrder[channel].order.push("PC");
+            initiativeOrder[channel].slots.push({type: "pc"});
             break;
           default:
             break;
         }
       }
-      initiativeOrder[channel].total = initiativeOrder[channel].order.length;
       printinitiativeOrder();
       break;
 
@@ -164,48 +154,46 @@ function init(params, initiativeOrder, message, diceResult, config) {
 
   //Adds a roll to the order and sorts it
   function addtoinitiativeOrder() {
-    initiativeOrder[channel].rolls.sort().reverse();
-    initiativeOrder[channel].order = [];
-    for(var i = 0; i < initiativeOrder[channel].rolls.length; i++) {
-      var mob = initiativeOrder[channel].rolls[i][1];
-      switch(mob) {
-        case "npc":
-          initiativeOrder[channel].order.push("NPC");
-          break;
-        case "pc":
-          initiativeOrder[channel].order.push("PC");
-          break;
-        default:
-          break;
-        }
-      }
-    initiativeOrder[channel].total = initiativeOrder[channel].order.length;
+
+    initiativeOrder[channel].slots.sort(function(a, b) {
+      var nameA = a.type
+      var nameB = b.type
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+
+    let order = ["triumph", "advantage", "success"];
+    order.forEach((symbol)=>{
+      initiativeOrder[channel].slots.sort(function (a, b) {
+        return a[symbol] - b[symbol];
+      });
+    })
+    initiativeOrder[channel].slots.reverse();
   }
 
   //Prints out Initiative Order to channel
   function printinitiativeOrder() {
-    initiativeOrder[channel].face = "";
-    for (var i = initiativeOrder[channel].turn - 1; i < initiativeOrder[channel].order.length; i++) {
-      if (initiativeOrder[channel].order[i] == "NPC") {
-        initiativeOrder[channel].face += ":smiling_imp: ";
-      } else if (initiativeOrder[channel].order[i] == "PC") {
-        initiativeOrder[channel].face += ":slight_smile: ";
+    let faces = "";
+    for (var i = initiativeOrder[channel].turn - 1; i < initiativeOrder[channel].slots.length; i++) {
+      if (initiativeOrder[channel].slots[i].type == "npc") {
+        faces += ":smiling_imp: ";
+      } else if (initiativeOrder[channel].slots[i].type == "pc") {
+        faces += ":slight_smile: ";
       }
     }
-    initiativeOrder[channel].face += ":repeat: ";
+    faces += ":repeat: ";
     for (var i = 0; i < initiativeOrder[channel].turn - 1; i++) {
-      if (initiativeOrder[channel].order[i] == "NPC") {
-        initiativeOrder[channel].face += ":smiling_imp: ";
-      } else if (initiativeOrder[channel].order[i] == "PC") {
-        initiativeOrder[channel].face += ":slight_smile: ";
+      if (initiativeOrder[channel].slots[i].type == "npc") {
+        faces += ":smiling_imp: ";
+      } else if (initiativeOrder[channel].slots[i].type == "pc") {
+        faces += ":slight_smile: ";
       }
     }
     jsonfile.writeFile("data/initiativeOrder.json", initiativeOrder);
     message.channel.sendMessage("Round: " + initiativeOrder[channel].round + " Turn: " + initiativeOrder[channel].turn + "\nInitiative Order: ");
-    if (initiativeOrder[channel].face == "") {
-      return;
-    }
-    message.channel.sendMessage(initiativeOrder[channel].face);
+    if (faces == "") return;
+    message.channel.sendMessage(faces);
   }
 }
 
