@@ -26,7 +26,7 @@ var obligation = require("./modules/obligation.js").obligation;
 
 
 bot.login(config.token);
-require('events').EventEmitter.defaultMaxListeners = 30;
+require('events').EventEmitter.defaultMaxListeners = 100;
 //init destinyBalance
 var destinyBalance = jsonfile.readFileSync('data/destinyBalance.json');
 
@@ -57,7 +57,6 @@ bot.on("message", message => {
 
   if (!message.content.startsWith(config.prefix)) {
     var params = message.content.split(" ");
-    console.log(params);
     for (var i=0; params.length>i; i++) {
       if (params[i].startsWith(config.prefix)) break;
     }
@@ -65,7 +64,6 @@ bot.on("message", message => {
   } else var params = message.content.split(" ");
 
   //create command
-  //var command = message.content.toLowerCase().split(" ").slice(0,1).toString().slice(1);
   if (params.length == 0) return;
 
   var command = params[0].toLowerCase().toString().slice(1);

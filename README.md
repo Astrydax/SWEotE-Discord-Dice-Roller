@@ -81,7 +81,15 @@ Commands:
   - !Init Reset: resets the initiative order
 
 - !Species/!Gleepglop: picks a random species
+
 - !Obligation: gathers all the obligations entered with !Char and rolls to trigger
+
+- !Reroll: modifies the previous roll
+  - !Reroll Same: rolls the same pool again
+  - !Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
+  - !Reroll Remove DiceIdentifiers: remove random dice of the designated color
+  - !Reroll Select DiceColor/DicePositon: rerolls specified dice
+    ie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool
 
 - !help          Type '!help topic for further information'
 
