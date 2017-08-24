@@ -50,7 +50,7 @@ var botStats = jsonfile.readFileSync('data/botStats.json');
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
-  var dailyJob = schedule.scheduleJob({second: 1}, () => {
+  var dailyJob = schedule.scheduleJob({hour: 8}, () => {
     botStats = statUpdate(botStats);
   });
 });
