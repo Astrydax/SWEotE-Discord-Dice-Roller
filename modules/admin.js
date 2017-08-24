@@ -1,7 +1,7 @@
 const jsonfile = require('jsonfile');
+var writeBotStats = require("./misc.js").writeBotStats;
 
-
-function admin(command, message, bot, characterStatus, params, shitList) {
+function admin(command, message, bot, botStats) {
   switch (command) {
     case "stats":
       message.author.sendMessage(`Currently on ${bot.guilds.size} servers!`);
@@ -11,10 +11,10 @@ function admin(command, message, bot, characterStatus, params, shitList) {
       bot.logout();
       break;
     case "fix":
-      Object.keys(characterStatus).forEach((channel)=> {
-        if (characterStatus[channel].blankCharacter != undefined) delete characterStatus[channel].blankCharacter;
-      })
-      jsonfile.writeFile("data/characterStatus.json", characterStatus);
+      break;
+    case "botstats":
+      let text = writeBotStats(botStats);
+      message.author.send(text);
       break;
     default:
       break;
