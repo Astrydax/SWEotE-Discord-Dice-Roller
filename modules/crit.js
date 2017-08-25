@@ -5,25 +5,25 @@ function crit(params, message) {
   if (params.length > 0) {
     if (params[0].includes("?")) {
       let query = params[0].replace(/\D/g, "");
-      message.channel.sendMessage("Crit " + query + ": " + textCrit(query, message));
+      message.channel.send("Crit " + query + ": " + textCrit(query, message));
       return;
     }
   }
 
   var total = d100(100,params, message);
-  message.channel.sendMessage("Crit " + total + ": " + textCrit(total, message));
+  message.channel.send("Crit " + total + ": " + textCrit(total, message));
 }
 
 function shipcrit(params, message) {
     if (params.length > 0) {
       if (params[0].includes("?")) {
         let query = params[0].replace(/\D/g, "");
-        message.channel.sendMessage("Ship Crit " + query + ": " + textShipCrit(query, message));
+        message.channel.send("Ship Crit " + query + ": " + textShipCrit(query, message));
         return;
       }
     }
     var total = d100(100, params, message);
-  	message.channel.sendMessage("Ship Crit " + total + ": " + textShipCrit(total, message));
+  	message.channel.send("Ship Crit " + total + ": " + textShipCrit(total, message));
 }
 
 function textCrit(total, message) {

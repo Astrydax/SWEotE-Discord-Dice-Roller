@@ -24,11 +24,11 @@ function init(params, initiativeOrder, message, diceResult, config) {
       }
       console.log(params);
       if (params[0] == undefined || params[0] == "npc" || params[0] == "pc") {
-        message.channel.sendMessage("No dice defined.  ie '!init roll yygg npc/pc'");
+        message.channel.send("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
       }
       if (!(params[params.length - 1] == "npc" || params[params.length - 1] == "pc")) {
-        message.channel.sendMessage("No Character type defined.  ie '!init roll yygg npc/pc'");
+        message.channel.send("No Character type defined.  ie '!init roll yygg npc/pc'");
         return;
       }
       let type = params.pop();
@@ -37,10 +37,10 @@ function init(params, initiativeOrder, message, diceResult, config) {
       if (initiativeOrder[channel].turn != 1) {
         initiativeOrder[channel].newslots.push(rollResult);
         if (type == "npc") {
-        message.channel.sendMessage(":smiling_imp: will be added to the initiative order in the next round");
+        message.channel.send(":smiling_imp: will be added to the initiative order in the next round");
         }
         if (type == "pc") {
-        message.channel.sendMessage(":slight_smile: will be added to the initiative order in the next round");
+        message.channel.send(":slight_smile: will be added to the initiative order in the next round");
         }
       } else {
         initiativeOrder[channel].slots.push(rollResult);
@@ -59,7 +59,7 @@ function init(params, initiativeOrder, message, diceResult, config) {
       };
       console.log("Setting current initiativeOrder for " + message.author.username);
       if (params[0] == undefined) {
-        message.channel.sendMessage("No Initiative Order defined.  ie '!init set nppnn'");
+        message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
         return;
       }
       for(var i = 0; i < params[0].length; i++) {
@@ -96,7 +96,7 @@ function init(params, initiativeOrder, message, diceResult, config) {
       if (initiativeOrder[channel].turn + 1 > initiativeOrder[channel].slots.length) {
         initiativeOrder[channel].turn = 1;
         initiativeOrder[channel].round++;
-        message.channel.sendMessage("New Round!");
+        message.channel.send("New Round!");
         if (initiativeOrder[channel].newslots.length > 0) {
           initiativeOrder[channel].slots = initiativeOrder[channel].slots.concat(initiativeOrder[channel].newslots);
           addtoinitiativeOrder();
@@ -111,11 +111,11 @@ function init(params, initiativeOrder, message, diceResult, config) {
     case "previous":
     case "p":
       if (initiativeOrder[channel].turn == 1 && initiativeOrder[channel].round == 1) {
-        message.channel.sendMessage("Initiative is already at the starting turn!");
+        message.channel.send("Initiative is already at the starting turn!");
       } else if (initiativeOrder[channel].turn - 1 < 1) {
         initiativeOrder[channel].turn = initiativeOrder[channel].slots.length;
         initiativeOrder[channel].round--;
-        message.channel.sendMessage("Previous Round!");
+        message.channel.send("Previous Round!");
       } else {
         initiativeOrder[channel].turn--;
       }
@@ -126,7 +126,7 @@ function init(params, initiativeOrder, message, diceResult, config) {
       console.log("Modifiying current initiativeOrder for " + message.author.username);
       //check if numbers are used
       if (params[0] == undefined) {
-        message.channel.sendMessage("No Initiative Order defined.  ie '!init set nppnn'");
+        message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
         return;
       }
       initiativeOrder[channel].order = [];
@@ -192,9 +192,9 @@ function init(params, initiativeOrder, message, diceResult, config) {
       }
     }
     jsonfile.writeFile("data/initiativeOrder.json", initiativeOrder);
-    message.channel.sendMessage("Round: " + initiativeOrder[channel].round + " Turn: " + initiativeOrder[channel].turn + "\nInitiative Order: ");
+    message.channel.send("Round: " + initiativeOrder[channel].round + " Turn: " + initiativeOrder[channel].turn + "\nInitiative Order: ");
     if (faces == "") return;
-    message.channel.sendMessage(faces);
+    message.channel.send(faces);
   }
 }
 

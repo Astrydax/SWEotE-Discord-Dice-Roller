@@ -81,7 +81,7 @@ function destiny(params, destinyBalance, message, config) {
     case "light":
     case "l":
       if (destinyBalance[channel].light <= 0){
-      message.channel.sendMessage("No lightside points available, request will be ignored");
+      message.channel.send("No lightside points available, request will be ignored");
       printdestinyBalance();
       break;
       } else {
@@ -97,7 +97,7 @@ function destiny(params, destinyBalance, message, config) {
     case "dark":
     case "d":
       if (destinyBalance[channel].dark <= 0){
-      message.channel.sendMessage("No Darkside points available, request will be ignored");
+      message.channel.send("No Darkside points available, request will be ignored");
       printdestinyBalance();
       break;
       } else {
@@ -141,9 +141,9 @@ function destiny(params, destinyBalance, message, config) {
         destinyBalance[channel].face += print("ds", message);
         }
     jsonfile.writeFile("data/destinyBalance.json", destinyBalance);
-    message.channel.sendMessage("Destiny Pool: ")
+    message.channel.send("Destiny Pool: ")
     if (destinyBalance[channel].face != "") {
-    message.channel.sendMessage(destinyBalance[channel].face);
+    message.channel.send(destinyBalance[channel].face);
     }
   }
 }

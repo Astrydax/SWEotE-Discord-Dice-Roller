@@ -262,7 +262,7 @@ function printDice (message, diceResult, desc, channel) {
     diceResult[channel].face = "Too many dice to display.";
   }
   if (diceResult[channel].face != "") {
-    message.channel.sendMessage(diceResult[channel].face);
+    message.channel.send(diceResult[channel].face);
     message.reply(desc + " results:" + "\n\n\t" + response);
   } else {
     message.reply("No dice rolled.");

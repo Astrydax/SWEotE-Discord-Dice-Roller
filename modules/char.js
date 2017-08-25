@@ -21,12 +21,12 @@ function char(params, characterStatus, message) {
   }
 
   if (command == undefined) {
-    message.channel.sendMessage("Bad Command, !help char for more information");
+    message.channel.send("Bad Command, !help char for more information");
     return;
   } else if (characterStatus[channel][characterName] == undefined) {
       if (command == "setup" || command == "add") {
         if (characterName == "") {
-          message.channel.sendMessage("No characterName, !help char for more information");
+          message.channel.send("No characterName, !help char for more information");
           return;
         } else {
           console.log ("Setup command detected.");
@@ -36,7 +36,7 @@ function char(params, characterStatus, message) {
       } else if (command == "reset") {
         console.log("Reset command detected.")
       } else {
-        message.channel.sendMessage(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
+        message.channel.send(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
         return;
       }
   }
@@ -47,7 +47,7 @@ function char(params, characterStatus, message) {
       case "setup":
       case "add":
         if (characterStatus[channel][characterName] != undefined) {
-          message.channel.sendMessage(characterName + " already exists!");
+          message.channel.send(characterName + " already exists!");
           return;
         }
         //init the new characters stats
@@ -70,13 +70,13 @@ function char(params, characterStatus, message) {
         if (params[4] != undefined) {
           characterStatus[channel][characterName].credits = params[4];
         }
-        message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
+        message.channel.send(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits);
         break;
 
       case "wound":
       case "w":
         if (params.length < 3) {
-          message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+          message.channel.send("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
           return;
         //addition modifier
       } else if (params.includes("+") || params[2][0] == "+") {
@@ -84,73 +84,73 @@ function char(params, characterStatus, message) {
             if (+characterStatus[channel][characterName].currentWound > 2 * +characterStatus[channel][characterName].maxWound) {
               characterStatus[channel][characterName].currentWound = 2 * +characterStatus[channel][characterName].maxWound;
             }
-            message.channel.sendMessage(characterName + " takes " + modifier + " wounds.");
-            message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+            message.channel.send(characterName + " takes " + modifier + " wounds.");
+            message.channel.send("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
         //subtraction modifier
       } else if (params.includes("-") || params[2][0] == "-") {
             characterStatus[channel][characterName].currentWound = +characterStatus[channel][characterName].currentWound - +modifier;
-            message.channel.sendMessage(characterName + " recovers from " + modifier + " wounds.");
+            message.channel.send(characterName + " recovers from " + modifier + " wounds.");
             if (+characterStatus[channel][characterName].currentWound < 0) {
               characterStatus[channel][characterName].currentWound = 0;
             }
-            message.channel.sendMessage("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
+            message.channel.send("\nWound: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound);
         }
         if (+characterStatus[channel][characterName].currentWound > +characterStatus[channel][characterName].maxWound) {
-          message.channel.sendMessage(characterName + " is incapacitated.");
+          message.channel.send(characterName + " is incapacitated.");
         }
         break;
 
       case "strain":
       case "s":
         if (params.length < 3) {
-          message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+          message.channel.send("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
           return;
         } else if (params.includes("+") || params[2][0] == "+") {
           characterStatus[channel][characterName].currentStrain = +characterStatus[channel][characterName].currentStrain + +modifier;
-          message.channel.sendMessage(characterName + " takes " + modifier + " strain.");
+          message.channel.send(characterName + " takes " + modifier + " strain.");
           if (+characterStatus[channel][characterName].currentStrain > +characterStatus[channel][characterName].maxStrain) {
             characterStatus[channel][characterName].currentStrain = characterStatus[channel][characterName].maxStrain;
           }
-          message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+          message.channel.send("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
 
         } else if (params.includes("-") || params[2][0] == "-") {
           characterStatus[channel][characterName].currentStrain = +characterStatus[channel][characterName].currentStrain - +modifier;
-          message.channel.sendMessage(characterName + " recovers " + modifier + " strain.");
+          message.channel.send(characterName + " recovers " + modifier + " strain.");
           if (+characterStatus[channel][characterName].currentStrain < 0) {
             characterStatus[channel][characterName].currentStrain = 0;
           }
-          message.channel.sendMessage("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
+          message.channel.send("\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain);
         }
         if (+characterStatus[channel][characterName].currentStrain > +characterStatus[channel][characterName].maxStrain) {
-          message.channel.sendMessage(characterName + " is incapacitated.");
+          message.channel.send(characterName + " is incapacitated.");
         }
         break;
 
         case "crit":
           if (params.length < 3) {
             if (characterStatus[channel][characterName].crit.length == 0) {
-              message.channel.sendMessage(characterName + " has no Critical Injuries.");
+              message.channel.send(characterName + " has no Critical Injuries.");
               return;
             }
             else {
-              message.channel.sendMessage(characterName + " has the following Critial Injuries.");
+              message.channel.send(characterName + " has the following Critial Injuries.");
               characterStatus[channel][characterName].crit.forEach((eachCrit)=>{
-              message.channel.sendMessage("Crit " + eachCrit + ": " + textCrit(eachCrit, message));
+              message.channel.send("Crit " + eachCrit + ": " + textCrit(eachCrit, message));
               })
               return;
             }
           //addition modifier
           } else if (params.includes("+") || params[2][0] == "+") {
               characterStatus[channel][characterName].crit.push(modifier);
-              message.channel.sendMessage(characterName + " has added " + "Crit " + modifier + ": " + " to their Critical Injuries.\n" +textCrit(modifier, message));
+              message.channel.send(characterName + " has added " + "Crit " + modifier + ": " + " to their Critical Injuries.\n" +textCrit(modifier, message));
           //subtraction modifier
           } else if (params.includes("-") || params[2][0] == "-") {
               if (characterStatus[channel][characterName].crit.length == 0) {
-                message.channel.sendMessage(characterName + " does not currently have any Critical Injuries.");
+                message.channel.send(characterName + " does not currently have any Critical Injuries.");
               } else {
                 for (let i = 0; characterStatus[channel][characterName].crit.length > i; i++) {
                   if (modifier == characterStatus[channel][characterName].crit[i]) characterStatus[channel][characterName].crit.splice(i, 1);
-                  message.channel.sendMessage(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message));
+                  message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message));
                   return;
                 }
             }
@@ -163,11 +163,11 @@ function char(params, characterStatus, message) {
           var Ob = params[3].toUpperCase();
         }
           if (params.length < 3) {
-            if (Object.keys(characterStatus[channel][characterName].obligation).length == 0 ) message.channel.sendMessage(characterName + " has no Obligations.");
+            if (Object.keys(characterStatus[channel][characterName].obligation).length == 0 ) message.channel.send(characterName + " has no Obligations.");
             else {
-              message.channel.sendMessage(characterName + " has the following Obligations.\n");
+              message.channel.send(characterName + " has the following Obligations.\n");
               Object.keys(characterStatus[channel][characterName].obligation).forEach((eachOb)=>{
-              message.channel.sendMessage(eachOb + ": " + characterStatus[channel][characterName].obligation[eachOb]);
+              message.channel.send(eachOb + ": " + characterStatus[channel][characterName].obligation[eachOb]);
               })
               return;
             }
@@ -178,19 +178,19 @@ function char(params, characterStatus, message) {
               } else {
                 characterStatus[channel][characterName].obligation[Ob] += +modifier;
               }
-              message.channel.sendMessage(characterName + " has added " + modifier + " to their " + Ob + " obilgation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
+              message.channel.send(characterName + " has added " + modifier + " to their " + Ob + " obilgation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
           //subtraction modifier
           } else if (params.includes("-") || params[2][0] == "-") {
             if (characterStatus[channel][characterName].obligation[Ob] == undefined) {
-                message.channel.sendMessage(characterName + " does not currently have any " + Ob + " obligation.");
+                message.channel.send(characterName + " does not currently have any " + Ob + " obligation.");
               } else {
                 characterStatus[channel][characterName].obligation[Ob] -= +modifier;
                 if (characterStatus[channel][characterName].obligation[Ob] <= 0) {
-                  message.channel.sendMessage(characterName + " has removed all of their " + Ob + " obligation.\n");
+                  message.channel.send(characterName + " has removed all of their " + Ob + " obligation.\n");
                   delete characterStatus[channel][characterName].obligation[Ob]
                   return;
                 }
-                message.channel.sendMessage(characterName + " has removed " + modifier + " from their " + Ob + " obligation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
+                message.channel.send(characterName + " has removed " + modifier + " from their " + Ob + " obligation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
                 return;
                 }
             }
@@ -200,19 +200,19 @@ function char(params, characterStatus, message) {
       case "credits":
       case "c":
         if (params.length < 3) {
-          message.channel.sendMessage(characterName + " has " + characterStatus[channel][characterName].credits + " credits.");
+          message.channel.send(characterName + " has " + characterStatus[channel][characterName].credits + " credits.");
           return;
         //addition modifier
         } else if (params.includes("+") || params[2][0] == "+") {
             characterStatus[channel][characterName].credits = +characterStatus[channel][characterName].credits + +modifier;
-            message.channel.sendMessage(characterName + " gets " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
+            message.channel.send(characterName + " gets " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
         //subtraction modifier
         } else if (params.includes("-") || params[2][0] == "-") {
             if (modifier > +characterStatus[channel][characterName].credits) {
-              message.channel.sendMessage(characterName + " does not have " + modifier + " credits! " + characterName + " only has " + characterStatus[channel][characterName].credits + " credits.");
+              message.channel.send(characterName + " does not have " + modifier + " credits! " + characterName + " only has " + characterStatus[channel][characterName].credits + " credits.");
             } else {
             characterStatus[channel][characterName].credits = +characterStatus[channel][characterName].credits - +modifier;
-            message.channel.sendMessage(characterName + " pays " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
+            message.channel.send(characterName + " pays " + modifier + " credits for a total of " + +characterStatus[channel][characterName].credits + ".");
           }
         }
         break;
@@ -222,35 +222,35 @@ function char(params, characterStatus, message) {
         Object.keys(characterStatus[channel][characterName].obligation).forEach((eachOb)=> {
           obliagtionText += eachOb + ": " + characterStatus[channel][characterName].obligation[eachOb] + "\n";
         })
-        message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit + "\n" + obliagtionText);
+        message.channel.send(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit + "\n" + obliagtionText);
         break;
 
       case "remove":
         delete characterStatus[channel][characterName];
-        message.channel.sendMessage(characterName + " has been removed.");
+        message.channel.send(characterName + " has been removed.");
         break;
 
       case "list":
         if (Object.keys(characterStatus[channel]).length < 1) {
-          message.channel.sendMessage("No characters.");
+          message.channel.send("No characters.");
         } else {
           Object.keys(characterStatus[channel]).forEach((characterName)=> {
             let obliagtionText = "Obligations:\n";
             Object.keys(characterStatus[channel][characterName].obligation).forEach((eachOb)=> {
               obliagtionText += eachOb + ": " + characterStatus[channel][characterName].obligation[eachOb] + "\n";
             });
-            message.channel.sendMessage(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit + "\n" + obliagtionText);
+            message.channel.send(characterName + "\nWounds: " + characterStatus[channel][characterName].currentWound + "/" + characterStatus[channel][characterName].maxWound + "\nStrain: " + characterStatus[channel][characterName].currentStrain + "/" + characterStatus[channel][characterName].maxStrain + "\nCredits: " + characterStatus[channel][characterName].credits + "\nCrits: " + characterStatus[channel][characterName].crit + "\n" + obliagtionText);
           });
         }
         break;
 
       case "reset":
-        message.channel.sendMessage("Deleting all the characters.");
+        message.channel.send("Deleting all the characters.");
         delete characterStatus[channel];
         break;
 
       default:
-        message.channel.sendMessage("Bad Command, !help char for more information");
+        message.channel.send("Bad Command, !help char for more information");
         break;
       }
 

@@ -4,7 +4,7 @@ function obligation(params, characterStatus, message) {
   var channel = message.channel.id;
   let obList = [];
   if (characterStatus[channel] == undefined) {
-    message.channel.sendMessage("No characters found please use !char to setup");
+    message.channel.send("No characters found please use !char to setup");
     return;
   }
   Object.keys(characterStatus[channel]).forEach((characterName)=>{
@@ -21,10 +21,10 @@ function obligation(params, characterStatus, message) {
   obList.forEach((ob)=> {
     obTotal += ob.value;
   });
-  message.channel.sendMessage("The total group obligation is " + obTotal + ". The obilgation roll is " + roll + ".");
+  message.channel.send("The total group obligation is " + obTotal + ". The obilgation roll is " + roll + ".");
 
   if (roll>obTotal) {
-    message.channel.sendMessage("No obligation triggered");
+    message.channel.send("No obligation triggered");
     return;
   }
 
@@ -32,7 +32,7 @@ function obligation(params, characterStatus, message) {
      target += obList[i].value;
      if (target>roll) break;
   }
-  message.channel.sendMessage(obList[i].name + "\'s " + obList[i].obligation + " obligation has been triggered.");
+  message.channel.send(obList[i].name + "\'s " + obList[i].obligation + " obligation has been triggered.");
 }
 
 module.exports = {

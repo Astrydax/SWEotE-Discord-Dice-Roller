@@ -50,8 +50,8 @@ var botStats = jsonfile.readFileSync('data/botStats.json');
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
-  var dailyJob = schedule.scheduleJob({hour: 8, minute: 0}, () => {
-    botStats = statUpdate(botStats);
+  var dailyJob = schedule.scheduleJob({hour: 08, minute: 00}, () => {
+    botStats = statUpdate(botStats, bot);
   });
 });
 
@@ -124,7 +124,7 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
   switch (command) {
     //Ver command
     case "ver":
-      message.channel.sendMessage(bot.user.username + ": version: " + version);
+      message.channel.send(bot.user.username + ": version: " + version);
       break;
     //Character Tracker
     case "char":
@@ -195,7 +195,7 @@ if (message.channel.type == "text") {
     }
   }
   if (message.author.id == config.adminID) {
-    admin(command, message, bot, botStats);
+    admin(command, message, botStats);
   }
   jsonfile.writeFile("data/botStats.json", botStats);
 
