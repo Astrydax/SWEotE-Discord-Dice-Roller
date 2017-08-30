@@ -31,19 +31,19 @@ var statUpdate = require("./modules/misc.js").statUpdate;
 bot.login(config.token);
 require('events').EventEmitter.defaultMaxListeners = 0;
 //init destinyBalance
-var destinyBalance = jsonfile.readFileSync('./data/destinyBalance.json');
+var destinyBalance = jsonfile.readFileSync(`.${config.dataPath}/data/destinyBalance.json`);
 
 //Init the diceResult
-var diceResult = jsonfile.readFileSync('./data/diceResult.json');
+var diceResult = jsonfile.readFileSync(`.${config.dataPath}/data/diceResult.json`);
 
 //init characterStatus
-var characterStatus = jsonfile.readFileSync('./data/characterStatus.json');
+var characterStatus = jsonfile.readFileSync(`.${config.dataPath}/data/characterStatus.json`);
 
 //init initiativeOrder
-var initiativeOrder = jsonfile.readFileSync('./data/initiativeOrder.json');
+var initiativeOrder = jsonfile.readFileSync(`.${config.dataPath}/data/initiativeOrder.json`);
 
 //init stats
-var botStats = jsonfile.readFileSync('./data/botStats.json');
+var botStats = jsonfile.readFileSync(`.${config.dataPath}/data/botStats.json`);
 
 
 //Called When bot becomes functional
@@ -197,7 +197,7 @@ if (message.channel.type == "text") {
   if (message.author.id == config.adminID) {
     admin(command, message, botStats);
   }
-  jsonfile.writeFile('./data/botStats.json', botStats);
+  jsonfile.writeFile(`.${config.dataPath}/data/botStats.json`, botStats);
 
 }
 process.on("unhandledRejection", err => {

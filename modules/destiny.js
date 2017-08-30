@@ -2,6 +2,7 @@ var chalk = require("chalk");
 var print = require("./printValues.js").print;
 var roll = require("./roll.js").roll;
 const jsonfile = require('jsonfile');
+const config = require("../config.json");
 
 function destiny(params, destinyBalance, message, config) {
   //setting the channel specific variable
@@ -140,7 +141,7 @@ function destiny(params, destinyBalance, message, config) {
     for (var i = 1; i <= destinyBalance[channel].dark; i++) {
         destinyBalance[channel].face += print("ds", message);
         }
-    jsonfile.writeFile("data/destinyBalance.json", destinyBalance);
+    jsonfile.writeFile(`.${config.dataPath}/data/destinyBalance.json`, destinyBalance);
     message.channel.send("Destiny Pool: ")
     if (destinyBalance[channel].face != "") {
     message.channel.send(destinyBalance[channel].face);

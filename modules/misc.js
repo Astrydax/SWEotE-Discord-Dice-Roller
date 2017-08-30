@@ -44,7 +44,7 @@ function statUpdate(botStats, bot) {
     //reset dailies
     botStats.daily[stat] = 0;
   })
-  jsonfile.writeFile('./data/botStats.json', botStats);
+  jsonfile.writeFile(`.${config.dataPath}/data/botStats.json`, botStats);
   return botStats;
 }
 

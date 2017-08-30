@@ -1,5 +1,6 @@
 const jsonfile = require('jsonfile');
 var textCrit = require("./crit.js").textCrit;
+const config = require("../config.json");
 
 function char(params, characterStatus, message) {
   //setting the channel specific variables
@@ -254,7 +255,7 @@ function char(params, characterStatus, message) {
         break;
       }
 
-      jsonfile.writeFile("data/characterStatus.json", characterStatus);
+      jsonfile.writeFile(`.${config.dataPath}/data/characterStatus.json`, characterStatus);
       return;
     }
 

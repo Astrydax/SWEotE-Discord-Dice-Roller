@@ -2,6 +2,7 @@ var chalk = require("chalk");
 var print = require("./printValues.js").print;
 var dice = require("./dice.js").dice;
 const jsonfile = require('jsonfile');
+const config = require("../config.json");
 
 function roll(params, diceResult, message, config, desc) {
   var channel = message.channel.id;
@@ -267,7 +268,7 @@ function printDice (message, diceResult, desc, channel) {
   } else {
     message.reply("No dice rolled.");
   }
-  jsonfile.writeFile("data/diceResult.json", diceResult);
+  jsonfile.writeFile(`.${config.dataPath}/data/diceResult.json`, diceResult);
 }
 
 function convertDice(color, number, diceResult, message, channel) {

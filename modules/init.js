@@ -1,5 +1,6 @@
 var roll = require("./roll.js").roll;
 const jsonfile = require('jsonfile');
+const config = require("../config.json");
 var r = 0;
 
 function init(params, initiativeOrder, message, diceResult, config) {
@@ -191,7 +192,7 @@ function init(params, initiativeOrder, message, diceResult, config) {
         faces += ":slight_smile: ";
       }
     }
-    jsonfile.writeFile("data/initiativeOrder.json", initiativeOrder);
+    jsonfile.writeFile(`.${config.dataPath}/data/initiativeOrder.json`, initiativeOrder);
     message.channel.send("Round: " + initiativeOrder[channel].round + " Turn: " + initiativeOrder[channel].turn + "\nInitiative Order: ");
     if (faces == "") return;
     message.channel.send(faces);
