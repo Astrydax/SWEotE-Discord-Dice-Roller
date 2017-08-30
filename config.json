@@ -3,5 +3,7 @@
   "adminID": "ADMIN_ID",
   "prefix": "!",
   "maxRollsPerDie": 1000,
-  "descriptorPrepend": ""
+  "descriptorPrepend": "",
+  "dm": "",
+  "dataPath": "SWEotE-Discord-Dice-Roller"
 }
