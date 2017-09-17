@@ -1,5 +1,10 @@
 
 function print(str, message) {
+
+  if (message.guild.id == 329634771909083147) {
+    return message.guild.emojis.find('name', str).toString();
+  }
+
   switch (str) {
     case "ga":
       str = "<:ga:294232171131043851>";
