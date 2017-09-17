@@ -3,7 +3,7 @@ const jsonfile = require('jsonfile');
 const config = require("../config.json");
 var r = 0;
 
-function init(params, initiativeOrder, message, diceResult, config) {
+function init(params, initiativeOrder, message, diceResult, config, desc, bot) {
   var channel = message.channel.id;
   if (initiativeOrder[channel] == undefined) {
     initiativeOrder[channel] = {
@@ -33,7 +33,7 @@ function init(params, initiativeOrder, message, diceResult, config) {
         return;
       }
       let type = params.pop();
-      diceResult[channel] = roll(params, diceResult[channel], message, config, "Initiative roll");
+      diceResult[channel] = roll(params, diceResult[channel], message, config, "Initiative roll", bot);
       var rollResult = {success: diceResult[channel].success, advantage: diceResult[channel].advantage, triumph: diceResult[channel].triumph, type: type};
       if (initiativeOrder[channel].turn != 1) {
         initiativeOrder[channel].newslots.push(rollResult);

@@ -2,7 +2,7 @@ var print = require("./printValues.js").print;
 var roll = require("./roll.js");
 var dice = require("./dice.js").dice;
 
-function reroll(params, diceResult, message, config, desc) {
+function reroll(params, diceResult, message, config, desc, bot) {
   var channel = message.channel.id;
   var previousRolls = diceResult[channel].rolls;
   var command = params[0];
@@ -10,9 +10,9 @@ function reroll(params, diceResult, message, config, desc) {
     case "add":
       var diceOrder = roll.processType(params.slice(1), diceResult, config, message, channel);
       for (var i = 0; i < diceOrder.length; i++) {
-        roll.rollDice(diceOrder[i], diceResult, message, channel);
+        roll.rollDice(diceOrder[i], diceResult, message, channel, undefined, bot);
       }
-      roll.printDice(message, diceResult, desc, channel);
+      roll.printDice(message, diceResult, desc, channel, bot);
       break;
 
     case "same":
@@ -21,7 +21,7 @@ function reroll(params, diceResult, message, config, desc) {
         rebuilt.push("1"+previousRolls[i][0]);
       }
       console.log(rebuilt);
-      roll.roll(rebuilt, diceResult, message, config, desc);
+      roll.roll(rebuilt, diceResult, message, config, desc, bot);
       break;
 
     case "remove":
@@ -42,9 +42,9 @@ function reroll(params, diceResult, message, config, desc) {
         previousRolls.splice(positions[randomDie],1)
       }
       for (var i = 0; i < previousRolls.length; i++) {
-        roll.rollDice(previousRolls[i][0], diceResult, message, channel, previousRolls[i][1]);
+        roll.rollDice(previousRolls[i][0], diceResult, message, channel, previousRolls[i][1], bot);
       }
-      roll.printDice(message, diceResult, desc, channel);
+      roll.printDice(message, diceResult, desc, channel, bot);
       break;
     case "select":
         for (var i = 1; i < params.length; i++) {
@@ -62,15 +62,15 @@ function reroll(params, diceResult, message, config, desc) {
             break;
           }
           previousRolls[positions[location-1]] = "";
-          roll.rollDice(color, diceResult, message, channel);
+          roll.rollDice(color, diceResult, message, channel, undefined, bot);
           var newRoll = diceResult[channel].rolls[0]
           previousRolls.splice(positions[location-1], 1, newRoll)
         }
         roll.initdiceResult(diceResult, channel);
         for (var k = 0; k < previousRolls.length; k++) {
-          roll.rollDice(previousRolls[k][0], diceResult, message, channel, previousRolls[k][1]);
+          roll.rollDice(previousRolls[k][0], diceResult, message, channel, previousRolls[k][1], bot);
         }
-        roll.printDice(message, diceResult, desc, channel);
+        roll.printDice(message, diceResult, desc, channel, bot);
       break
     default:
       break

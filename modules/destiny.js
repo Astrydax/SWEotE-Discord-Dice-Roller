@@ -4,7 +4,7 @@ var roll = require("./roll.js").roll;
 const jsonfile = require('jsonfile');
 const config = require("../config.json");
 
-function destiny(params, destinyBalance, message, config) {
+function destiny(params, destinyBalance, message, config, bot) {
   //setting the channel specific variable
   var channel = message.channel.id;
   if (destinyBalance[channel] == undefined) {
@@ -119,7 +119,7 @@ function destiny(params, destinyBalance, message, config) {
         face: "",
       };
       //destinyRoll = rollWhite(1, message);
-      destinyRoll = roll(["w"], destinyRoll, message, config, "Destiny roll");
+      destinyRoll = roll(["w"], destinyRoll, message, config, "Destiny roll", bot);
       destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
       destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
       printdestinyBalance();
@@ -136,10 +136,10 @@ function destiny(params, destinyBalance, message, config) {
   function printdestinyBalance() {
     destinyBalance[channel].face = "";
     for (var i = 1; i <= destinyBalance[channel].light; i++) {
-        destinyBalance[channel].face += print("ls", message);
+        destinyBalance[channel].face += print("ls", message, bot);
         }
     for (var i = 1; i <= destinyBalance[channel].dark; i++) {
-        destinyBalance[channel].face += print("ds", message);
+        destinyBalance[channel].face += print("ds", message, bot);
         }
     jsonfile.writeFile(`.${config.dataPath}/data/destinyBalance.json`, destinyBalance);
     message.channel.send("Destiny Pool: ")

@@ -157,34 +157,34 @@ if (message.channel.type == "text") {
     //!crit command
     case "crit":
       botStats.daily.crit++;
-      crit(params, message);
+      crit(params, message, bot);
       break;
     //!shipcrit command
     case "shipcrit":
       botStats.daily.shipcrit++;
-      shipcrit(params, message);
+      shipcrit(params, message, bot);
       break;
     //Destiny Point Module
     case "destiny":
     case "d":
       botStats.daily.destiny++;
-      destiny(params, destinyBalance, message, config);
+      destiny(params, destinyBalance, message, config, bot);
       break;
       // Roll the dice command
     case "roll":
     case "r":
       botStats.daily.roll++;
-      roll(params, diceResult, message, config, desc);
+      roll(params, diceResult, message, config, desc, bot);
       break;
     case "reroll":
     case "rr":
       botStats.daily.reroll++;
-      reroll(params, diceResult, message, config, desc);
+      reroll(params, diceResult, message, config, desc, bot);
       break;
     case "init":
     case "i":
       botStats.daily.init++;
-      init(params, initiativeOrder, message, diceResult, config, desc);
+      init(params, initiativeOrder, message, diceResult, config, desc, bot);
       break;
     case "obligation":
     case "o":

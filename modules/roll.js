@@ -4,19 +4,19 @@ var dice = require("./dice.js").dice;
 const jsonfile = require('jsonfile');
 const config = require("../config.json");
 
-function roll(params, diceResult, message, config, desc) {
+function roll(params, diceResult, message, config, desc, bot) {
   var channel = message.channel.id;
   if (params[0] == undefined) {
     message.reply("No dice rolled.");
     return;
   }
-  initdiceResult(diceResult, channel)
+  initdiceResult(diceResult, channel);
   var diceOrder = processType(params, diceResult, config, message, channel);
   if (diceOrder == 0) return;
   for (var i = 0; i < diceOrder.length; i++) {
-    rollDice(diceOrder[i], diceResult, message, channel);
+    rollDice(diceOrder[i], diceResult, message, channel, undefined, bot);
   }
-  printDice(message, diceResult, desc, channel);
+  printDice(message, diceResult, desc, channel, bot);
 
   return diceResult[channel];
 }
@@ -68,7 +68,7 @@ function processType(params, diceResult, config, message, channel) {
 }
 
 //roll dice and adds result to diceResult[channel]
-function rollDice(color, diceResult, message, channel, number) {
+function rollDice(color, diceResult, message, channel, number, bot) {
     switch(color) {
       case "y":
       case "pro":
@@ -77,7 +77,7 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(12);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("yellow", number, diceResult, message, channel);
+        convertDice("yellow", number, diceResult, message, channel, bot);
         break;
       case "g":
       case "a":
@@ -86,7 +86,7 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(8);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("green", number, diceResult, message, channel);
+        convertDice("green", number, diceResult, message, channel, bot);
         break;
       case "b":
       case "boo":
@@ -95,7 +95,7 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(6);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("blue", number, diceResult, message, channel);
+        convertDice("blue", number, diceResult, message, channel, bot);
         break;
       case "blk":
       case "sb":
@@ -106,7 +106,7 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(6);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("black", number, diceResult, message, channel);
+        convertDice("black", number, diceResult, message, channel, bot);
         break;
       case "r":
       case "c":
@@ -115,7 +115,7 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(12);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("red", number, diceResult, message, channel);
+        convertDice("red", number, diceResult, message, channel, bot);
         break;
       case "p":
       case "diff":
@@ -125,7 +125,7 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(8);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("purple", number, diceResult, message, channel);
+        convertDice("purple", number, diceResult, message, channel, bot);
         break;
       case "w":
       case "f":
@@ -134,12 +134,12 @@ function rollDice(color, diceResult, message, channel, number) {
           number = dice(12);
         }
         diceResult[channel].rolls.push([color, number]);
-        convertDice("white", number, diceResult, message, channel);
+        convertDice("white", number, diceResult, message, channel, bot);
         break;
       case "success":
       case "*":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("suc", message);
+        diceResult[channel].face += print("suc", message, bot);
         diceResult[channel].success += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
@@ -147,7 +147,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "adv":
       case "v":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("adv", message);
+        diceResult[channel].face += print("adv", message, bot);
         diceResult[channel].advantage += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
@@ -155,7 +155,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "tri":
       case "!":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("tri", message);
+        diceResult[channel].face += print("tri", message, bot);
         diceResult[channel].triumph += 1;
         diceResult[channel].success += 1;
         diceResult[channel].rolls.push([color, 0]);
@@ -164,7 +164,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "fail":
       case "-":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("fail", message);
+        diceResult[channel].face += print("fail", message, bot);
         diceResult[channel].failure += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
@@ -172,7 +172,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "thr":
       case "t":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("thr", message);
+        diceResult[channel].face += print("thr", message, bot);
         diceResult[channel].threat += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
@@ -180,7 +180,7 @@ function rollDice(color, diceResult, message, channel, number) {
       case "des":
       case "$":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("des", message);
+        diceResult[channel].face += print("des", message, bot);
         diceResult[channel].despair += 1;
         diceResult[channel].failure += 1;
         diceResult[channel].rolls.push([color, 0]);
@@ -188,14 +188,14 @@ function rollDice(color, diceResult, message, channel, number) {
       case "light":
       case "l":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("ls", message);
+        diceResult[channel].face += print("ls", message, bot);
         diceResult[channel].light += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
       case "dark":
       case "n":
         console.log(`Adding ${color} to the roll results`);
-        diceResult[channel].face += print("ds", message);
+        diceResult[channel].face += print("ds", message, bot);
         diceResult[channel].dark += 1;
         diceResult[channel].rolls.push([color, 0]);
         break;
@@ -204,7 +204,7 @@ function rollDice(color, diceResult, message, channel, number) {
     }
 }
 
-function printDice (message, diceResult, desc, channel) {
+function printDice (message, diceResult, desc, channel, bot) {
   //BEGIN PREPARING THE MESSAGE TO SEND
   var cancelledDiceResult = {
     [channel]: {
@@ -225,35 +225,35 @@ function printDice (message, diceResult, desc, channel) {
   //cancel success/failures
   if (diceResult[channel].success > diceResult[channel].failure) {
     cancelledDiceResult[channel].success =  diceResult[channel].success - diceResult[channel].failure;
-    response += "  " + print("suc", message) + cancelledDiceResult[channel].success;
+    response += "  " + print("suc", message, bot) + cancelledDiceResult[channel].success;
   } else if (diceResult[channel].success < diceResult[channel].failure) {
     cancelledDiceResult[channel].failure = diceResult[channel].failure - diceResult[channel].success;
-    response += "  " + print("fail", message) + cancelledDiceResult[channel].failure ;
+    response += "  " + print("fail", message, bot) + cancelledDiceResult[channel].failure ;
   }
   //cancel Advantage/Threat
   if (diceResult[channel].advantage > diceResult[channel].threat) {
     cancelledDiceResult[channel].advantage = diceResult[channel].advantage - diceResult[channel].threat;
-    response += "  " + print("adv", message) + cancelledDiceResult[channel].advantage;
+    response += "  " + print("adv", message, bot) + cancelledDiceResult[channel].advantage;
   } else if (diceResult[channel].advantage < diceResult[channel].threat) {
     cancelledDiceResult[channel].threat = diceResult[channel].threat - diceResult[channel].advantage;
-    response += "  " + print("thr", message) + cancelledDiceResult[channel].threat;
+    response += "  " + print("thr", message, bot) + cancelledDiceResult[channel].threat;
   }
   //Check for any Triumphs
   if (diceResult[channel].triumph != 0) {
     cancelledDiceResult[channel].triumph = diceResult[channel].triumph;
-    response += "  " + print("tri", message) + diceResult[channel].triumph;
+    response += "  " + print("tri", message, bot) + diceResult[channel].triumph;
   }
   //Check for any Despair
   if (diceResult[channel].despair != 0) {
     cancelledDiceResult[channel].despair = diceResult[channel].despair;
-    response += "  " + print("des", message) + diceResult[channel].despair;
+    response += "  " + print("des", message, bot) + diceResult[channel].despair;
   }
   //check for force
   if (diceResult[channel].light != 0) {
-    response += "  " + print("ls", message) + diceResult[channel].light;
+    response += "  " + print("ls", message, bot) + diceResult[channel].light;
   }
   if (diceResult[channel].dark != 0) {
-    response += "  " + print("ds", message) + diceResult[channel].dark;
+    response += "  " + print("ds", message, bot) + diceResult[channel].dark;
   }
   //if all the dice cancel out, response filled with this
   if (response == "") {
@@ -271,7 +271,7 @@ function printDice (message, diceResult, desc, channel) {
   jsonfile.writeFile(`.${config.dataPath}/data/diceResult.json`, diceResult);
 }
 
-function convertDice(color, number, diceResult, message, channel) {
+function convertDice(color, number, diceResult, message, channel, bot) {
   switch(color) {
       case "blue":
         //Blue "Boost" die (d6)
@@ -285,32 +285,32 @@ function convertDice(color, number, diceResult, message, channel) {
         switch (number) {
           case 1:
             console.log(chalk.white.bgBlue("Blank"));
-            diceResult[channel].face += print("bb", message);
+            diceResult[channel].face += print("bb", message, bot);
             break;
           case 2:
             console.log(chalk.white.bgBlue("Blank"));
-            diceResult[channel].face += print("bb", message);
+            diceResult[channel].face += print("bb", message, bot);
             break;
           case 3:
             console.log(chalk.white.bgBlue("Success"));
             diceResult[channel].success += 1;
-            diceResult[channel].face += print("bs", message);
+            diceResult[channel].face += print("bs", message, bot);
             break;
           case 4:
             console.log(chalk.white.bgBlue("Advantage"));
             diceResult[channel].advantage += 1;
-            diceResult[channel].face += print("ba", message);
+            diceResult[channel].face += print("ba", message, bot);
             break;
           case 5:
             console.log(chalk.white.bgBlue("Advantage x2"));
             diceResult[channel].advantage += 2;
-            diceResult[channel].face += print("baa", message);
+            diceResult[channel].face += print("baa", message, bot);
             break;
           case 6:
             console.log(chalk.white.bgBlue("Success + Advantage"));
             diceResult[channel].success += 1;
             diceResult[channel].advantage += 1;
-            diceResult[channel].face += print("bsa", message);
+            diceResult[channel].face += print("bsa", message, bot);
             break;
         }
         break;
@@ -328,42 +328,42 @@ function convertDice(color, number, diceResult, message, channel) {
         switch (number) {
           case 1:
             console.log(chalk.white.bgGreen("Blank"));
-            diceResult[channel].face += print("gb", message);
+            diceResult[channel].face += print("gb", message, bot);
             break;
           case 2:
             console.log(chalk.white.bgGreen("Success"));
-            diceResult[channel].face += print("gs", message);
+            diceResult[channel].face += print("gs", message, bot);
             diceResult[channel].success += 1;
             break;
           case 3:
             console.log(chalk.white.bgGreen("Success"));
-            diceResult[channel].face += print("gs", message);
+            diceResult[channel].face += print("gs", message, bot);
             diceResult[channel].success += 1;
             break;
           case 4:
             console.log(chalk.white.bgGreen("Advantage"));
-            diceResult[channel].face += print("ga", message);
+            diceResult[channel].face += print("ga", message, bot);
             diceResult[channel].advantage += 1;
             break;
           case 5:
             console.log(chalk.white.bgGreen("Advantage"));
-            diceResult[channel].face += print("ga", message);
+            diceResult[channel].face += print("ga", message, bot);
             diceResult[channel].advantage += 1;
             break;
           case 6:
             console.log(chalk.white.bgGreen("Success + Advantage"));
-            diceResult[channel].face += print("gsa", message);
+            diceResult[channel].face += print("gsa", message, bot);
             diceResult[channel].success += 1;
             diceResult[channel].advantage += 1;
             break;
           case 7:
             console.log(chalk.white.bgGreen("Advantage x2"));
-            diceResult[channel].face += print("gaa", message);
+            diceResult[channel].face += print("gaa", message, bot);
             diceResult[channel].advantage += 2;
             break;
           case 8:
             console.log(chalk.white.bgGreen("Success x2"));
-            diceResult[channel].face += print("gss", message);
+            diceResult[channel].face += print("gss", message, bot);
             diceResult[channel].success += 2;
             break;
         }
@@ -386,66 +386,66 @@ function convertDice(color, number, diceResult, message, channel) {
         switch (number) {
           case 1:
             console.log(chalk.black.bgYellow("blank"));
-            diceResult[channel].face += print("yb", message);
+            diceResult[channel].face += print("yb", message, bot);
             break;
           case 2:
             console.log(chalk.black.bgYellow("Success"));
             diceResult[channel].success += 1;
-            diceResult[channel].face += print("ys", message);
+            diceResult[channel].face += print("ys", message, bot);
             break;
           case 3:
             console.log(chalk.black.bgYellow("Success"));
             diceResult[channel].success += 1;
-            diceResult[channel].face += print("ys", message);
+            diceResult[channel].face += print("ys", message, bot);
             break;
           case 4:
             console.log(chalk.black.bgYellow("Success x2"));
             diceResult[channel].success += 2;
-            diceResult[channel].face += print("yss", message);
+            diceResult[channel].face += print("yss", message, bot);
             break;
           case 5:
             console.log(chalk.black.bgYellow("Success x2"));
             diceResult[channel].success += 2;
-            diceResult[channel].face += print("yss", message);
+            diceResult[channel].face += print("yss", message, bot);
             break;
           case 6:
             console.log(chalk.black.bgYellow("Advantage"));
             diceResult[channel].advantage += 1;
-            diceResult[channel].face += print("ya", message);
+            diceResult[channel].face += print("ya", message, bot);
             break;
           case 7:
             console.log(chalk.black.bgYellow("Success + Advantage"));
             diceResult[channel].success += 1;
             diceResult[channel].advantage += 1;
-            diceResult[channel].face += print("ysa", message);
+            diceResult[channel].face += print("ysa", message, bot);
             break;
           case 8:
             console.log(chalk.black.bgYellow("Success + Advantage"));
             diceResult[channel].success += 1;
             diceResult[channel].advantage += 1;
-            diceResult[channel].face += print("ysa", message);
+            diceResult[channel].face += print("ysa", message, bot);
             break;
           case 9:
             console.log(chalk.black.bgYellow("Success + Advantage"));
             diceResult[channel].success += 1;
             diceResult[channel].advantage += 1;
-            diceResult[channel].face += print("ysa", message);
+            diceResult[channel].face += print("ysa", message, bot);
             break;
           case 10:
             console.log(chalk.black.bgYellow("Advantage x2"));
             diceResult[channel].advantage += 2;
-            diceResult[channel].face += print("yaa", message);
+            diceResult[channel].face += print("yaa", message, bot);
             break;
           case 11:
             console.log(chalk.black.bgYellow("Advantage x2"));
             diceResult[channel].advantage += 2;
-            diceResult[channel].face += print("yaa", message);
+            diceResult[channel].face += print("yaa", message, bot);
             break;
           case 12:
             console.log(chalk.black.bgYellow("Triumph"));
             diceResult[channel].triumph += 1;
             diceResult[channel].success += 1;
-            diceResult[channel].face += print("yt", message);
+            diceResult[channel].face += print("yt", message, bot);
             break;
         }
         break;
@@ -461,31 +461,31 @@ function convertDice(color, number, diceResult, message, channel) {
         switch (number) {
           case 1:
             console.log(chalk.white.bgBlack("Blank"));
-            diceResult[channel].face += print("blkb", message);
+            diceResult[channel].face += print("blkb", message, bot);
             break;
           case 2:
             console.log(chalk.white.bgBlack("Blank"));
-            diceResult[channel].face += print("blkb", message);
+            diceResult[channel].face += print("blkb", message, bot);
             break;
           case 3:
             console.log(chalk.white.bgBlack("Failure"));
             diceResult[channel].failure += 1;
-            diceResult[channel].face += print("blkf", message);
+            diceResult[channel].face += print("blkf", message, bot);
             break;
           case 4:
             console.log(chalk.white.bgBlack("Failure"));
             diceResult[channel].failure += 1;
-            diceResult[channel].face += print("blkf", message);
+            diceResult[channel].face += print("blkf", message, bot);
             break;
           case 5:
             console.log(chalk.white.bgBlack("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("blkt", message);
+            diceResult[channel].face += print("blkt", message, bot);
             break;
           case 6:
             console.log(chalk.white.bgBlack("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("blkt", message);
+            diceResult[channel].face += print("blkt", message, bot);
             break;
         }
         break;
@@ -503,43 +503,43 @@ function convertDice(color, number, diceResult, message, channel) {
         switch (number) {
           case 1:
             console.log(chalk.white.bgMagenta("Blank"));
-            diceResult[channel].face += print("pb", message);
+            diceResult[channel].face += print("pb", message, bot);
             break;
           case 2:
             console.log(chalk.white.bgMagenta("Failure"));
             diceResult[channel].failure += 1;
-            diceResult[channel].face += print("pf", message);
+            diceResult[channel].face += print("pf", message, bot);
             break;
           case 3:
             console.log(chalk.white.bgMagenta("Failure x2"));
             diceResult[channel].failure += 2;
-            diceResult[channel].face += print("pff", message);
+            diceResult[channel].face += print("pff", message, bot);
             break;
           case 4:
             console.log(chalk.white.bgMagenta("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("pt", message);
+            diceResult[channel].face += print("pt", message, bot);
             break;
           case 5:
             console.log(chalk.white.bgMagenta("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("pt", message);
+            diceResult[channel].face += print("pt", message, bot);
             break;
           case 6:
             console.log(chalk.white.bgMagenta("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("pt", message);
+            diceResult[channel].face += print("pt", message, bot);
             break;
           case 7:
             console.log(chalk.white.bgMagenta("Threat x2"));
             diceResult[channel].threat += 2;
-            diceResult[channel].face += print("ptt", message);
+            diceResult[channel].face += print("ptt", message, bot);
             break;
           case 8:
             console.log(chalk.white.bgMagenta("Failure + Threat"));
             diceResult[channel].failure += 1;
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("pft", message);
+            diceResult[channel].face += print("pft", message, bot);
             break;
         }
         break;
@@ -561,65 +561,65 @@ function convertDice(color, number, diceResult, message, channel) {
         switch (number) {
           case 1:
             console.log(chalk.black.bgRed("Blank"));
-            diceResult[channel].face += print("rb", message);
+            diceResult[channel].face += print("rb", message, bot);
             break;
           case 2:
             console.log(chalk.black.bgRed("Despair"));
             diceResult[channel].despair += 1;
             diceResult[channel].failure += 1;
-            diceResult[channel].face += print("rd", message);
+            diceResult[channel].face += print("rd", message, bot);
             break;
           case 3:
             console.log(chalk.black.bgRed("Failure"));
             diceResult[channel].failure += 1;
-            diceResult[channel].face += print("rf", message);
+            diceResult[channel].face += print("rf", message, bot);
             break;
           case 4:
             console.log(chalk.black.bgRed("Failure"));
             diceResult[channel].failure += 1;
-            diceResult[channel].face += print("rf", message);
+            diceResult[channel].face += print("rf", message, bot);
             break;
           case 5:
             console.log(chalk.black.bgRed("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("rt", message);
+            diceResult[channel].face += print("rt", message, bot);
             break;
           case 6:
             console.log(chalk.black.bgRed("Threat"));
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("rt", message);
+            diceResult[channel].face += print("rt", message, bot);
             break;
           case 7:
             console.log(chalk.black.bgRed("Failure x2"));
             diceResult[channel].failure += 2;
-            diceResult[channel].face += print("rff", message);
+            diceResult[channel].face += print("rff", message, bot);
             break;
           case 8:
             console.log(chalk.black.bgRed("Failure x2"));
             diceResult[channel].failure += 2;
-            diceResult[channel].face += print("rff", message);
+            diceResult[channel].face += print("rff", message, bot);
             break;
           case 9:
             console.log(chalk.black.bgRed("Threat x2"));
             diceResult[channel].threat += 2;
-            diceResult[channel].face += print("rtt", message);
+            diceResult[channel].face += print("rtt", message, bot);
             break;
           case 10:
             console.log(chalk.black.bgRed("Threat x2"));
             diceResult[channel].threat += 2;
-            diceResult[channel].face += print("rtt", message);
+            diceResult[channel].face += print("rtt", message, bot);
             break;
           case 11:
             console.log(chalk.black.bgRed("Failure + Threat"));
             diceResult[channel].failure += 1;
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("rft", message);
+            diceResult[channel].face += print("rft", message, bot);
             break;
           case 12:
             console.log(chalk.black.bgRed("Failure + Threat"));
             diceResult[channel].failure += 1;
             diceResult[channel].threat += 1;
-            diceResult[channel].face += print("rft", message);
+            diceResult[channel].face += print("rft", message, bot);
             break;
         }
         break;
@@ -642,62 +642,62 @@ function convertDice(color, number, diceResult, message, channel) {
         case 1:
           console.log(chalk.black.bgWhite("Light"));
           diceResult[channel].light += 1;
-          diceResult[channel].face += print("wl", message);
+          diceResult[channel].face += print("wl", message, bot);
           break;
         case 2:
           console.log(chalk.black.bgWhite("Light"));
           diceResult[channel].light += 1;
-          diceResult[channel].face += print("wl", message);
+          diceResult[channel].face += print("wl", message, bot);
           break;
         case 3:
           console.log(chalk.black.bgWhite("Light x2"));
           diceResult[channel].light += 2;
-          diceResult[channel].face += print("wll", message);
+          diceResult[channel].face += print("wll", message, bot);
           break;
         case 4:
           console.log(chalk.black.bgWhite("Light x2"));
           diceResult[channel].light += 2;
-          diceResult[channel].face += print("wll", message);
+          diceResult[channel].face += print("wll", message, bot);
           break;
         case 5:
           console.log(chalk.black.bgWhite("Light x2"));
           diceResult[channel].light += 2;
-          diceResult[channel].face += print("wll", message);
+          diceResult[channel].face += print("wll", message, bot);
           break;
         case 6:
           console.log(chalk.black.bgWhite("Dark"));
           diceResult[channel].dark += 1;
-          diceResult[channel].face += print("wd", message);
+          diceResult[channel].face += print("wd", message, bot);
           break;
         case 7:
           console.log(chalk.black.bgWhite("Dark"));
           diceResult[channel].dark += 1;
-          diceResult[channel].face += print("wd", message);
+          diceResult[channel].face += print("wd", message, bot);
           break;
         case 8:
           console.log(chalk.black.bgWhite("Dark"));
           diceResult[channel].dark += 1;
-          diceResult[channel].face += print("wd", message);
+          diceResult[channel].face += print("wd", message, bot);
           break;
         case 9:
           console.log(chalk.black.bgWhite("Dark"));
           diceResult[channel].dark += 1;
-          diceResult[channel].face += print("wd", message);
+          diceResult[channel].face += print("wd", message, bot);
           break;
         case 10:
           console.log(chalk.black.bgWhite("Dark"));
           diceResult[channel].dark += 1;
-          diceResult[channel].face += print("wd", message);
+          diceResult[channel].face += print("wd", message, bot);
           break;
         case 11:
           console.log(chalk.black.bgWhite("Dark"));
           diceResult[channel].dark += 1;
-          diceResult[channel].face += print("wd", message);
+          diceResult[channel].face += print("wd", message, bot);
           break;
         case 12:
           console.log(chalk.black.bgWhite("Dark x2"));
           diceResult[channel].dark += 2;
-          diceResult[channel].face += print("wdd", message);
+          diceResult[channel].face += print("wdd", message, bot);
           break;
         }
         break;
