@@ -1,3 +1,6 @@
+1.9
+  -no custom emoji needed anymore
+
 1.8.4
   -update all the .sendmessage() to .send()
   -daily stats update

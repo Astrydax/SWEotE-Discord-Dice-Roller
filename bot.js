@@ -116,7 +116,6 @@ bot.on("message", message => {
   console.log("@" + message.author.username + " " + message.createdAt);
   console.log(command + " " + params + " " + desc);
 
-
 //************************COMMANDS START HERE************************
 
 if (message.channel.type == "dm" || message.channel.type == "text") {
