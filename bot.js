@@ -69,6 +69,10 @@ bot.on("message", message => {
     channelEmoji[channel] = "swrpg";
     jsonfile.writeFile(`.${config.dataPath}/data/channelEmoji.json`, channelEmoji);
   }
+  if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
+    message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
+    return;
+  }
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   if (!message.content.startsWith(config.prefix)) {
     var params = message.content.split(" ");
