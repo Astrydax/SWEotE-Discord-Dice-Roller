@@ -138,21 +138,20 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
 
   1. token
     - this is the login token for your bot
-  2. prefix
+  2.  adminID
+    - the user discordID for the Admin
+  3. prefix
     - this is the symbol the bot uses to recognize commands. This is set to "!" by default
-  3. descriptorPrenpend
+  4. maxRollsPerDie
+    - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
+  5. descriptorPrenpend
     - Any text you place between the double quotes following this property will be prepended to the text provided in the comment parameter.
     Example: if "descriptorPrepend" is set to "Targeting: ", then the command !roll 2g 2blk "Soldier 1" is called, the bot will respond with:     Targeting: Soldier 1
     Astrydax roll results:    Success: 1   Threat: 1
-  4. maxRollsPerDie
-    - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
-
-#CUSTOM emoji
-
-  1. Follow instructions here https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic to add emoji from /dice to your discord server
-
-  - NOTE: To disable emoji rename printValues_NO_EMOJI.js to printValues.js, replacing existing file.
-
+  6.  dm
+    - direct channel for botstats report
+  7.  dataPath
+    - optional dataPath if needed for server (pm2 is notorious for needed one or the other)
 
 #Amazon EC2 install
 

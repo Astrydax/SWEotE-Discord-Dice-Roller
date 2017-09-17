@@ -45,6 +45,8 @@ var initiativeOrder = jsonfile.readFileSync(`.${config.dataPath}/data/initiative
 //init stats
 var botStats = jsonfile.readFileSync(`.${config.dataPath}/data/botStats.json`);
 
+var channelEmoji = jsonfile.readFileSync(`.${config.dataPath}/data/channelEmoji.json`);
+
 
 //Called When bot becomes functional
 bot.on("ready", () => {
@@ -61,8 +63,13 @@ bot.on("message", message => {
   if (message.author.bot) return;
   //Ignore messages that dont start with the command symbol
   if (!message.content.includes(config.prefix)) return;
+  //establish which emoji to use
+  var channel = message.channel.id;
+  if (channelEmoji[channel] == undefined) {
+    channelEmoji[channel] = "swrpg";
+    jsonfile.writeFile(`.${config.dataPath}/data/channelEmoji.json`, channelEmoji);
+  }
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
-
   if (!message.content.startsWith(config.prefix)) {
     var params = message.content.split(" ");
     for (var i=0; params.length>i; i++) {
@@ -110,9 +117,9 @@ bot.on("message", message => {
   if (params != undefined) {
     params = params.filter(Boolean);
     for (var i = 0; i < params.length; i++) {
-    params[i] = params[i].toLowerCase();
+      params[i] = params[i].toLowerCase();
+    }
   }
-
   console.log("@" + message.author.username + " " + message.createdAt);
   console.log(command + " " + params + " " + desc);
 
@@ -140,12 +147,6 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
       botStats.daily.species++;
       gleepglop(message);
       break;
-    }
-  }
-
-if (message.channel.type == "text") {
-
-  switch (command) {
     case "polyhedral":
       botStats.daily.d++;
       polyhedral(sides, params, message);
@@ -154,51 +155,62 @@ if (message.channel.type == "text") {
       botStats.daily.poly++;
       poly(params, message);
       break;
+    }
+  }
+
+if (message.channel.type == "text") {
+
+  switch (command) {
     //!crit command
     case "crit":
       botStats.daily.crit++;
-      crit(params, message, bot);
+      crit(params, message, bot, channelEmoji);
       break;
     //!shipcrit command
     case "shipcrit":
       botStats.daily.shipcrit++;
-      shipcrit(params, message, bot);
+      shipcrit(params, message, bot, channelEmoji);
       break;
     //Destiny Point Module
     case "destiny":
     case "d":
       botStats.daily.destiny++;
-      destiny(params, destinyBalance, message, config, bot);
+      destiny(params, destinyBalance, message, config, bot, channelEmoji);
       break;
       // Roll the dice command
     case "roll":
     case "r":
       botStats.daily.roll++;
-      roll(params, diceResult, message, config, desc, bot);
+      roll(params, diceResult, message, config, desc, bot, channelEmoji);
       break;
     case "reroll":
     case "rr":
       botStats.daily.reroll++;
-      reroll(params, diceResult, message, config, desc, bot);
+      reroll(params, diceResult, message, config, desc, bot, channelEmoji);
       break;
     case "init":
     case "i":
       botStats.daily.init++;
-      init(params, initiativeOrder, message, diceResult, config, desc, bot);
+      init(params, initiativeOrder, message, diceResult, config, desc, bot, channelEmoji);
       break;
     case "obligation":
     case "o":
       botStats.daily.obligation++;
       obligation(params, characterStatus, message);
       break;
-    }
+    case "swrpg":
+    case "genesys":
+      channelEmoji[channel] = command;
+      jsonfile.writeFile(`.${config.dataPath}/data/channelEmoji.json`, channelEmoji);
+      message.channel.send(`${bot.user.username} will now use ${command} dice`);
+      break;
   }
+}
   if (message.author.id == config.adminID) {
     admin(command, message, botStats);
   }
   jsonfile.writeFile(`.${config.dataPath}/data/botStats.json`, botStats);
 
-}
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n" + err.stack);
 });

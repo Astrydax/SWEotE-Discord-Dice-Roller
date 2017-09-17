@@ -4,7 +4,7 @@ var roll = require("./roll.js").roll;
 const jsonfile = require('jsonfile');
 const config = require("../config.json");
 
-function destiny(params, destinyBalance, message, config, bot) {
+function destiny(params, destinyBalance, message, config, bot, channelEmoji) {
   //setting the channel specific variable
   var channel = message.channel.id;
   if (destinyBalance[channel] == undefined) {
@@ -136,10 +136,10 @@ function destiny(params, destinyBalance, message, config, bot) {
   function printdestinyBalance() {
     destinyBalance[channel].face = "";
     for (var i = 1; i <= destinyBalance[channel].light; i++) {
-        destinyBalance[channel].face += print("ls", message, bot);
+        destinyBalance[channel].face += print("ls", message, bot, channelEmoji);
         }
     for (var i = 1; i <= destinyBalance[channel].dark; i++) {
-        destinyBalance[channel].face += print("ds", message, bot);
+        destinyBalance[channel].face += print("ds", message, bot, channelEmoji);
         }
     jsonfile.writeFile(`.${config.dataPath}/data/destinyBalance.json`, destinyBalance);
     message.channel.send("Destiny Pool: ")
