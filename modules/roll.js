@@ -116,6 +116,7 @@ function rollDice(color, diceResult, message, channel, number, bot, channelEmoji
         }
         diceResult[channel].rolls.push([color, number]);
         convertDice("red", number, diceResult, message, channel, bot, channelEmoji);
+        break;
       case "p":
       case "diff":
       case "d":
