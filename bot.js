@@ -65,10 +65,7 @@ bot.on("message", message => {
   if (!message.content.includes(config.prefix)) return;
   //establish which emoji to use
   var channel = message.channel.id;
-  if (channelEmoji[channel] == undefined) {
-    channelEmoji[channel] = "swrpg";
-    jsonfile.writeFile(`.${config.dataPath}/data/channelEmoji.json`, channelEmoji);
-  }
+
   if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
     message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
     return;
