@@ -64,7 +64,6 @@ bot.on("message", message => {
   //Ignore messages that dont start with the command symbol
   if (!message.content.includes(config.prefix)) return;
   //establish which emoji to use
-  var channel = message.channel.id;
 
   if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
     message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
@@ -201,7 +200,7 @@ if (message.channel.type == "text") {
       break;
     case "swrpg":
     case "genesys":
-      channelEmoji[channel] = command;
+      channelEmoji[message.channel.id] = command;
       jsonfile.writeFile(`.${config.dataPath}/data/channelEmoji.json`, channelEmoji);
       message.channel.send(`${bot.user.username} will now use ${command} dice`);
       break;
