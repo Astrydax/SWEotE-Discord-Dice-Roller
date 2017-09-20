@@ -119,7 +119,7 @@ function destiny(params, destinyBalance, message, config, bot, channelEmoji) {
         face: "",
       };
       //destinyRoll = rollWhite(1, message);
-      destinyRoll = roll(["w"], destinyRoll, message, config, "Destiny roll", bot);
+      destinyRoll = roll(["w"], destinyRoll, message, config, "Destiny roll", bot, channelEmoji);
       destinyBalance[channel].light = +destinyBalance[channel].light + +destinyRoll.light;
       destinyBalance[channel].dark = +destinyBalance[channel].dark + +destinyRoll.dark;
       printdestinyBalance();
