@@ -150,10 +150,14 @@ function char(params, characterStatus, message, bot, channelEmoji) {
                 message.channel.send(characterName + " does not currently have any Critical Injuries.");
               } else {
                 for (let i = 0; characterStatus[channel][characterName].crit.length > i; i++) {
-                  if (modifier == characterStatus[channel][characterName].crit[i]) characterStatus[channel][characterName].crit.splice(i, 1);
-                  message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message, bot, channelEmoji));
-                  return;
+                  if (modifier == characterStatus[channel][characterName].crit[i]) {
+                    characterStatus[channel][characterName].crit.splice(i, 1);
+                    console.log(i + " " + characterStatus[channel][characterName].crit);
+                    message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message, bot, channelEmoji));
+                    return;
+                  }
                 }
+                message.channel.send(characterName + " does not have " + "Crit " + modifier + " in their Critical Injuries.\n");
             }
           }
           break;
