@@ -2,7 +2,7 @@ const jsonfile = require('jsonfile');
 var textCrit = require("./crit.js").textCrit;
 const config = require("../config.json");
 
-function char(params, characterStatus, message) {
+function char(params, characterStatus, message, bot, channelEmoji) {
   //setting the channel specific variables
   var channel = message.channel.id;
   var characterName = "";
@@ -136,14 +136,14 @@ function char(params, characterStatus, message) {
             else {
               message.channel.send(characterName + " has the following Critial Injuries.");
               characterStatus[channel][characterName].crit.forEach((eachCrit)=>{
-              message.channel.send("Crit " + eachCrit + ": " + textCrit(eachCrit, message));
+              message.channel.send("Crit " + eachCrit + ": " + textCrit(eachCrit, message, bot, channelEmoji));
               })
               return;
             }
           //addition modifier
           } else if (params.includes("+") || params[2][0] == "+") {
               characterStatus[channel][characterName].crit.push(modifier);
-              message.channel.send(characterName + " has added " + "Crit " + modifier + ": " + " to their Critical Injuries.\n" +textCrit(modifier, message));
+              message.channel.send(characterName + " has added " + "Crit " + modifier + ": " + " to their Critical Injuries.\n" +textCrit(modifier, message, bot, channelEmoji));
           //subtraction modifier
           } else if (params.includes("-") || params[2][0] == "-") {
               if (characterStatus[channel][characterName].crit.length == 0) {
@@ -151,7 +151,7 @@ function char(params, characterStatus, message) {
               } else {
                 for (let i = 0; characterStatus[channel][characterName].crit.length > i; i++) {
                   if (modifier == characterStatus[channel][characterName].crit[i]) characterStatus[channel][characterName].crit.splice(i, 1);
-                  message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message));
+                  message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message, bot, channelEmoji));
                   return;
                 }
             }

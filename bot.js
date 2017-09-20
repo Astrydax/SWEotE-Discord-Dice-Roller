@@ -135,7 +135,7 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
     //Character Tracker
     case "char":
       botStats.daily.char++;
-      char(params, characterStatus, message);
+      char(params, characterStatus, message, bot, channelEmoji);
       break;
     // help module
     case "help":
