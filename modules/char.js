@@ -152,7 +152,6 @@ function char(params, characterStatus, message, bot, channelEmoji) {
                 for (let i = 0; characterStatus[channel][characterName].crit.length > i; i++) {
                   if (modifier == characterStatus[channel][characterName].crit[i]) {
                     characterStatus[channel][characterName].crit.splice(i, 1);
-                    console.log(i + " " + characterStatus[channel][characterName].crit);
                     message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message, bot, channelEmoji));
                     return;
                   }

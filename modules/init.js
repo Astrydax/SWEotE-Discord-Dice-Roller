@@ -23,7 +23,6 @@ function init(params, initiativeOrder, message, diceResult, config, desc, bot, c
       if (diceResult[channel] == undefined) {
         diceResult[channel] = {};
       }
-      console.log(params);
       if (params[0] == undefined || params[0] == "npc" || params[0] == "pc") {
         message.channel.send("No dice defined.  ie '!init roll yygg npc/pc'");
         return;
@@ -124,13 +123,14 @@ function init(params, initiativeOrder, message, diceResult, config, desc, bot, c
       break;
     //manually modify the initiativeOrder
     case "modify":
+      console.log(initiativeOrder[channel])
       console.log("Modifiying current initiativeOrder for " + message.author.username);
       //check if numbers are used
       if (params[0] == undefined) {
         message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
         return;
       }
-      initiativeOrder[channel].order = [];
+      initiativeOrder[channel].slots = [];
       for(var i = 0; i < params[0].length; i++) {
         var mob = params[0][i];
         switch(mob) {
