@@ -1,4 +1,7 @@
+1.9.3
   -use external emoji check
+  -botstats now needs 'daily' 'weekly' 'monthly' 'alltime'
+  -added !char modify
 
 1.9.2
   -!swrpg and !genesys switch

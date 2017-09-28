@@ -10,18 +10,17 @@ function gleepglop (message) {
   message.reply("A wild " + gleepglop + " appears!")
 }
 
-function writeBotStats(botStats) {
+function writeBotStats(botStats, time) {
+  if (!(time == 'daily' || time == 'weekly' || time == 'monthly' || time == 'alltime')) return "Bad command";
   let text = "Bot stats: \n";
-  Object.keys(botStats).forEach((time) => {
-    text += time.toUpperCase() + ":\n";
-    Object.keys(botStats[time]).forEach((stat)=> {
-      let count = 0;
-      if (botStats[time][stat].length > 1) count = botStats[time][stat].reduce((a, b) => a + b, 0);
-      else count = botStats[time][stat];
-      text += "\t" + stat + ": " + count + "\n";
-    })
-    text += "\n"
+  text += time.toUpperCase() + ":\n";
+  Object.keys(botStats[time]).forEach((stat)=> {
+    let count = 0;
+    if (botStats[time][stat].length > 1) count = botStats[time][stat].reduce((a, b) => a + b, 0);
+    else count = botStats[time][stat];
+    text += "\t" + stat + ": " + count + "\n";
   })
+  text += "\n"
   return text;
 }
 

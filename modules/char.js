@@ -42,8 +42,6 @@ function char(params, characterStatus, message, bot, channelEmoji) {
       }
   }
 
-
-
     switch(command) {
       case "setup":
       case "add":
@@ -247,6 +245,36 @@ function char(params, characterStatus, message, bot, channelEmoji) {
           });
         }
         break;
+
+      case "modify":
+        if (params.length < 3) {
+          message.channel.send("\nMaxWound: " + characterStatus[channel][characterName].maxWound + "\nMaxStrain: " + characterStatus[channel][characterName].maxStrain);
+          return;
+        }
+        if (params.length < 4) {
+          message.channel.send("Bad Command, !help char for more information");
+          return;
+        }
+
+        let stat = "";
+        if (params[3] == "maxstrain") stat = "maxStrain";
+        else if (params[3] == "maxwounds") stat = "maxWound";
+        else {
+          message.channel.send("Bad Command, !help char for more information");
+          return;
+        }
+
+      if (params.includes("+") || params[2][0] == "+") {
+          characterStatus[channel][characterName][stat] = +characterStatus[channel][characterName][stat] + +modifier;
+      } else if (params.includes("-") || params[2][0] == "-") {
+          characterStatus[channel][characterName][stat] = +characterStatus[channel][characterName][stat] - +modifier;
+      } else {
+        characterStatus[channel][characterName][stat] = +modifier;
+      }
+      message.channel.send(characterName + "\'s " + stat + " is set at " + characterStatus[channel][characterName][stat]);
+
+      break;
+
 
       case "reset":
         message.channel.send("Deleting all the characters.");

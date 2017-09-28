@@ -207,7 +207,7 @@ if (message.channel.type == "text") {
   }
 }
   if (message.author.id == config.adminID) {
-    admin(command, message, botStats);
+    admin(command, message, botStats, bot, params);
   }
   jsonfile.writeFile(`.${config.dataPath}/data/botStats.json`, botStats);
 

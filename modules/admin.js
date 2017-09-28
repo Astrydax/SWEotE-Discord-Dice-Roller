@@ -3,11 +3,11 @@ var writeBotStats = require("./misc.js").writeBotStats;
 const config = require("../config.json");
 
 
-function admin(command, message, botStats) {
+function admin(command, message, botStats, bot, params) {
+  var channel = message.channel.id;
   switch (command) {
     case "stats":
-      message.author.send(`Currently on ${bot.guilds.size} servers!`);
-      message.author.send(`Currently assisting ${bot.guilds.reduce((a, b) => a + b.memberCount, 0)} users!`);
+      message.channel.send(`Currently on ${bot.guilds.size} servers!\nCurrently assisting ${bot.guilds.reduce((a, b) => a + b.memberCount, 0)} users!`);
       break;
     case "logout":
       bot.logout();
@@ -17,8 +17,8 @@ function admin(command, message, botStats) {
     case "test":
       break;
     case "botstats":
-      let text = writeBotStats(botStats);
-      message.author.send(text);
+      let text = writeBotStats(botStats, params[0]);
+      message.channel.send(text);
       break;
     default:
       break;
