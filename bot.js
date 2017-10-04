@@ -5,8 +5,6 @@
 const Discord = require("discord.js");
 const config = require("./config.json");
 const initData = require("./initData.json");
-const fs = require('fs');
-const jsonfile = require('jsonfile');
 const firebase = require('firebase');
 const chalk = require("chalk");
 const bot = new Discord.Client();
@@ -29,36 +27,9 @@ var gleepglop = require("./modules/misc.js").gleepglop;
 var obligation = require("./modules/obligation.js").obligation;
 var statUpdate = require("./modules/misc.js").statUpdate;
 
-
-
 bot.login(config.token);
 require('events').EventEmitter.defaultMaxListeners = 0;
 firebase.initializeApp(firebaseconfig.config);
-//init destinyBalance
-var destinyBalanceold = jsonfile.readFileSync(`.${config.dataPath}/data/destinyBalance.json`);
-
-//Init the diceResult
-var diceResultold = jsonfile.readFileSync(`.${config.dataPath}/data/diceResult.json`);
-
-//init characterStatus
-var characterStatusold = jsonfile.readFileSync(`.${config.dataPath}/data/characterStatus.json`);
-
-//init initiativeOrder
-var initiativeOrderold = jsonfile.readFileSync(`.${config.dataPath}/data/initiativeOrder.json`);
-
-//init stats
-var botStatsold = jsonfile.readFileSync(`.${config.dataPath}/data/botStats.json`);
-
-var channelEmojiold = jsonfile.readFileSync(`.${config.dataPath}/data/channelEmoji.json`);
-
-var fix = {
-  'destinyBalance': destinyBalanceold,
-  'diceResult': diceResultold,
-  'characterStatus': characterStatusold,
-  'initiativeOrder': initiativeOrderold,
-  'botStats': botStatsold,
-  'channelEmoji': channelEmojiold
-}
 
 var destinyBalance,
     diceResult,
@@ -258,8 +229,7 @@ if (message.channel.type == "text") {
       firebase.database().ref().child(`${bot.user.username}`).child('channelEmoji').child(message.channel.id).set(channelEmoji[message.channel.id]);
       message.channel.send(`${bot.user.username} will now use ${command} dice`);
       break;
-    case "fix":
-      firebase.database().ref().child(`${bot.user.username}`).set(fix);
+    case default:
       break;
   }
 }

@@ -1,3 +1,6 @@
+2.0.1
+  -Removed all fix commands
+
 2.0.0
   -moved storage to firebase
 
