@@ -1,6 +1,6 @@
-const jsonfile = require('jsonfile');
 var textCrit = require("./crit.js").textCrit;
 const config = require("../config.json");
+const firebase = require('firebase');
 
 function char(params, characterStatus, message, bot, channelEmoji) {
   //setting the channel specific variables
@@ -19,6 +19,11 @@ function char(params, characterStatus, message, bot, channelEmoji) {
 
   if (characterStatus[channel] == undefined) {
     characterStatus[channel] = {};
+  } else {
+      Object.keys(characterStatus[channel]).forEach((characterName) => {
+        if (characterStatus[channel][characterName].crit == undefined) characterStatus[channel][characterName].crit = [];
+        if (characterStatus[channel][characterName].obligation == undefined) characterStatus[channel][characterName].obligation = {};
+      })
   }
 
   if (command == undefined) {
@@ -140,6 +145,7 @@ function char(params, characterStatus, message, bot, channelEmoji) {
             }
           //addition modifier
           } else if (params.includes("+") || params[2][0] == "+") {
+              if (characterStatus[channel][characterName].crit == '') characterStatus[channel][characterName].crit = [];
               characterStatus[channel][characterName].crit.push(modifier);
               message.channel.send(characterName + " has added " + "Crit " + modifier + ": " + " to their Critical Injuries.\n" +textCrit(modifier, message, bot, channelEmoji));
           //subtraction modifier
@@ -151,10 +157,12 @@ function char(params, characterStatus, message, bot, channelEmoji) {
                   if (modifier == characterStatus[channel][characterName].crit[i]) {
                     characterStatus[channel][characterName].crit.splice(i, 1);
                     message.channel.send(characterName + " has removed " + "Crit " + modifier + ": " + " from their Critical Injuries.\n"+ textCrit(modifier, message, bot, channelEmoji));
-                    return;
+                    break;
+                  }
+                  if (characterStatus[channel][characterName].crit.length == i+1) {
+                    message.channel.send(characterName + " does not have " + "Crit " + modifier + " in their Critical Injuries.\n");
                   }
                 }
-                message.channel.send(characterName + " does not have " + "Crit " + modifier + " in their Critical Injuries.\n");
             }
           }
           break;
@@ -175,6 +183,7 @@ function char(params, characterStatus, message, bot, channelEmoji) {
             }
           //addition modifier
           } else if (params.includes("+") || params[2][0] == "+") {
+              if (characterStatus[channel][characterName].obligation == '') characterStatus[channel][characterName].obligation = {};
               if (characterStatus[channel][characterName].obligation[Ob] == undefined) {
                 characterStatus[channel][characterName].obligation[Ob] = +modifier;
               } else {
@@ -189,11 +198,11 @@ function char(params, characterStatus, message, bot, channelEmoji) {
                 characterStatus[channel][characterName].obligation[Ob] -= +modifier;
                 if (characterStatus[channel][characterName].obligation[Ob] <= 0) {
                   message.channel.send(characterName + " has removed all of their " + Ob + " obligation.\n");
-                  delete characterStatus[channel][characterName].obligation[Ob]
-                  return;
+                  delete characterStatus[channel][characterName].obligation[Ob];
+                  break;
                 }
                 message.channel.send(characterName + " has removed " + modifier + " from their " + Ob + " obligation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
-                return;
+                break;
                 }
             }
           break;
@@ -263,30 +272,26 @@ function char(params, characterStatus, message, bot, channelEmoji) {
           message.channel.send("Bad Command, !help char for more information");
           return;
         }
-
-      if (params.includes("+") || params[2][0] == "+") {
-          characterStatus[channel][characterName][stat] = +characterStatus[channel][characterName][stat] + +modifier;
-      } else if (params.includes("-") || params[2][0] == "-") {
-          characterStatus[channel][characterName][stat] = +characterStatus[channel][characterName][stat] - +modifier;
-      } else {
-        characterStatus[channel][characterName][stat] = +modifier;
-      }
-      message.channel.send(characterName + "\'s " + stat + " is set at " + characterStatus[channel][characterName][stat]);
-
-      break;
-
+        if (params.includes("+") || params[2][0] == "+") {
+            characterStatus[channel][characterName][stat] = +characterStatus[channel][characterName][stat] + +modifier;
+        } else if (params.includes("-") || params[2][0] == "-") {
+            characterStatus[channel][characterName][stat] = +characterStatus[channel][characterName][stat] - +modifier;
+        } else {
+          characterStatus[channel][characterName][stat] = +modifier;
+        }
+        message.channel.send(characterName + "\'s " + stat + " is set at " + characterStatus[channel][characterName][stat]);
+        break;
 
       case "reset":
         message.channel.send("Deleting all the characters.");
-        delete characterStatus[channel];
+        characterStatus[channel] = {};
         break;
 
       default:
         message.channel.send("Bad Command, !help char for more information");
         break;
       }
-
-      jsonfile.writeFile(`.${config.dataPath}/data/characterStatus.json`, characterStatus);
+      firebase.database().ref().child(`${bot.user.username}`).child('characterStatus').child(channel).set(characterStatus[channel]);
       return;
     }
 

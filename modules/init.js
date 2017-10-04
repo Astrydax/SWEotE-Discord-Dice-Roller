@@ -1,5 +1,5 @@
 var roll = require("./roll.js").roll;
-const jsonfile = require('jsonfile');
+const firebase = require('firebase');
 const config = require("../config.json");
 var r = 0;
 
@@ -13,6 +13,10 @@ function init(params, initiativeOrder, message, diceResult, config, desc, bot, c
       newslots: [],
     };
   }
+
+  if (initiativeOrder[channel].newslots == undefined) initiativeOrder[channel].newslots = [];
+  if (initiativeOrder[channel].slots == undefined) initiativeOrder[channel].slots = [];
+
 
   var command = params.shift();
   switch(command) {
@@ -192,10 +196,10 @@ function init(params, initiativeOrder, message, diceResult, config, desc, bot, c
         faces += ":slight_smile: ";
       }
     }
-    jsonfile.writeFile(`.${config.dataPath}/data/initiativeOrder.json`, initiativeOrder);
     message.channel.send("Round: " + initiativeOrder[channel].round + " Turn: " + initiativeOrder[channel].turn + "\nInitiative Order: ");
     if (faces == "") return;
     message.channel.send(faces);
+    firebase.database().ref().child(`${bot.user.username}`).child('initiativeOrder').child(channel).set(initiativeOrder[channel]);
   }
 }
 

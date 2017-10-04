@@ -125,6 +125,7 @@ Commands:
 5. Open config.json with a text editor program of your choice.
 6. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
 6. Replace "ADMIN_ID" with the NUMBERS of your userID.
+7. Open firebaseconfig.js and paste in your firebase Config file (console.firebase.com)
 7. Your bot is now configured and ready to launch.
 
 #Running the bot

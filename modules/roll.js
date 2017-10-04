@@ -1,7 +1,7 @@
 var chalk = require("chalk");
 var print = require("./printValues.js").print;
 var dice = require("./dice.js").dice;
-const jsonfile = require('jsonfile');
+const firebase = require('firebase');
 const config = require("../config.json");
 
 function roll(params, diceResult, message, config, desc, bot, channelEmoji) {
@@ -268,7 +268,7 @@ function printDice (message, diceResult, desc, channel, bot, channelEmoji) {
   } else {
     message.reply("No dice rolled.");
   }
-  jsonfile.writeFile(`.${config.dataPath}/data/diceResult.json`, diceResult);
+  firebase.database().ref().child(`${bot.user.username}`).child('diceResult').child(channel).set(diceResult[channel]);
 }
 
 function convertDice(color, number, diceResult, message, channel, bot, channelEmoji) {

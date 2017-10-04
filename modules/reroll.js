@@ -4,6 +4,7 @@ var dice = require("./dice.js").dice;
 
 function reroll(params, diceResult, message, config, desc, bot, channelEmoji) {
   var channel = message.channel.id;
+  if (diceResult[channel].rolls == undefined) diceResult[channel].rolls = [];
   var previousRolls = diceResult[channel].rolls;
   var command = params[0];
   switch(command) {

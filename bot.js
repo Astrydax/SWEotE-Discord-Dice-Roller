@@ -4,11 +4,14 @@
 */
 const Discord = require("discord.js");
 const config = require("./config.json");
+const initData = require("./initData.json");
 const fs = require('fs');
 const jsonfile = require('jsonfile');
+const firebase = require('firebase');
 const chalk = require("chalk");
 const bot = new Discord.Client();
 const schedule = require('node-schedule');
+var firebaseconfig = require("./firebaseconfig");
 var print = require("./modules/printValues.js").print;
 var destiny = require("./modules/destiny.js").destiny;
 var crit = require("./modules/crit.js").crit;
@@ -30,28 +33,79 @@ var statUpdate = require("./modules/misc.js").statUpdate;
 
 bot.login(config.token);
 require('events').EventEmitter.defaultMaxListeners = 0;
+firebase.initializeApp(firebaseconfig.config);
 //init destinyBalance
-var destinyBalance = jsonfile.readFileSync(`.${config.dataPath}/data/destinyBalance.json`);
+var destinyBalanceold = jsonfile.readFileSync(`.${config.dataPath}/data/destinyBalance.json`);
 
 //Init the diceResult
-var diceResult = jsonfile.readFileSync(`.${config.dataPath}/data/diceResult.json`);
+var diceResultold = jsonfile.readFileSync(`.${config.dataPath}/data/diceResult.json`);
 
 //init characterStatus
-var characterStatus = jsonfile.readFileSync(`.${config.dataPath}/data/characterStatus.json`);
+var characterStatusold = jsonfile.readFileSync(`.${config.dataPath}/data/characterStatus.json`);
 
 //init initiativeOrder
-var initiativeOrder = jsonfile.readFileSync(`.${config.dataPath}/data/initiativeOrder.json`);
+var initiativeOrderold = jsonfile.readFileSync(`.${config.dataPath}/data/initiativeOrder.json`);
 
 //init stats
-var botStats = jsonfile.readFileSync(`.${config.dataPath}/data/botStats.json`);
+var botStatsold = jsonfile.readFileSync(`.${config.dataPath}/data/botStats.json`);
 
-var channelEmoji = jsonfile.readFileSync(`.${config.dataPath}/data/channelEmoji.json`);
+var channelEmojiold = jsonfile.readFileSync(`.${config.dataPath}/data/channelEmoji.json`);
 
+var fix = {
+  'destinyBalance': destinyBalanceold,
+  'diceResult': diceResultold,
+  'characterStatus': characterStatusold,
+  'initiativeOrder': initiativeOrderold,
+  'botStats': botStatsold,
+  'channelEmoji': channelEmojiold
+}
+
+var destinyBalance,
+    diceResult,
+    characterStatus,
+    initiativeOrder,
+    botStats,
+    channelEmoji;
 
 //Called When bot becomes functional
 bot.on("ready", () => {
   console.log(`Bot version ${version}`);
   console.log(`Logged in as ${bot.user.username}!`);
+
+  firebase.database().ref().child(`${bot.user.username}`).once('value', snap => {
+    if (snap.val() == null) {
+      destinyBalance = initData.destinyBalance;
+      diceResult = initData.diceResult;
+      characterStatus = initData.characterStatus;
+      initiativeOrder = initData.initiativeOrder;
+      destinyBalance = initData.destinyBalance;
+      botStats = initData.botStats;
+      channelEmoji = initData.channelEmoji;
+      return;
+    }
+
+    if (snap.val().destinyBalance == null) destinyBalance = initData.destinyBalance;
+    else destinyBalance = snap.val().destinyBalance;
+
+    if (snap.val().diceResult == null) diceResult = initData.diceResult;
+    else diceResult = snap.val().diceResult;
+
+    if (snap.val().characterStatus == null) characterStatus = initData.characterStatus;
+    else destinyBalance = characterStatus = snap.val().characterStatus;
+
+    if (snap.val().initiativeOrder == null) initiativeOrder = initData.initiativeOrder;
+    else initiativeOrder = snap.val().initiativeOrder;
+
+    if (snap.val().destinyBalance == null) destinyBalance = initData.destinyBalance;
+    else destinyBalance = snap.val().destinyBalance;
+
+    if (snap.val().botStats == null) botStats = initData.botStats;
+    else botStats = snap.val().botStats;
+
+    if (snap.val().channelEmoji == null) channelEmoji = initData.channelEmoji;
+    else channelEmoji = snap.val().channelEmoji;
+  });
+
   let dailyJob = schedule.scheduleJob({hour: 08, minute: 00, second: 00}, () => {
     botStats = statUpdate(botStats, bot);
   });
@@ -201,17 +255,22 @@ if (message.channel.type == "text") {
     case "swrpg":
     case "genesys":
       channelEmoji[message.channel.id] = command;
-      jsonfile.writeFile(`.${config.dataPath}/data/channelEmoji.json`, channelEmoji);
+      firebase.database().ref().child(`${bot.user.username}`).child('channelEmoji').child(message.channel.id).set(channelEmoji[message.channel.id]);
       message.channel.send(`${bot.user.username} will now use ${command} dice`);
+      break;
+    case "fix":
+      firebase.database().ref().child(`${bot.user.username}`).set(fix);
       break;
   }
 }
-  if (message.author.id == config.adminID) {
-    admin(command, message, botStats, bot, params);
-  }
-  jsonfile.writeFile(`.${config.dataPath}/data/botStats.json`, botStats);
+
+if (message.author.id == config.adminID) {
+  admin(command, message, botStats, bot, params);
+}
+firebase.database().ref().child(`${bot.user.username}`).child('botStats').set(botStats);
 
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n" + err.stack);
-});
+  });
+
 });

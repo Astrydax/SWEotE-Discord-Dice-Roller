@@ -1,7 +1,7 @@
 var chalk = require("chalk");
 var print = require("./printValues.js").print;
 var roll = require("./roll.js").roll;
-const jsonfile = require('jsonfile');
+const firebase = require('firebase');
 const config = require("../config.json");
 
 function destiny(params, destinyBalance, message, config, bot, channelEmoji) {
@@ -141,11 +141,12 @@ function destiny(params, destinyBalance, message, config, bot, channelEmoji) {
     for (var i = 1; i <= destinyBalance[channel].dark; i++) {
         destinyBalance[channel].face += print("ds", message, bot, channelEmoji);
         }
-    jsonfile.writeFile(`.${config.dataPath}/data/destinyBalance.json`, destinyBalance);
-    message.channel.send("Destiny Pool: ")
+
+    message.channel.send("Destiny Pool: ");
     if (destinyBalance[channel].face != "") {
-    message.channel.send(destinyBalance[channel].face);
+      message.channel.send(destinyBalance[channel].face);
     }
+    firebase.database().ref().child(`${bot.user.username}`).child('destinyBalance').child(channel).set(destinyBalance[channel]);
   }
 }
 

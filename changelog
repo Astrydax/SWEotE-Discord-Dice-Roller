@@ -1,3 +1,6 @@
+2.0.0
+  -moved storage to firebase
+
 1.9.3
   -use external emoji check
   -botstats now needs 'daily' 'weekly' 'monthly' 'alltime'
