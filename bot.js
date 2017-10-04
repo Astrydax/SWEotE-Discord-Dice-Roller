@@ -229,8 +229,6 @@ if (message.channel.type == "text") {
       firebase.database().ref().child(`${bot.user.username}`).child('channelEmoji').child(message.channel.id).set(channelEmoji[message.channel.id]);
       message.channel.send(`${bot.user.username} will now use ${command} dice`);
       break;
-    case default:
-      break;
   }
 }
 
