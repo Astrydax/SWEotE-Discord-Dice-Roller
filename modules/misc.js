@@ -1,4 +1,3 @@
-const jsonfile = require('jsonfile');
 const config = require("../config.json");
 
 var Species =
