@@ -1,4 +1,3 @@
-
 var writeBotStats = require("./misc.js").writeBotStats;
 const config = require("../config.json");
 
