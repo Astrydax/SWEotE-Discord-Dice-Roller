@@ -90,10 +90,13 @@ bot.on("message", message => {
   if (!message.content.includes(config.prefix)) return;
   //establish which emoji to use
 
-  if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
-    message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
-    return;
+  if (message.channel.type !== "dm") {
+    if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
+      message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
+      return;
+    }
   }
+
   //Seperate and create a list of parameters. A space in the message denotes a new parameter
   if (!message.content.startsWith(config.prefix)) {
     var params = message.content.split(" ");
@@ -150,8 +153,6 @@ bot.on("message", message => {
 
 //************************COMMANDS START HERE************************
 
-if (message.channel.type == "dm" || message.channel.type == "text") {
-
   switch (command) {
     //Ver command
     case "ver":
@@ -180,17 +181,10 @@ if (message.channel.type == "dm" || message.channel.type == "text") {
       botStats.daily.poly++;
       poly(params, message);
       break;
-    }
-  }
-
-if (message.channel.type == "text") {
-
-  switch (command) {
-    //!crit command
-    case "crit":
-      botStats.daily.crit++;
-      crit(params, message, bot, channelEmoji);
-      break;
+      case "crit":
+        botStats.daily.crit++;
+        crit(params, message, bot, channelEmoji);
+        break;
     //!shipcrit command
     case "shipcrit":
       botStats.daily.shipcrit++;
@@ -230,7 +224,7 @@ if (message.channel.type == "text") {
       message.channel.send(`${bot.user.username} will now use ${command} dice`);
       break;
   }
-}
+
 
 if (message.author.id == config.adminID) {
   admin(command, message, botStats, bot, params);
