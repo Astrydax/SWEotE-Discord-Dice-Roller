@@ -1,16 +1,148 @@
-version 1.4.5
+2.0.2
+  -can now use emoji in DM channel with D1
+
+2.0.1
+  -Removed all fix commands
+
+2.0.0
+  -moved storage to firebase
+
+1.9.3
+  -use external emoji check
+  -botstats now needs 'daily' 'weekly' 'monthly' 'alltime'
+  -added !char modify
+
+1.9.2
+  -!swrpg and !genesys switch
+
+1.9.1
+  -emojiID lookup again
+
+1.9
+  -no custom emoji needed anymore
+
+1.8.4
+  -update all the .sendmessage() to .send()
+  -daily stats update
+
+1.8.3
+  -botStats
+
+1.8.2
+  -rewrote init
+
+1.8.1
+  -you can now start a command at any point to a message
+
+1.8.0
+  -Added !obligation
+
+1.7.10
+  -added !char obilgation
+
+1.7.9
+  -added Crit lookup command ie !crit ?12
+
+1.7.8
+  -added !species/!gleepglop
+
+1.7.7
+  -added !poly
+
+1.7.6
+  -added !char crit
+  -reformated crit module to allow use of crit table elsewhere
+
+1.7.4
+  - added !char remove to help command
+  - added stop for trying to add 2 characters named the same
+
+1.7.3
+  - Polyhedral die rolls are now anything !dXXX
+  - fixed triumph and despairs
+
+1.7.2
+  - fixed !init set bug that reset Init order on new round
+
+1.7.1
+  - fixed !rr select
+
+1.7.0
+  - recoded !roll into functions
+  - redid modules
+  - added polyhedral
+  - added !reroll
+
+1.6.7
+  - added result symbols to DiceIdentifiers in rolls
+      Success/Suc/ *  = success
+      Advantage/Adv/V = advantage
+      Triumph/Tri/! = triumph
+      Failure/Fail/- = failure
+      Threat/Thr/T = threat
+      Despair/Des/$ = despair
+      Light/L = lightside point
+      Dark/N = darkside point
+
+1.6.6
+  - destiny roll now uses !roll module.
+  - space fix: !roll yyy ggg rr now rolls all dice
+  - tweaked !init roll a bit
+
+1.6.5
+  -cleaned up console.log
+  -slimmed down !roll
+
+1.6.4
+  - fixed desc (for reals)
+
+1.6.3
+  - added mid round roll for !init
+
+1.6.2
+  - fixed an init error with the offline memory
+
+1.6.1
+  - fixed desc
+
+1.6
+  - added restart memory.  !destiny, !Char, !init no longer reset after crash or restart.
+
+1.5.2
+  - added "All dice have cancelled out" result
+
+1.5.1
+  - emoji defaults to on, new emoji disable instructions
+
+1.5.0
+  -added !init module
+
+1.4.8
+  - added some simple admin commands
+  - added @reply to rolls and stuff
+
+1.4.7.1
+  - add !r and !d for shorter !roll and !destiny
+
+1.4.7
+  - fixed formatting in !help
+
+1.4.6
+  - added warning if ser doesn't have the correct custom emoji
+
+1.4.5
   - added !char remove, list, and reset
 
-version 1.4.4
+1.4.4
   - module-ized the whole monty
 
-version 1.4.3
+1.4.3
   - added background emojiID lookup
 
-version 1.4.2
+1.4.2
   -  added/fixed !help
 
-version 1.4.1
+1.4.1
   -  Made a Changelog
   -  Fixed the one word error in the descriptor
-  -  added !ver command
+  -  added ! command

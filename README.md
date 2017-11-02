@@ -27,17 +27,18 @@ Commands:
       - !roll 3pro 2a 2boo 2dif 2sb "Delusions of Grandeur"
       - !roll "Get to the ship" 2y 1g 1r 1p
 
-- !d100   rolls a d100 with optional modifier and displays result.
+-  !Poly: rolls any combination of polyhedral dice with modifier
 
   EXAMPLES
+      - !poly 1d4 2d6+1 1d100-60
+
+- !d100   rolls a d100 with optional modifier and displays result.
   - !d100 +X
   - !d100 + X
   - !d100 -X
   - !d100 - X
 
 - !destiny  sets and manages the Destiny Balance for the group
-
-  COMMANDS
   - !destiny            view the destiny pool
   - !destiny roll       rolls one Force Die and adds it to current destiny pool
   - !destiny l/light    uses light side point
@@ -47,42 +48,64 @@ Commands:
   - !destiny reset      resets the destiny pool
 
 - !crit     rolls a d100 with optional modifier and displays result of the critical hit.
-
-  EXAMPLES
   - !crit +X
   - !crit + X
   - !crit -X
   - !crit - X
 
 - !shipcrit   rolls a d100 with optional modifier and displays result of the ship critical hit.
-
-  EXAMPLES
   - !shipcrit +X
   - !shipcrit + X
   - !shipcrit -X
   - !shipcrit - X
 
 - !char         Simple character stat manager
-  COMMANDS
-  - !char setup characterName [maxWound] [maxStrain] [credits]  Setup a new character
+  - !char setup characterName maxWound maxStrain credits  Setup a new character
   - !char wound/w characterName +X/-X                           increases/decreases wounds for characterName by X
   - !char strain/s characterName +X/-X                          increases/decreases Strain for characterName by X
   - !char credits/c characterName +X/-X                         increases/decreases credit balance for characterName by X
+  - !Char Modify CharacterName +X/-X MaxStrain/MaxWounds        increases/decreases selected stat for characterName by x
+  - !Char Crit CharacterName +X/-X                              adds/removes critical injuries for characterName
+  - !Char obligation/o CharacterName +X/-X obligationName       adds/removes obligations for characterName
   - !char status characterName                                  current status for characterName   
   - !char remove characterName                                  removes characterName
   - !char list                                                  lists all characters
   - !char reset                                                 resets all characters
 
-- !help          Type '!help [topic] for further information'
+- !Init initiative tracker and roller
+  - !Init: shows current initiative order
+  - !Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order
+  - !Init Next: moves to next initiative slot
+  - !Init Previous: moves to previous initiative slot
+  - !Init Set: manually set initiative order before any turns occur
+  - !Init Modify: manually alter initiative order mid-round
+  - !Init Reset: resets the initiative order
 
-  - !roll        rolls any combination of SWRPG dice and returns the canceled results.
+- !Species/!Gleepglop: picks a random species
+
+- !Obligation: gathers all the obligations entered with !Char and rolls to trigger
+
+- !Reroll: modifies the previous roll
+  - !Reroll Same: rolls the same pool again
+  - !Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
+  - !Reroll Remove DiceIdentifiers: remove random dice of the designated color
+  - !Reroll Select DiceColor/DicePositon: rerolls specified dice
+    ie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool
+
+- !help          Type '!help topic for further information'
+
+  - !roll        rolls any combination of SWRPG dice and returns the canceled results
   - !d100        rolls a d100 with optional modifier and displays result
   - !destiny     sets and manages the destiny balance for the group
   - !crit        rolls a d100 with optional modifier and displays result of the critical hit
   - !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
-  - !char        simple character stat manager.
-  - !help        displays help for topics.
+  - !char        simple character stat manager
+  - !help        displays help for topics
+  - !init        initiative tracker and roller
   - !ver         displays bot version
+
+- ADMIN ONLY
+  - !stats     Displays # of servers/users bot is currently has.
 
 #Installation and Setup
 
@@ -98,9 +121,12 @@ Commands:
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
-4. Open config.json with a text editor program of your choice.
-5. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
-6. Your bot is now configured and ready to launch.
+4. Type \@<username> into your channel to get you userID
+5. Open config.json with a text editor program of your choice.
+6. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
+6. Replace "ADMIN_ID" with the NUMBERS of your userID.
+7. Open firebaseconfig.js and paste in your firebase Config file (console.firebase.com)
+7. Your bot is now configured and ready to launch.
 
 #Running the bot
 
@@ -114,23 +140,20 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
 
   1. token
     - this is the login token for your bot
-  2. prefix
+  2.  adminID
+    - the user discordID for the Admin
+  3. prefix
     - this is the symbol the bot uses to recognize commands. This is set to "!" by default
-  3. descriptorPrenpend
+  4. maxRollsPerDie
+    - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
+  5. descriptorPrenpend
     - Any text you place between the double quotes following this property will be prepended to the text provided in the comment parameter.
     Example: if "descriptorPrepend" is set to "Targeting: ", then the command !roll 2g 2blk "Soldier 1" is called, the bot will respond with:     Targeting: Soldier 1
     Astrydax roll results:    Success: 1   Threat: 1
-  4. maxRollsPerDie
-    - This is the max number per dice type that can be rolled in a given roll command. Set to 20 by default. Commands that don't respect the roll limit will be aborted and send an error message to the discord chat.
-  5.  emoji
-    - set to 'true' to enable custom emoji
-
-#CUSTOM emoji
-
-  1. Follow instructions here https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic to add emoji from /dice to your discord server
-
-  2. Set "emoji": true in config.json
-
+  6.  dm
+    - direct channel for botstats report
+  7.  dataPath
+    - optional dataPath if needed for server (pm2 is notorious for needed one or the other)
 
 #Amazon EC2 install
 
