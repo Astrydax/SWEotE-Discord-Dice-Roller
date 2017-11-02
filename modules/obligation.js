@@ -21,7 +21,7 @@ function obligation(params, characterStatus, message) {
   obList.forEach((ob)=> {
     obTotal += ob.value;
   });
-  message.channel.send("The total group obligation is " + obTotal + ". The obilgation roll is " + roll + ".");
+  message.channel.send("The total group obligation is " + obTotal + ". The obligation roll is " + roll + ".");
 
   if (roll>obTotal) {
     message.channel.send("No obligation triggered");

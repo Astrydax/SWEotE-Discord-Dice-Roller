@@ -89,7 +89,7 @@ Commands:
   - !Reroll Same: rolls the same pool again
   - !Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
   - !Reroll Remove DiceIdentifiers: remove random dice of the designated color
-  - !Reroll Select DiceColor/DicePositon: rerolls specified dice
+  - !Reroll Select DiceColor/DicePosition: rerolls specified dice
     ie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool
 
 - !help          Type '!help topic for further information'
@@ -165,7 +165,7 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
 
     -  sudo apt-get install -y nodejs
 
-  3.  Download and unzip lastest build
+  3.  Download and unzip latest build
       wget https://github.com/Astrydax/SWEotE-Discord-Dice-Roller/archive/master.zip
       unzip master.zip
       cd SWEotE-Discord-Dice-Roller-master
