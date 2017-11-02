@@ -128,7 +128,7 @@ function init(params, initiativeOrder, message, diceResult, config, desc, bot, c
     //manually modify the initiativeOrder
     case "modify":
       console.log(initiativeOrder[channel])
-      console.log("Modifiying current initiativeOrder for " + message.author.username);
+      console.log("Modifying current initiativeOrder for " + message.author.username);
       //check if numbers are used
       if (params[0] == undefined) {
         message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");

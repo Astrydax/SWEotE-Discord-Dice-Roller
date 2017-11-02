@@ -189,7 +189,7 @@ function char(params, characterStatus, message, bot, channelEmoji) {
               } else {
                 characterStatus[channel][characterName].obligation[Ob] += +modifier;
               }
-              message.channel.send(characterName + " has added " + modifier + " to their " + Ob + " obilgation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
+              message.channel.send(characterName + " has added " + modifier + " to their " + Ob + " obligation, for a total of " + characterStatus[channel][characterName].obligation[Ob] + "\n");
           //subtraction modifier
           } else if (params.includes("-") || params[2][0] == "-") {
             if (characterStatus[channel][characterName].obligation[Ob] == undefined) {
