@@ -1,3 +1,6 @@
+2.0.3
+  -moved server ID for emoji to config.json
+
 2.0.2
   -can now use emoji in DM channel with D1
 

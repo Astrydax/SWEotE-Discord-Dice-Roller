@@ -120,13 +120,16 @@ Commands:
   7. Under the heading "App Details" Copy the number after "Client ID:" and paste this in notepad as well.
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
+  10. If you have a swrpg and genesys server to enable all dice invite bot to both servers.
 3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
 4. Type \@<username> into your channel to get you userID
 5. Open config.json with a text editor program of your choice.
 6. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
 6. Replace "ADMIN_ID" with the NUMBERS of your userID.
 7. Open firebaseconfig.js and paste in your firebase Config file (console.firebase.com)
-7. Your bot is now configured and ready to launch.
+8. Get Discord ServerID from Discord Server Settings...Widget...ServerID for both swrpg and genesys servers
+9. Paste ServerID into correct slots ("swrpg" and "genesys") in config.json (paste the same number in both slots if only one set of dice will be used)
+9. Your bot is now configured and ready to launch.
 
 #Running the bot
 
@@ -136,7 +139,7 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
 
 #Configuration File config.json
 
-  config.json has four properties
+  config.json has properties
 
   1. token
     - this is the login token for your bot
@@ -152,8 +155,11 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
     Astrydax roll results:    Success: 1   Threat: 1
   6.  dm
     - direct channel for botstats report
-  7.  dataPath
-    - optional dataPath if needed for server (pm2 is notorious for needed one or the other)
+  7.  swrpg
+    - server ID for SWRPG Dice emoji
+  8.  Genesys
+    - server ID for Genesys Dice emoji  
+
 
 #Amazon EC2 install
 
