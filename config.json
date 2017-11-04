@@ -1,9 +1,10 @@
 {
-  "token": "BOT TOKEN",
-  "adminID": "ADMIN_ID",
+  "token": "",
+  "adminID": "",
   "prefix": "!",
   "maxRollsPerDie": 1000,
   "descriptorPrepend": "",
   "dm": "",
-  "dataPath": ""
+  "swrpg": "",
+  "genesys": ""
 }
