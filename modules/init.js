@@ -1,6 +1,6 @@
 var roll = require("./roll.js").roll;
 const firebase = require('firebase');
-const config = require("../config.json");
+const config = require("../config.js").config;
 var r = 0;
 
 function init(params, initiativeOrder, message, diceResult, config, desc, bot, channelEmoji) {

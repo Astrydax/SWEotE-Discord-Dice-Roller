@@ -1,2 +1,7 @@
 cd "`dirname "$0"`"
-node bot.js
+if [ -d node_modules ]
+then node bot.js;
+else
+npm install;
+node bot.js;
+fi

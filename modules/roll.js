@@ -2,7 +2,7 @@ var chalk = require("chalk");
 var print = require("./printValues.js").print;
 var dice = require("./dice.js").dice;
 const firebase = require('firebase');
-const config = require("../config.json");
+const config = require("../config.js").config;
 
 function roll(params, diceResult, message, config, desc, bot, channelEmoji) {
   var channel = message.channel.id;

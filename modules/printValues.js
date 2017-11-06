@@ -1,4 +1,4 @@
-const config = require("../config.json");
+const config = require("../config.js").config;
 
 function print(str, message, bot, channelEmoji) {
   let channel = message.channel.id;

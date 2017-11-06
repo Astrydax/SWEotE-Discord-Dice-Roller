@@ -2,7 +2,7 @@ var chalk = require("chalk");
 var print = require("./printValues.js").print;
 var roll = require("./roll.js").roll;
 const firebase = require('firebase');
-const config = require("../config.json");
+const config = require("../config.js").config;
 
 function destiny(params, destinyBalance, message, config, bot, channelEmoji) {
   //setting the channel specific variable

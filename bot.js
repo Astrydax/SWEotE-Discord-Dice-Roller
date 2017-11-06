@@ -3,13 +3,13 @@
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
 const Discord = require("discord.js");
-const config = require("./config.json");
+const config = require("./config").config;
 const initData = require("./initData.json");
 const firebase = require('firebase');
 const chalk = require("chalk");
 const bot = new Discord.Client();
 const schedule = require('node-schedule');
-var firebaseconfig = require("./firebaseconfig");
+var firebaseconfig = require("./config").firebaseconfig;
 var print = require("./modules/printValues.js").print;
 var destiny = require("./modules/destiny.js").destiny;
 var crit = require("./modules/crit.js").crit;
@@ -29,7 +29,7 @@ var statUpdate = require("./modules/misc.js").statUpdate;
 
 bot.login(config.token);
 require('events').EventEmitter.defaultMaxListeners = 0;
-firebase.initializeApp(firebaseconfig.config);
+firebase.initializeApp(firebaseconfig);
 
 var destinyBalance,
     diceResult,

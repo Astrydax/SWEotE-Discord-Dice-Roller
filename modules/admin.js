@@ -1,5 +1,5 @@
 var writeBotStats = require("./misc.js").writeBotStats;
-const config = require("../config.json");
+const config = require("../config.js").config;
 
 
 function admin(command, message, botStats, bot, params) {

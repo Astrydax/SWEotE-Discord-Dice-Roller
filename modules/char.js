@@ -1,5 +1,5 @@
 var textCrit = require("./crit.js").textCrit;
-const config = require("../config.json");
+const config = require("../config.js").config;
 const firebase = require('firebase');
 
 function char(params, characterStatus, message, bot, channelEmoji) {

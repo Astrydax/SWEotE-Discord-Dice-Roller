@@ -121,25 +121,37 @@ Commands:
   8. Replace "CLIENT_ID_GOES_HERE" in the following link with the Client ID you copied in the above step https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_GOES_HERE&scope=bot&permissions=0
   9. Paste the edited link into a web browser, select the discord server you wish to add the bot to, and click "Authorize".
   10. If you have a swrpg and genesys server to enable all dice invite bot to both servers.
-3. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
-4. Type \@<username> into your channel to get you userID
-5. Open config.json with a text editor program of your choice.
-6. Replace "BOT TOKEN" with your bot token you copied in step 2.6 and save the file
-6. Replace "ADMIN_ID" with the NUMBERS of your userID.
-7. Open firebaseconfig.js and paste in your firebase Config file (console.firebase.com)
-8. Get Discord ServerID from Discord Server Settings...Widget...ServerID for both swrpg and genesys servers
-9. Paste ServerID into correct slots ("swrpg" and "genesys") in config.json (paste the same number in both slots if only one set of dice will be used)
-9. Your bot is now configured and ready to launch.
+3. Setup Firebase
+  1. https://console.firebase.google.com
+  2. Click "Add Project"
+  3. Name project whatever you want, click Create
+  4. Click the reddish circle labeled "Add Firebase to your web app"
+  5. Copy everything between var config = {  }
+4. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
+5. Type \@<username> into your channel to get you userID
+6. Open config.js with a text editor program of your choice.
+7. Replace "BOT TOKEN" with your bot token you copied in step 2.6
+8. Replace "ADMIN_ID" with the NUMBERS of your userID from step 5.
+9. Paste into var firebaseconfig = {   }
+10. Get Discord ServerID from Discord Server Settings...Widget...ServerID for both swrpg and genesys servers
+11. Paste ServerID into correct slots ("swrpg" and "genesys") in config.json (paste the same number in both slots if only one set of dice will be used)
+12. Save file
+13. Your bot is now configured and ready to launch.
 
 #Running the bot
 
-Before you first launch the bot you need to run the file "Run this before first launch". You can't miss it. This will install all the dependencies that bot needs to run.
+To run the bot, Just execute the file "start.bat" on a windows or "start.command" on mac.
 
-To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move this file to any location you want. However, do not move "start.bat" out of the installation folder.
+#Updating the bot
 
-#Configuration File config.json
+To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.command" on mac. Your config.js file will be backed up and restored automatically
 
-  config.json has properties
+#Configuration File config.js
+
+  config.js has properties
+
+  1. firebaseconfig
+    -firebase token
 
   1. token
     - this is the login token for your bot
@@ -153,11 +165,9 @@ To run the bot, Just execute the file "EotE Dice Roller.lnk". You can copy/move 
     - Any text you place between the double quotes following this property will be prepended to the text provided in the comment parameter.
     Example: if "descriptorPrepend" is set to "Targeting: ", then the command !roll 2g 2blk "Soldier 1" is called, the bot will respond with:     Targeting: Soldier 1
     Astrydax roll results:    Success: 1   Threat: 1
-  6.  dm
-    - direct channel for botstats report
-  7.  swrpg
+  6.  swrpg
     - server ID for SWRPG Dice emoji
-  8.  Genesys
+  7.  Genesys
     - server ID for Genesys Dice emoji  
 
 
