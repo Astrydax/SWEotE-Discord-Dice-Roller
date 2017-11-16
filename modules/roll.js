@@ -238,11 +238,11 @@ function countSymbols(diceResult, message, bot, desc, channelEmoji) {
       diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
     });
   });
-  printResults(diceResult.results, message, bot, desc);
+  printResults(diceResult.results, message, bot, desc, channelEmoji);
   return;
 }
 
-function printResults (diceResult, message, bot, desc) {
+function printResults (diceResult, message, bot, desc, channelEmoji) {
   let response = '';
   //prints faces
   if (diceResult.face != '') {
@@ -265,7 +265,7 @@ function printResults (diceResult, message, bot, desc) {
 
   //prints finalCount
   Object.keys(finalCount).forEach((symbol) => {
-    if (finalCount[symbol] !== 0) response += printEmoji(`${symbol}`, bot) + finalCount[symbol] + ' ';
+    if (finalCount[symbol] !== 0) response += printEmoji(`${symbol}`, bot, channelEmoji) + finalCount[symbol] + ' ';
   });
   if (diceResult.face != '') message.reply(desc + " results:" + "\n\n\t" + response);
 }

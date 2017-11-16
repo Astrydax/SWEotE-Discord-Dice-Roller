@@ -77,14 +77,14 @@ var dice = {
     11: {face: 'll', adjacent: ['n', 'n', 'n', 'l', 'll'], adjacentposition: [2, 5, 8, 9, 12]},
     12: {face: 'll', adjacent: ['n', 'n', 'n', 'l', 'll'], adjacentposition: [1, 2, 6, 9, 11]}
   },
-  success: {1: {face: 's', adjacent: [], adjacentposition: []}},
-  advantage: {1: {face: 'a', adjacent: [], adjacentposition: []}},
-  triumph: {1: {face: 'r', adjacent: [], adjacentposition: []}},
-  failure: {1: {face: 'f', adjacent: [], adjacentposition: []}},
-  threat: {1: {face: 't', adjacent: [], adjacentposition: []}},
-  despair: {1: {face: 'd', adjacent: [], adjacentposition: []}},
-  lightside: {1: {face: 'l', adjacent: [], adjacentposition: []}},
-  darkside: {1: {face: 'n', adjacent: [], adjacentposition: []}},
+  success: {1: {face: 's', adjacent: [], adjacentposition: [1]}},
+  advantage: {1: {face: 'a', adjacent: [], adjacentposition: [1]}},
+  triumph: {1: {face: 'r', adjacent: [], adjacentposition: [1]}},
+  failure: {1: {face: 'f', adjacent: [], adjacentposition: [1]}},
+  threat: {1: {face: 't', adjacent: [], adjacentposition: [1]}},
+  despair: {1: {face: 'd', adjacent: [], adjacentposition: [1]}},
+  lightside: {1: {face: 'l', adjacent: [], adjacentposition: [1]}},
+  darkside: {1: {face: 'n', adjacent: [], adjacentposition: [1]}},
 }
 
 exports.dice = dice;
