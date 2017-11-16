@@ -7,7 +7,7 @@ function roll(params, message, bot, desc, channelEmoji, diceResult, diceOrder) {
   if (diceResult === undefined) diceResult = initdiceResult();
   if (params[0] === undefined) {
     message.reply('No dice rolled.');
-    return;
+    return diceResult;
   }
   //process each identifier and set it into an array
   if (diceOrder === undefined) diceOrder = processType(params, message);
