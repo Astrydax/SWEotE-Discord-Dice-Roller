@@ -1,4 +1,4 @@
-var dice = require("./dice.js").dice;
+var dice = require("./misc.js").dice;
 
 function poly (params, message) {
   let text = 'rolled: ';

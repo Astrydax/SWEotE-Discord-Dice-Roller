@@ -4,7 +4,7 @@
 */
 const Discord = require("discord.js");
 const config = require("./config").config;
-const initData = require("./initData.json");
+const initData = require("./modules/initData.json");
 const firebase = require('firebase');
 const chalk = require("chalk");
 const bot = new Discord.Client();
@@ -17,9 +17,9 @@ var shipcrit = require("./modules/crit.js").shipcrit;
 var help = require("./modules/help.js").help;
 var char = require("./modules/char.js").char;
 var roll = require("./modules/roll.js").roll;
-var polyhedral = require("./modules/dice.js").polyhedral;
+var polyhedral = require("./modules/misc.js").polyhedral;
 var admin = require("./modules/admin.js").admin;
-var init = require("./modules/init.js").init;
+var initiative = require("./modules/initiative.js").initiative;
 var reroll = require("./modules/reroll.js").reroll;
 var version = require("./package.json").version;
 var poly = require("./modules/poly.js").poly;
@@ -84,6 +84,8 @@ bot.on("ready", () => {
 
 //Called whenever a users send a message to the server
 bot.on("message", message => {
+  let channel = message.channel.id;
+  var userID = message.author.id;
   //Ignore messages sent by the bot
   if (message.author.bot) return;
   //Ignore messages that dont start with the command symbol
@@ -160,73 +162,81 @@ bot.on("message", message => {
       break;
     //Character Tracker
     case "char":
-      botStats.daily.char++;
-      char(params, characterStatus, message, bot, channelEmoji);
+      botStats.char[0]++;
+      characterStatus[channel] = char(params, characterStatus[channel], message, bot, channelEmoji[channel]);
+      firebase.database().ref().child(`${bot.user.username}`).child('characterStatus').child(channel).set(characterStatus[channel]);
       break;
     // help module
     case "help":
-      botStats.daily.help++;
+      botStats.help[0]++;
       help(params, message);
       break;
     case "gleepglop":
     case "species":
-      botStats.daily.species++;
+      botStats.species[0]++;
       gleepglop(message);
       break;
     case "polyhedral":
-      botStats.daily.d++;
+      botStats.polyhedral[0]++;
       polyhedral(sides, params, message);
       break;
     case "poly":
-      botStats.daily.poly++;
+      botStats.polyhedral[0]++;
       poly(params, message);
       break;
-      case "crit":
-        botStats.daily.crit++;
-        crit(params, message, bot, channelEmoji);
-        break;
+    case "crit":
+      botStats.crit[0]++;
+      crit(params, message, bot, channelEmoji[channel]);
+      break;
     //!shipcrit command
     case "shipcrit":
-      botStats.daily.shipcrit++;
-      shipcrit(params, message, bot, channelEmoji);
+      botStats.shipcrit[0]++;
+      shipcrit(params, message, bot, channelEmoji[channel]);
       break;
     //Destiny Point Module
     case "destiny":
     case "d":
-      botStats.daily.destiny++;
-      destiny(params, destinyBalance, message, config, bot, channelEmoji);
+      botStats.destiny[0]++;
+      destinyBalance[channel] = destiny(params, destinyBalance[channel], message, bot, channelEmoji[channel]);
+      firebase.database().ref().child(`${bot.user.username}`).child('destinyBalance').child(channel).set(destinyBalance[channel]);
+
       break;
-      // Roll the dice command
+    // Roll the dice command
     case "roll":
     case "r":
-      botStats.daily.roll++;
-      roll(params, diceResult, message, config, desc, bot, channelEmoji);
+      botStats.roll[0]++;
+      if (diceResult[channel] === undefined) diceResult[channel] = {};
+      diceResult[channel][userID] = roll(params, message, bot, desc, channelEmoji[channel]).roll;
+      firebase.database().ref().child(`${bot.user.username}`).child('diceResult').child(channel).child(userID).set(diceResult[channel][userID]);
       break;
     case "reroll":
     case "rr":
-      botStats.daily.reroll++;
-      reroll(params, diceResult, message, config, desc, bot, channelEmoji);
+      botStats.reroll[0]++;
+      if (diceResult[channel] === undefined) diceResult[channel] = {};
+      diceResult[channel][userID] = reroll(diceResult[channel][userID], params, message, bot, channelEmoji[channel]);
+      firebase.database().ref().child(`${bot.user.username}`).child('diceResult').child(channel).child(userID).set(diceResult[channel][userID]);
       break;
+    case "initiative":
     case "init":
     case "i":
-      botStats.daily.init++;
-      init(params, initiativeOrder, message, diceResult, config, desc, bot, channelEmoji);
+      botStats.initiative[0]++;
+      initiativeOrder[channel] = initiative(params, initiativeOrder[channel], message, bot, channelEmoji[channel]);
+      firebase.database().ref().child(`${bot.user.username}`).child('initiativeOrder').child(channel).set(initiativeOrder[channel]);
       break;
     case "obligation":
     case "o":
-      botStats.daily.obligation++;
-      obligation(params, characterStatus, message);
+      botStats.obligation[0]++;
+      obligation(params, characterStatus[channel], message);
       break;
     case "swrpg":
     case "genesys":
-      channelEmoji[message.channel.id] = command;
-      firebase.database().ref().child(`${bot.user.username}`).child('channelEmoji').child(message.channel.id).set(channelEmoji[message.channel.id]);
+      channelEmoji[channel] = command;
+      firebase.database().ref().child(`${bot.user.username}`).child('channelEmoji').child(channel).set(channelEmoji[channel]);
       message.channel.send(`${bot.user.username} will now use ${command} dice`);
       break;
   }
-
-
 if (message.author.id == config.adminID) {
+  botStats.admin[0]++;
   admin(command, message, botStats, bot, params);
 }
 firebase.database().ref().child(`${bot.user.username}`).child('botStats').set(botStats);

@@ -1,3 +1,8 @@
+2.1.0
+  -roll rewrite
+  -added !rr fortune
+  -lots more
+
 2.0.4
   -moved all config data to config.js
   -setup one click update

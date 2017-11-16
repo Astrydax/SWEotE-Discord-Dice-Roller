@@ -1,15 +1,14 @@
-var dice = require("./dice.js").dice;
+var dice = require("./misc.js").dice;
 
 function obligation(params, characterStatus, message) {
-  var channel = message.channel.id;
   let obList = [];
-  if (characterStatus[channel] == undefined) {
+  if (characterStatus == undefined) {
     message.channel.send("No characters found please use !char to setup");
     return;
   }
-  Object.keys(characterStatus[channel]).forEach((characterName)=>{
-    Object.keys(characterStatus[channel][characterName].obligation).forEach((obName)=>{
-      obList.push({ name: characterName, obligation: obName, value: characterStatus[channel][characterName].obligation[obName] });
+  Object.keys(characterStatus).forEach((characterName)=>{
+    Object.keys(characterStatus[characterName].obligation).forEach((obName)=>{
+      obList.push({ name: characterName, obligation: obName, value: characterStatus[characterName].obligation[obName] });
     })
   })
   obList.sort(function (a, b) {

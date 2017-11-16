@@ -11,13 +11,15 @@ function gleepglop (message) {
 }
 
 function writeBotStats(botStats, time) {
-  if (!(time == 'daily' || time == 'weekly' || time == 'monthly' || time == 'alltime')) return "Bad command";
-  let text = "Bot stats: \n";
-  text += time.toUpperCase() + ":\n";
-  Object.keys(botStats[time]).forEach((stat)=> {
+  time = time.replace(/\D/g, "")
+  if (!(time > 0)) return "Bad Command";
+  let text = "Bot stats: \nIn the last " + time + " days:\n";
+  Object.keys(botStats).forEach((stat)=> {
     let count = 0;
-    if (botStats[time][stat].length > 1) count = botStats[time][stat].reduce((a, b) => a + b, 0);
-    else count = botStats[time][stat];
+    for (let i=0; time>i; i++) {
+      if (i >= botStats[stat].length) break;
+      count = count + botStats[stat][i];
+    }
     text += "\t" + stat + ": " + count + "\n";
   })
   text += "\n"
@@ -26,29 +28,52 @@ function writeBotStats(botStats, time) {
 
 function statUpdate(botStats, bot) {
   let text = "Yesterday's stats: \n";
-  Object.keys(botStats.daily).forEach((stat)=> {
-    text += "\t" + stat + ": " + botStats.daily[stat] + "\n";
+  Object.keys(botStats).forEach((stat)=> {
+    text += "\t" + stat + ": " + botStats[stat][0] + "\n";
   })
   if (bot.channels.get(config.dm) != undefined) bot.channels.get(config.dm).send(text);
   console.log("Performing daily botStats process!");
-  Object.keys(botStats.daily).forEach((stat)=> {
-    //add dailies to alltime
-    botStats.alltime[stat] += botStats.daily[stat];
-    //add dailies to monthly
-    botStats.monthly[stat].push(botStats.daily[stat]);
-    botStats.monthly[stat].shift();
-    //add dailies to weekly
-    botStats.weekly[stat].push(botStats.daily[stat]);
-    botStats.weekly[stat].shift();
-    //reset dailies
-    botStats.daily[stat] = 0;
+  Object.keys(botStats).forEach((stat)=> {
+    botStats[stat].splice(0, 0, 0);
   })
   firebase.database().ref().child(`${bot.user.username}`).child('botStats').set(botStats);
   return botStats;
+}
+
+function polyhedral(sides, str, message) {
+  var total = 0;
+  //no modifier
+  if (str.length < 1) {
+    console.log("No modifier, straight d100 roll");
+      let r = dice(sides);
+      total = +r;
+      message.reply(" rolled a d" + sides + ": " + total);
+  //addition modifier
+  } else if (str.includes("+") || str[0][0] == "+") {
+		console.log("+ modifier detected");
+        var modifier = (str[str.length - 1]).replace(/\D/g, "");
+        let r = dice(sides);
+        total = +r + +modifier;
+        message.reply(" rolled a d" + sides + ": " + r + " + " + modifier + " " + "for a total of " + total);
+	//subtraction modifier
+  } else if (str.includes("-") || str[0][0] == "-") {
+    	console.log("- modifier detected");
+        var modifier = (str[str.length - 1]).replace(/\D/g, "");
+        let r = dice(sides);
+        total = +r - +modifier;
+        message.reply(" rolled a d" + sides + ": " + r + " - " + modifier + " " + "for a total of " + total);
+    }
+    return total;
+}
+
+function dice(sides) {
+  return Math.floor(Math.random() * sides) + 1;
 }
 
 module.exports = {
     gleepglop: gleepglop,
     writeBotStats: writeBotStats,
     statUpdate: statUpdate,
+    dice: dice,
+    polyhedral: polyhedral,
 };

@@ -91,6 +91,10 @@ Commands:
   - !Reroll Remove DiceIdentifiers: remove random dice of the designated color
   - !Reroll Select DiceColor/DicePosition: rerolls specified dice
     ie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool
+  - !Reroll Fortune Show DiceColor/DicePosition: shows adjacent sides for the specified die
+      ie !Reroll Fortune Show Y1 P2  (shows the adjacent side for the 1st yellow and 2 purple dicefaces)
+  -  !Reroll Fortune Swap DiceColor/DicePosition AdjacentFace (From !Reroll Fortune Show Command): swaps the   current face for an adjacent one
+      ie !Reroll Fortune Swap 2Y 3: swaps the current die face on the 2nd yellow with option 3 of the adjacent sides
 
 - !help          Type '!help topic for further information'
 
