@@ -13,6 +13,7 @@ var config = {
     prefix: "!",
     maxRollsPerDie: 1000,
     descriptorPrepend: "",
+    dm: "",
     swrpg: "",
     genesys: ""
 }
