@@ -80,12 +80,17 @@ function reroll(diceResult, params, message, bot, channelEmoji) {
           fortuneDice.forEach((die)=>{
             target = roll.processType([`${die}`], message)[0];
             position = die.replace(/\D/g, "")-1;
+            let emoji = ''
             if (diceResult.roll[target] != undefined && diceResult.roll[target] != 0 && diceResult.roll[target][position] != undefined) {
               let currentRoll = diceResult.roll[target][position];
-              let text = `${target}${position+1} ` + printEmoji(`${target}${diceFaces[target][currentRoll].face}`, bot, channelEmoji) + ':\n';
+              emoji = `${target}${diceFaces[target][currentRoll].face}`
+              if (target === 'success' || target === 'advantage' || target === 'triumph' || target === 'failure' || target === 'threat' || target === 'despair' || target === 'lightside' || target === 'darkside') emoji = target;
+              let text = `${target}${position+1} ` + printEmoji(emoji, bot, channelEmoji) + ':\n';
               let count = 1;
               diceFaces[target][currentRoll].adjacentposition.forEach((newRoll)=>{
-                text += count + ': ' + printEmoji(`${target}${diceFaces[target][newRoll].face}`, bot, channelEmoji) + '  ';
+                emoji = `${target}${diceFaces[target][newRoll].face}`
+                if (target === 'success' || target === 'advantage' || target === 'triumph' || target === 'failure' || target === 'threat' || target === 'despair' || target === 'lightside' || target === 'darkside') emoji = target;
+                text += count + ': ' + printEmoji(emoji, bot, channelEmoji) + '  ';
                 count++
               });
               message.reply(text);
