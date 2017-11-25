@@ -16,11 +16,11 @@ function initiative(params, initiativeOrder, message, bot, channelEmoji) {
       console.log("Rolling initiativeOrder for " + message.author.username);
       if (params[0] == undefined || params[0] == "npc" || params[0] == "pc") {
         message.channel.send("No dice defined.  ie '!init roll yygg npc/pc'");
-        return;
+        break;
       }
       if (!(params[params.length - 1] == "npc" || params[params.length - 1] == "pc")) {
         message.channel.send("No Character type defined.  ie '!init roll yygg npc/pc'");
-        return;
+        break;
       }
       let type = params.pop();
       let diceResult = roll(params, message, bot, "Initiative roll", channelEmoji).results;
@@ -45,7 +45,7 @@ function initiative(params, initiativeOrder, message, bot, channelEmoji) {
       console.log("Setting current initiativeOrder for " + message.author.username);
       if (params[0] == undefined) {
         message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
-        return;
+        break;
       }
       for(var i = 0; i < params[0].length; i++) {
         var mob = params[0][i];
@@ -103,7 +103,7 @@ function initiative(params, initiativeOrder, message, bot, channelEmoji) {
       //check if numbers are used
       if (params[0] == undefined) {
         message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
-        return;
+        break;
       }
       initiativeOrder.slots = [];
       for(var i = 0; i < params[0].length; i++) {

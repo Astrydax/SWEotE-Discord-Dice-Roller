@@ -43,7 +43,7 @@ function textCrit(total, bot, channelEmoji) {
       textCrit = print('purple', bot, channelEmoji) + "Distracted: The target cannot perform a free maneuver during his next turn.";
       break;
     case (total >= 21 && total <= 25):
-      textCrit = print('purple', bot, channelEmoji) + "Off-Balance. Add " + print('black', message, bot, channelEmoji) + " to his next skill check.";
+      textCrit = print('purple', bot, channelEmoji) + "Off-Balance. Add " + print('black', bot, channelEmoji) + " to his next skill check.";
       break;
     case (total >= 26 && total <= 30):
       textCrit = print('purple', bot, channelEmoji) + "Discouraging Wound: Flip one light side Destiny point to a dark side Destiny Point (reverse if NPC).";
@@ -91,7 +91,7 @@ function textCrit(total, bot, channelEmoji) {
       textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Crippled: One of the target’s limbs (selected by the GM) is crippled until healed or replaced. Increase difficulty of all checks that require use of that limb by one.";
       break;
     case (total >= 101 && total <= 105):
-      textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Maimed: One of the target’s limbs (selected by the GM) is permanently lost. Unless the target has a cybernetic replacement, the target cannot perform actions that would require the use of that limb. All other actions gain " + print('black', message, bot, channelEmoji) + ".";
+      textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Maimed: One of the target’s limbs (selected by the GM) is permanently lost. Unless the target has a cybernetic replacement, the target cannot perform actions that would require the use of that limb. All other actions gain " + print('black', bot, channelEmoji) + ".";
       break;
     case (total >= 106 && total <= 110):
       textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Horrific Injury. Randomly roll 1d100 to determine one of the target's characteristics—1-30 for Brawn, 31-60 for Agility, 61-70 for Intellect, 71-80 for Cunning, 81-90 for Presence, 91-100 for Willpower. Until this Critical Injury is healed, treat that characteristic as one point lower.";
@@ -141,7 +141,7 @@ function textShipCrit(total, bot, channelEmoji) {
       textCrit = print('purple', bot, channelEmoji) + "Knocked Off Course: A particularly strong blast or impact sends the ship or vehicle careening off in a new direction. On his next turn, the pilot cannot execute any maneuvers and must make a Piloting check to regain control. The difficulty of this check depends on his current speed.";
       break;
     case (total >= 37 && total <= 45):
-      textCrit = print('purple', bot, channelEmoji) + "Tailspin: All firing from the ship or vehicle suffers " + print('black', message, bot, channelEmoji) + print('black', message, bot, channelEmoji) + " dice until the end of the pilot’s next turn. All crewmembers are immobilized until the end of the pilot’s next turn.";
+      textCrit = print('purple', bot, channelEmoji) + "Tailspin: All firing from the ship or vehicle suffers " + print('black', bot, channelEmoji) + print('black', bot, channelEmoji) + " dice until the end of the pilot’s next turn. All crewmembers are immobilized until the end of the pilot’s next turn.";
       break;
     case (total >= 46 && total <= 54):
       textCrit = print('purple', bot, channelEmoji) + "Component Hit: One component of the attacker’s choice is knocked offline, and is rendered inoperable until the end of the following round. For a list of ship components, see EotE Core Rulebook Table 7-10: Small Ship or Vehicle Components or Table 7-11: Large Ship or Vehicle Components depending on target ship silhouette.";
