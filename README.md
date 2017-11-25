@@ -129,7 +129,15 @@ Commands:
   1. https://console.firebase.google.com
   2. Click "Add Project"
   3. Name project whatever you want, click Create
-  4. Click the reddish circle labeled "Add Firebase to your web app"
+  4. Database...Rules....
+    1. change to
+    {
+      "rules": {
+        ".read": "true",
+        ".write": "true"
+      }
+    }
+  5. Overview....Click the reddish circle labeled "Add Firebase to your web app"
   5. Copy everything between var config = {  }
 4. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
 5. Type \@<username> into your channel to get you userID
