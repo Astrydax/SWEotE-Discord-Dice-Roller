@@ -267,6 +267,7 @@ function printResults (diceResult, message, bot, desc, channelEmoji) {
   Object.keys(finalCount).forEach((symbol) => {
     if (finalCount[symbol] !== 0) response += printEmoji(`${symbol}`, bot, channelEmoji) + finalCount[symbol] + ' ';
   });
+  if (response == '') response += 'All dice have cancelled out';
   if (diceResult.face != '') message.reply(desc + " results:" + "\n\n\t" + response);
 }
 

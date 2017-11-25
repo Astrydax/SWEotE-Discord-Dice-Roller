@@ -84,7 +84,6 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
     case "r":
       console.log("Rolling Destiny for " + message.author.username);
       let destinyRoll = roll(["w"], message, bot, "Destiny roll", channelEmoji).results;
-      console.log(destinyRoll);
       destinyBalance.light = +destinyBalance.light + +destinyRoll.lightside;
       destinyBalance.dark = +destinyBalance.dark + +destinyRoll.darkside;
       break;

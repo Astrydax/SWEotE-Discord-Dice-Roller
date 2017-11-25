@@ -1,5 +1,7 @@
 const config = require("../config.js").config;
 const firebase = require('firebase');
+const seedrandom = require('seedrandom');
+var rng = seedrandom('added entropy.', { entropy: true });
 
 var Species =
 ["Aleena", "Anx", "Aqualish", "Arcona", "Arkanian Offshoot", "Arkanian", "Barabel", "Bardottan", "Besalisk", "Bith", "Bothan", "Caamasi", "Cathar", "Cerean", "Chadra-Fan", "Chagrian", "Chevin", "Chiss", "Clawdite", "Corellian Human", "Dashade", "Defel", "Devaronian", "Drall", "Dressellian", "Droid", "Dug", "Duros", "Elom", "Elomin", "Ewok", "Falleen", "Farghul", "Gamorrean", "Gand", "Gank", "Givin", "Gossam", "Gotal", "Gran", "Gungan", "Herglic", "Human", "Hutt", "Iktotchi", "Ishi Tib", "Ithorian", "Jawa", "Kalleran", "Kel Dor", "Klatooinian", "Kubaz", "Kyuzo", "Lannik", "Lepi", "Mandalorian Human", "Mirialan", "Mon Calamari", "Mustafarian", "Muun", "Nagai", "Nautolan", "Neimoidian", "Nikto", "Noghri", "Ortolan", "Pantoran", "Pau'an", "Polis Massan", "Quarren", "Quermian", "Rodian", "Ryn", "Sakiyan", "Sathari", "Selkath", "Selonian", "Shistavanen", "Sluissi", "Snivvian", "Squib", "Sullustan", "Talz", "Thakwaash", "Togorian", "Togruta", "Toydarians", "Trandoshan", "Twi'lek", "Ubese", "Ugnaught", "Verpine", "Weequay", "Whiphid", "Wookiee", "Xexto", "Zabrak", "Zeltron", "Zygerrian"];
@@ -67,13 +69,20 @@ function polyhedral(sides, str, message) {
 }
 
 function dice(sides) {
-  return Math.floor(Math.random() * sides) + 1;
+  let number = Math.floor(Math.random() * sides) + 1;
+  return number;
+}
+
+function cryptoDice(sides) {
+  let number = Math.floor(rng() * sides) + 1;
+  return number;
 }
 
 module.exports = {
     gleepglop: gleepglop,
     writeBotStats: writeBotStats,
     statUpdate: statUpdate,
-    dice: dice,
+    olddice: dice,
     polyhedral: polyhedral,
+    dice:cryptoDice
 };
