@@ -9,14 +9,6 @@ function char(params, characterStatus, message, bot, channelEmoji) {
 
   if (params[1] != undefined) characterName = params[1].toUpperCase();
   if (params[2] != undefined) var modifier = +(params[2]).replace(/\D/g, "");
-  if (characterStatus == undefined) characterStatus = {};
-  else {
-      Object.keys(characterStatus).forEach((characterName) => {
-        if (characterStatus[characterName].crit == undefined) characterStatus[characterName].crit = [];
-        if (characterStatus[characterName].obligation == undefined) characterStatus[characterName].obligation = {};
-      })
-  }
-
   if (command == undefined) {
     message.channel.send("Bad Command, !help char for more information");
     return characterStatus;
