@@ -1,7 +1,10 @@
+2.1.2
+  -botStats are back
+
 2.1.1
   -rewrote how variables are called and stored
   -botstats disabled for now
-  
+
 2.1.0
   -roll rewrite
   -added !rr fortune

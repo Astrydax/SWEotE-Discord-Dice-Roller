@@ -12,36 +12,6 @@ function gleepglop (message) {
   message.reply("A wild " + gleepglop + " appears!")
 }
 
-function writeBotStats(botStats, time) {
-  time = time.replace(/\D/g, "")
-  if (!(time > 0)) return "Bad Command";
-  let text = "Bot stats: \nIn the last " + time + " days:\n";
-  Object.keys(botStats).forEach((stat)=> {
-    let count = 0;
-    for (let i=0; time>i; i++) {
-      if (i >= botStats[stat].length) break;
-      count = count + botStats[stat][i];
-    }
-    text += "\t" + stat + ": " + count + "\n";
-  })
-  text += "\n"
-  return text;
-}
-
-function statUpdate(botStats, bot) {
-  let text = "Yesterday's stats: \n";
-  Object.keys(botStats).forEach((stat)=> {
-    text += "\t" + stat + ": " + botStats[stat][0] + "\n";
-  })
-  if (bot.channels.get(config.dm) != undefined) bot.channels.get(config.dm).send(text);
-  console.log("Performing daily botStats process!");
-  Object.keys(botStats).forEach((stat)=> {
-    botStats[stat].splice(0, 0, 0);
-  })
-  firebase.database().ref().child(`${bot.user.username}`).child('botStats').set(botStats);
-  return botStats;
-}
-
 function polyhedral(sides, str, message) {
   var total = 0;
   //no modifier
@@ -80,8 +50,6 @@ function cryptoDice(sides) {
 
 module.exports = {
     gleepglop: gleepglop,
-    writeBotStats: writeBotStats,
-    statUpdate: statUpdate,
     olddice: dice,
     polyhedral: polyhedral,
     dice:cryptoDice

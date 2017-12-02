@@ -25,7 +25,8 @@ var poly = require("./modules/poly.js").poly;
 var gleepglop = require("./modules/misc.js").gleepglop;
 var obligation = require("./modules/obligation.js").obligation;
 var statUpdate = require("./modules/misc.js").statUpdate;
-var data = require("./modules/data.js")
+var data = require("./modules/data.js");
+var botStats = require("./modules/botStats.js");
 
 bot.login(config.token);
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -37,7 +38,7 @@ bot.on("ready", () => {
   console.log(`Logged in as ${bot.user.username}!`);
 
   let dailyJob = schedule.scheduleJob({hour: 08, minute: 00, second: 00}, () => {
-    botStats = statUpdate(botStats, bot);
+    botStats.statUpdate(bot);
   });
 });
 
@@ -133,12 +134,14 @@ bot.on("message", message => {
       case "gleepglop":
       case "species":
         gleepglop(message);
+        command = 'species'
         break;
       case "polyhedral":
         polyhedral(sides, params, message);
         break;
       case "poly":
         poly(params, message);
+        command = 'polyhedral';
         break;
       case "crit":
         crit(params, message, bot);
@@ -154,12 +157,14 @@ bot.on("message", message => {
           destinyBalance = destiny(params, destinyBalance, message, bot);
           data.writeData(message, bot, 'destinyBalance', destinyBalance);
         });
+        command = 'destiny';
         break;
       // Roll the dice command
       case "roll":
       case "r":
         let diceResult = roll(params, message, bot, desc, channelEmoji).roll;
         data.writeData(message, bot, 'diceResult', diceResult);
+        command = 'roll';
         break;
       case "reroll":
       case "rr":
@@ -167,6 +172,7 @@ bot.on("message", message => {
           diceResult = reroll(diceResult, params, message, bot);
           data.writeData(message, bot, 'diceResult', diceResult);
         });
+        command = 'reroll';
         break;
       case "initiative":
       case "init":
@@ -175,13 +181,14 @@ bot.on("message", message => {
           initiativeOrder = initiative(params, initiativeOrder, message, bot);
           data.writeData(message, bot, 'initiativeOrder', initiativeOrder);
         });
+        command = 'initiative';
         break;
       case "obligation":
       case "o":
         data.readData(message, bot, 'characterStatus', (characterStatus) => {
-          console.log(characterStatus);
           obligation(params, characterStatus, message);
         });
+        command = 'obligation';
         break;
       case "swrpg":
       case "genesys":
@@ -189,9 +196,10 @@ bot.on("message", message => {
           message.channel.send(`${bot.user.username} will now use ${command} dice`);
         break;
     }
+    botStats.track(command, bot);
   });
 if (message.author.id == config.adminID) {
-//  admin(command, message, botStats, bot, params);
+  admin(command, message, bot, params);
 }
 
 process.on("unhandledRejection", err => {
