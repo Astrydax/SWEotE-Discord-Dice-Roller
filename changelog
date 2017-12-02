@@ -1,3 +1,5 @@
+  -added stop for bot if it can't write to channel
+
 2.1.3
   -fixed empty varibale crashes
 
