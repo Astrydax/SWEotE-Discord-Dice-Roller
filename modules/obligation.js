@@ -2,7 +2,7 @@ var dice = require("./misc.js").dice;
 
 function obligation(params, characterStatus, message) {
   let obList = [];
-  if (characterStatus == undefined) {
+  if (Object.keys(characterStatus).length === 0) {
     message.channel.send("No characters found please use !char to setup");
     return;
   }

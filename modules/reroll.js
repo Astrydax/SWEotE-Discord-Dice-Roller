@@ -4,6 +4,7 @@ var printEmoji = require("./printValues.js").print;
 const diceFaces = require('./dice.js').dice;
 
 function reroll(diceResult, params, message, bot, channelEmoji) {
+  if (Object.keys(diceResult).length === 0) return;
   diceResult = {roll: diceResult};
   var target = '';
   var position = 0;

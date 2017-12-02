@@ -3,8 +3,7 @@ var roll = require("./roll.js").roll;
 const config = require("../config.js").config;
 
 function destiny(params, destinyBalance, message, bot, channelEmoji) {
-  //setting the channel specific variable
-  if (destinyBalance == undefined) destinyBalance = initdestinyBalance();
+  if (Object.keys(destinyBalance).length === 0) destinyBalance = initdestinyBalance();
 
   //!destiny commands
   var command = params[0];
@@ -98,6 +97,7 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
 }
 
 function initdestinyBalance() {
+  console.log('initing');
   return {
       light: 0,
       dark: 0,

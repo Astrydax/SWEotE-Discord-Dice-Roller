@@ -4,7 +4,7 @@ const config = require("../config.js").config;
 var r = 0;
 
 function initiative(params, initiativeOrder, message, bot, channelEmoji) {
-  if (initiativeOrder == undefined) initiativeOrder = initializeinitOrder();
+  if (Object.keys(initiativeOrder).length === 0) initiativeOrder = initializeinitOrder();
   if (initiativeOrder.newslots == undefined) initiativeOrder.newslots = [];
   if (initiativeOrder.slots == undefined) initiativeOrder.slots = [];
 
