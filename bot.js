@@ -172,7 +172,7 @@ bot.on("message", message => {
       case "reroll":
       case "rr":
         data.readData(message, bot, 'diceResult', (diceResult) => {
-          diceResult = reroll(diceResult, params, message, bot);
+          diceResult = reroll(diceResult, params, message, bot, channelEmoji);
           data.writeData(message, bot, 'diceResult', diceResult);
         });
         command = 'reroll';
