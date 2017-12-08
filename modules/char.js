@@ -45,9 +45,9 @@ function char(params, characterStatus, message, bot, channelEmoji) {
           crit: [],
           obligation: {},
         };
-        if (params[2] != undefined) characterStatus[characterName].maxWound = params[2];
-        if (params[3] != undefined) characterStatus[characterName].maxStrain = params[3];
-        if (params[4] != undefined) characterStatus[characterName].credits = params[4];
+        if (params[2] != undefined) characterStatus[characterName].maxWound = +params[2].replace(/\D/g, "");
+        if (params[3] != undefined) characterStatus[characterName].maxStrain = +params[3].replace(/\D/g, "");
+        if (params[4] != undefined) characterStatus[characterName].credits = +params[4].replace(/\D/g, "");
         message.channel.send(characterName + "\nWounds: " + characterStatus[characterName].currentWound + "/" + characterStatus[characterName].maxWound + "\nStrain: " + characterStatus[characterName].currentStrain + "/" + characterStatus[characterName].maxStrain + "\nCredits: " + characterStatus[characterName].credits);
         break;
       case "wound":
