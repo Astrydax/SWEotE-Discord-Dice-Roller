@@ -70,7 +70,7 @@ function textCrit(total, bot, channelEmoji) {
       textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Slightly Dazed: The target is disoriented until the end of the encounter.";
       break;
     case (total >= 66 && total <= 70):
-      textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Scattered Senses: The target removes all " + print('black', bot, channelEmoji) + " from skill checks until end of encounter.";
+      textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Scattered Senses: The target removes all " + print('blue', bot, channelEmoji) + " from skill checks until end of encounter.";
       break;
     case (total >= 71 && total <= 75):
       textCrit = print('purple', bot, channelEmoji) + print('purple', bot, channelEmoji) + "Hamstrung: The target loses his free maneuver until the end of the encounter.";
