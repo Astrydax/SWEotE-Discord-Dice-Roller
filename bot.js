@@ -51,13 +51,14 @@ bot.on("message", message => {
   //Ignore messages that dont start with the command symbol
   if (!message.content.includes(config.prefix)) return;
   //check to see if bot can send messages on channel
-  if (message.channel.permissionsFor(bot.user).has('SEND_MESSAGES') != true) return;
   //check to see if external emoji can be used
   if (message.channel.type !== "dm") {
     if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
       message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
       return;
     }
+    if (message.channel.permissionsFor(bot.user).has('SEND_MESSAGES') != true) return;
+
   }
 
 
