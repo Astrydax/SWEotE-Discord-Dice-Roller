@@ -1,3 +1,6 @@
+2.1.4
+  -merged https://github.com/SkyJedi/SWEotE-Discord-Dice-Roller/pull/20
+  -renamed emoji folders
   -added stop for bot if it can't write to channel
 
 2.1.3

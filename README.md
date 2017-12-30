@@ -72,7 +72,7 @@ Commands:
   - !char list                                                  lists all characters
   - !char reset                                                 resets all characters
 
-- !Init initiative tracker and roller (See [here](docs/initiative.md) for more details) 
+- !Init initiative tracker and roller (See [here](docs/initiative.md) for more details)
   - !Init: shows current initiative order
   - !Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order
   - !Init Next: moves to next initiative slot
@@ -148,8 +148,9 @@ Commands:
 8. Replace "ADMIN_ID" with the NUMBERS of your userID from step 5.
 9. Paste into var firebaseconfig = {   }
 10. Get Discord ServerID from Discord Server Settings...Widget...ServerID for both swrpg and genesys servers
-11. Paste ServerID into correct slots ("swrpg" and "genesys") in config.json (paste the same number in both slots if only one set of dice will be used)
+11. Paste ServerID into correct slots ("swrpg" and "genesys") in config.js (paste the same number in both slots if only one set of dice will be used)
 12. Save file
+13. upload custom emoji from emoji folder to the server.  https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic
 13. Your bot is now configured and ready to launch.
 
 #Running the bot
