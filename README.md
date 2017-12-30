@@ -72,7 +72,7 @@ Commands:
   - !char list                                                  lists all characters
   - !char reset                                                 resets all characters
 
-- !Init initiative tracker and roller
+- !Init initiative tracker and roller (See [here](docs/initiative.md) for more details) 
   - !Init: shows current initiative order
   - !Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order
   - !Init Next: moves to next initiative slot
@@ -80,6 +80,8 @@ Commands:
   - !Init Set: manually set initiative order before any turns occur
   - !Init Modify: manually alter initiative order mid-round
   - !Init Reset: resets the initiative order
+  - !Init Kill: kills a NPC/PC but keeps it in the initiative tracker
+  - !Init Revive: brings back a NPC/PC
 
 - !Species/!Gleepglop: picks a random species
 
