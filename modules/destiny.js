@@ -3,6 +3,9 @@ var roll = require("./roll.js").roll;
 const config = require("../config.js").config;
 
 function destiny(params, destinyBalance, message, bot, channelEmoji) {
+  let type = '';
+  console.log(channelEmoji);
+  channelEmoji==='swrpg' ? type='Destiny' : type='Story';
   if (Object.keys(destinyBalance).length === 0) destinyBalance = initdestinyBalance();
 
   //!destiny commands
@@ -12,7 +15,6 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
     case "set":
     case "s":
       destinyBalance = initdestinyBalance();
-      console.log("Setting current Destiny Balance for " + message.author.username);
       //check if numbers are used
       if (params.length > 1) {
         if ((params[1].match(/\d+/g)) != null) {
@@ -49,9 +51,8 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
 
     //Reset the Destiny pool
     case "reset":
-      console.log(message.author.username + " resets the Destiny Pool");
       destinyBalance = initdestinyBalance();
-      message.reply(" resets the Destiny Pool");
+      message.reply(` resets the ${type} Points`);
       break;
     //Use a lightside from the Destiny pool
     case "light":
@@ -60,7 +61,6 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
         message.channel.send("No lightside points available, request will be ignored");
         break;
       } else {
-        console.log(message.author.username + " uses a Lightside point");
         destinyBalance.light--;
         destinyBalance.dark++;
         message.reply(" uses a Lightside point");
@@ -73,7 +73,6 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
         message.channel.send("No Darkside points available, request will be ignored");
         break;
       } else {
-        console.log(message.author.username + " uses a Darkside point");
         destinyBalance.dark--;
         destinyBalance.light++;
         message.reply(" uses a Darkside point");
@@ -81,23 +80,20 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
       }
     case "roll":
     case "r":
-      console.log("Rolling Destiny for " + message.author.username);
-      let destinyRoll = roll(["w"], message, bot, "Destiny roll", channelEmoji).results;
+      let destinyRoll = roll(["w"], message, bot, `${type} roll`, channelEmoji).results;
       destinyBalance.light = +destinyBalance.light + +destinyRoll.lightside;
       destinyBalance.dark = +destinyBalance.dark + +destinyRoll.darkside;
       break;
     default:
-      console.log("Just printing destinyBalance");
       break;
   }
-  printdestinyBalance(destinyBalance, bot, channelEmoji, message);
+  printdestinyBalance(destinyBalance, bot, channelEmoji, message, type);
   return destinyBalance;
 
   //Prints out destiny pool to channel
 }
 
 function initdestinyBalance() {
-  console.log('initing');
   return {
       light: 0,
       dark: 0,
@@ -105,7 +101,7 @@ function initdestinyBalance() {
       };
 }
 
-function printdestinyBalance(destinyBalance, bot, channelEmoji, message) {
+function printdestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
   destinyBalance.face = "";
   for (var i = 1; i <= destinyBalance.light; i++) {
       destinyBalance.face += print("lightside", bot, channelEmoji);
@@ -113,7 +109,7 @@ function printdestinyBalance(destinyBalance, bot, channelEmoji, message) {
   for (var i = 1; i <= destinyBalance.dark; i++) {
       destinyBalance.face += print("darkside", bot, channelEmoji);
       }
-  message.channel.send("Destiny Pool: ");
+  message.channel.send(`${type} Points: `);
   if (destinyBalance.face != "") {
     message.channel.send(destinyBalance.face);
   }

@@ -5,7 +5,10 @@ function help(params, message) {
     var topic = params[0];
     switch (topic) {
       case "destiny":
-        message.channel.send("```prolog\n!Destiny: view the destiny pool\n\n!Destiny Roll: rolls a force die and adds result to the destiny pool\n\n!Destiny L/Light: uses light side point\n\n!Destiny D/Dark: uses dark side point\n\n!Destiny Set #L #D: sets destiny pool\n\n!Destiny Set LLDD: sets destiny pool\n\n!Destiny Reset: resets the destiny pool\n\n```");
+        message.channel.send("```prolog\n!Destiny: view the destiny points\n\n!Destiny Roll: rolls a force die and adds result to the destiny pool\n\n!Destiny L/Light: uses light side point\n\n!Destiny D/Dark: uses dark side point\n\n!Destiny Set #L #D: sets destiny pool\n\n!Destiny Set LLDD: sets destiny pool\n\n!Destiny Reset: resets the destiny pool\n\n```");
+        break;
+      case "story":
+        message.channel.send("```prolog\n!Story: view the destiny points\n\n!Story Roll: rolls a white die and adds result to the story points\n\n!Story L/Light: uses light side point\n\n!Story D/Dark: uses dark side point\n\n!Story Set #L #D: sets story points\n\n!Story Set LLDD: sets story points\n\n!Story Reset: resets the story points\n\n```");
         break;
       case "char":
         message.channel.send("```prolog\n!Char: simple character stat manager\n\n!Char Setup CharacterName MaxWound MaxStrain Credits: setup a new character\n\n!Char Wound/W CharacterName +X/-X: increases/decreases wounds for characterName by x\n\n!Char Strain/S CharacterName +X/-X: increases/decreases strain for characterName by x\n\n!Char Credits/C CharacterName +X/-X: increases/decreases credit balance for characterName by x\n\n!Char Crit CharacterName +X/-X: adds/removes critical injuries for characterName\n\n!Char Obligation/O CharacterName +X/-X ObligationName: adds/removes obligations for characterName\n\n!Char Modify CharacterName +X/-X MaxStrain/MaxWounds: increases/decreases selected stat for characterName by x\n\n!Char Status CharacterName: current status for characterName\n\n!Char Remove CharacterName: removes characterName\n\n!Char List: displays all characters\n\n!Char Reset: resets all the characters\n```");

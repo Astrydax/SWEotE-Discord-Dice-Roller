@@ -114,8 +114,8 @@ bot.on("message", message => {
       params[i] = params[i].toLowerCase();
     }
   }
-  console.log("@" + message.author.username + " " + message.createdAt);
-  console.log(command + " " + params + " " + desc);
+  console.log(`@${message.author.username} ${message.createdAt}`);
+  console.log(`${command} ${params} ${desc}`);
 
 //************************COMMANDS START HERE************************
   data.readData(message, bot, 'channelEmoji', (channelEmoji) => {
@@ -157,12 +157,15 @@ bot.on("message", message => {
       //Destiny Point Module
       case "destiny":
       case "d":
+      case "story":
+      case "s":
         data.readData(message, bot, 'destinyBalance', (destinyBalance) => {
-          destinyBalance = destiny(params, destinyBalance, message, bot);
+          destinyBalance = destiny(params, destinyBalance, message, bot, channelEmoji);
           data.writeData(message, bot, 'destinyBalance', destinyBalance);
         });
         command = 'destiny';
         break;
+
       // Roll the dice command
       case "roll":
       case "r":
@@ -182,7 +185,7 @@ bot.on("message", message => {
       case "init":
       case "i":
         data.readData(message, bot, 'initiativeOrder', (initiativeOrder) => {
-          initiativeOrder = initiative(params, initiativeOrder, message, bot);
+          initiativeOrder = initiative(params, initiativeOrder, message, bot, channelEmoji);
           data.writeData(message, bot, 'initiativeOrder', initiativeOrder);
         });
         command = 'initiative';
