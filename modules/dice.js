@@ -83,8 +83,8 @@ var dice = {
   failure: {1: {face: 'f', adjacent: [], adjacentposition: [1]}},
   threat: {1: {face: 't', adjacent: [], adjacentposition: [1]}},
   despair: {1: {face: 'd', adjacent: [], adjacentposition: [1]}},
-  lightside: {1: {face: 'l', adjacent: [], adjacentposition: [1]}},
-  darkside: {1: {face: 'n', adjacent: [], adjacentposition: [1]}},
+  lightpip: {1: {face: 'l', adjacent: [], adjacentposition: [1]}},
+  darkpip: {1: {face: 'n', adjacent: [], adjacentposition: [1]}},
 }
 
 exports.dice = dice;
