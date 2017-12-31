@@ -81,8 +81,8 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
     case "roll":
     case "r":
       let destinyRoll = roll(["w"], message, bot, `${type} roll`, channelEmoji).results;
-      destinyBalance.light = +destinyBalance.light + +destinyRoll.lightside;
-      destinyBalance.dark = +destinyBalance.dark + +destinyRoll.darkside;
+      destinyBalance.light = +destinyBalance.light + +destinyRoll.lightpip;
+      destinyBalance.dark = +destinyBalance.dark + +destinyRoll.darkpip;
       break;
     default:
       break;

@@ -41,8 +41,8 @@ function initdiceResult() {
       failure: [],
       threat: [],
       despair: [],
-      lightside: [],
-      darkside: []
+      lightpip: [],
+      darkpip: []
     },
     results: {
       face: '',
@@ -52,8 +52,8 @@ function initdiceResult() {
       failure: 0,
       threat: 0,
       despair: 0,
-      lightside: 0,
-      darkside: 0
+      lightpip: 0,
+      darkpip: 0
       }
     };
   return diceResult;
@@ -163,14 +163,16 @@ function processType(params, message) {
         finalOrder.push('despair');
         break;
       case 'lightside':
+      case 'lightpip':
       case 'light':
       case 'l':
-        finalOrder.push('lightside');
+        finalOrder.push('lightpip');
         break;
       case 'darkside':
+      case 'darkpip':
       case 'dark':
       case 'n':
-        finalOrder.push('darkside');
+        finalOrder.push('darkpip');
         break;
       default:
         break;
@@ -195,8 +197,8 @@ function countSymbols(diceResult, message, bot, desc, channelEmoji) {
     failure: 0,
     threat: 0,
     despair: 0,
-    lightside: 0,
-    darkside: 0
+    lightpip: 0,
+    darkpip: 0
   }
 
   Object.keys(diceResult.roll).forEach((color) => {
@@ -225,16 +227,16 @@ function countSymbols(diceResult, message, bot, desc, channelEmoji) {
             diceResult.results.failure++
             break;
           case 'l':
-            diceResult.results.lightside++
+            diceResult.results.lightpip++
             break;
           case 'n':
-            diceResult.results.darkside++
+            diceResult.results.darkpip++
             break;
           default:
             break;
         }
       }
-      if (color === 'success' || color === 'advantage' || color === 'triumph' || color === 'failure' || color === 'threat' || color === 'despair' || color === 'lightside' || color === 'darkside') face = '';
+      if (color === 'success' || color === 'advantage' || color === 'triumph' || color === 'failure' || color === 'threat' || color === 'despair' || color === 'lightpip' || color === 'darkpip') face = '';
       diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
     });
   });
@@ -260,8 +262,8 @@ function printResults (diceResult, message, bot, desc, channelEmoji) {
   if (diceResult.threat>diceResult.advantage) finalCount.threat = diceResult.threat-diceResult.advantage;
   if (diceResult.triumph>0) finalCount.triumph = diceResult.triumph;
   if (diceResult.despair>0) finalCount.despair = diceResult.despair;
-  if (diceResult.lightside>0) finalCount.lightside = diceResult.lightside;
-  if (diceResult.darkside>0) finalCount.darkside = diceResult.darkside;
+  if (diceResult.lightpip>0) finalCount.lightpip = diceResult.lightpip;
+  if (diceResult.darkpip>0) finalCount.darkpip = diceResult.darkpip;
 
   //prints finalCount
   Object.keys(finalCount).forEach((symbol) => {
