@@ -3,9 +3,9 @@ var roll = require("./roll.js").roll;
 const config = require("../config.js").config;
 
 function destiny(params, destinyBalance, message, bot, channelEmoji) {
-  let type = '';
-  console.log(channelEmoji);
-  channelEmoji==='swrpg' ? type='Destiny' : type='Story';
+  let type, pointNameLight, pointNameDark = '';
+  channelEmoji==='swrpg' ? (type='Destiny', pointNameLight='Lightside', pointNameDark='Darkside') : (type='Story', pointNameLight='Player', pointNameDark='GM')
+
   if (Object.keys(destinyBalance).length === 0) destinyBalance = initdestinyBalance();
 
   //!destiny commands
@@ -57,25 +57,29 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
     //Use a lightside from the Destiny pool
     case "light":
     case "l":
+    case 'player':
+    case 'p':
       if (destinyBalance.light <= 0){
-        message.channel.send("No lightside points available, request will be ignored");
+        message.channel.send(`No ${pointNameLight} points available, request will be ignored`);
         break;
       } else {
         destinyBalance.light--;
         destinyBalance.dark++;
-        message.reply(" uses a Lightside point");
+        message.reply(` uses a ${pointNameLight} point`);
         break;
       }
     //Use a darkside from the Destiny pool
     case "dark":
     case "d":
+    case 'gm':
+    case 'g':
       if (destinyBalance.dark <= 0){
-        message.channel.send("No Darkside points available, request will be ignored");
+        message.channel.send(`No ${pointNameDark} points available, request will be ignored`);
         break;
       } else {
         destinyBalance.dark--;
         destinyBalance.light++;
-        message.reply(" uses a Darkside point");
+        message.reply(` uses a ${pointNameDark} point`);
         break;
       }
     case "roll":
