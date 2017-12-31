@@ -22,9 +22,11 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
             var color = params[i].replace(/\d/g, "");
             switch(color) {
               case "l":
+              case 'p':
                 destinyBalance.light = (params[i]).replace(/\D/g, "");
                 break;
               case "d":
+              case 'g':
                 destinyBalance.dark = (params[i]).replace(/\D/g, "");
                 break;
               default:
