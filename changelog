@@ -1,3 +1,9 @@
+2.2.0
+   -Redid a lot of stuff
+   -all bar to let
+   -cleaned up a lot of undefined checks
+   -created index for the modules
+
 2.1.7
   -added !story p or g
 

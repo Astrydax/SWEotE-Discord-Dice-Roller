@@ -1,4 +1,3 @@
-const config = require("../config.js").config;
 const firebase = require('firebase');
 
 function init() {
@@ -35,9 +34,9 @@ function track(command, bot) {
     });
 }
 
-function writeBotStats(bot, time, cb) {
+function writeBotStats(bot, time = '1', cb) {
   readbotStats(bot, (botStats) => {
-    time = time.replace(/\D/g, "")
+    time = time.replace(/\D/g, "");
     if (!(time > 0)) return "Bad Command";
     let text = "Bot stats: \nIn the last " + time + " days:\n";
     Object.keys(botStats).forEach((stat)=> {
@@ -47,29 +46,27 @@ function writeBotStats(bot, time, cb) {
         count = count + botStats[stat][i];
       }
       text += "\t" + stat + ": " + count + "\n";
-    })
-    text += "\n"
+    });
+    text += "\n";
      cb(text);
   });
 }
 
 function statUpdate(bot) {
-  readbotStats(bot, (botStats) => {
+  readbotStats(bot, config, (botStats) => {
     let text = "Yesterday's stats: \n";
     Object.keys(botStats).forEach((stat)=> {
       text += "\t" + stat + ": " + botStats[stat][0] + "\n";
-    })
-    if (bot.channels.get(config.dm) != undefined) bot.channels.get(config.dm).send(text);
+    });
+    if (bot.channels.get(config.dm)) bot.channels.get(config.dm).send(text);
     console.log("Performing daily botStats process!");
     Object.keys(botStats).forEach((stat)=> {
       botStats[stat].splice(0, 0, 0);
-    })
+    });
     firebase.database().ref().child(`${bot.user.username}`).child('botStats').set(botStats);
   });
 }
 
-module.exports = {
-    track: track,
-    writeBotStats: writeBotStats,
-    statUpdate: statUpdate,
-};
+exports.track = track;
+exports.writeBotStats = writeBotStats;
+exports.statUpdate = statUpdate;

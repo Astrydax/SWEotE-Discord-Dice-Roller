@@ -1,8 +1,4 @@
-var botStats = require("./botStats.js");
-const config = require("../config.js").config;
-
-
-function admin(command, message, bot, params) {
+function admin(command, message, bot, params, botStats) {
   switch (command) {
     case "stats":
       message.channel.send(`Currently on ${bot.guilds.size} servers!\nCurrently assisting ${bot.guilds.reduce((a, b) => a + b.memberCount, 0)} users!`);
@@ -24,6 +20,4 @@ function admin(command, message, bot, params) {
   }
 }
 
-module.exports = {
-    admin: admin,
-};
+exports.admin = admin;

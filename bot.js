@@ -2,215 +2,193 @@
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
-const Discord = require("discord.js");
-const config = require("./config").config;
-const chalk = require("chalk");
+const functions = require('./modules/index');
+const Discord = require('discord.js');
 const bot = new Discord.Client();
-const schedule = require('node-schedule');
 const firebase = require('firebase');
-var firebaseconfig = require("./config").firebaseconfig;
-var print = require("./modules/printValues.js").print;
-var destiny = require("./modules/destiny.js").destiny;
-var crit = require("./modules/crit.js").crit;
-var shipcrit = require("./modules/crit.js").shipcrit;
-var help = require("./modules/help.js").help;
-var char = require("./modules/char.js").char;
-var roll = require("./modules/roll.js").roll;
-var polyhedral = require("./modules/misc.js").polyhedral;
-var admin = require("./modules/admin.js").admin;
-var initiative = require("./modules/initiative.js").initiative;
-var reroll = require("./modules/reroll.js").reroll;
-var version = require("./package.json").version;
-var poly = require("./modules/poly.js").poly;
-var gleepglop = require("./modules/misc.js").gleepglop;
-var obligation = require("./modules/obligation.js").obligation;
-var statUpdate = require("./modules/misc.js").statUpdate;
-var data = require("./modules/data.js");
-var botStats = require("./modules/botStats.js");
+const schedule = require('node-schedule');
 
-bot.login(config.token);
+bot.login(functions.config.token);
 require('events').EventEmitter.defaultMaxListeners = 0;
-firebase.initializeApp(firebaseconfig);
+firebase.initializeApp(functions.firebaseconfig);
 
 //Called When bot becomes functional
-bot.on("ready", () => {
-  console.log(`Bot version ${version}`);
-  console.log(`Logged in as ${bot.user.username}!`);
+bot.on('ready', () => {
+    console.log(`Bot version ${functions.version}`);
+    console.log(`Logged in as ${bot.user.username}!`);
 
-  let dailyJob = schedule.scheduleJob({hour: 08, minute: 00, second: 00}, () => {
-    botStats.statUpdate(bot);
-  });
+    schedule.scheduleJob({hour: 8, minute: 0, second: 0}, () => {
+        functions.botStats.statUpdate(bot, functions.config);
+    });
 });
 
 //Called whenever a users send a message to the server
 bot.on("message", message => {
-  let channel = message.channel.id;
-  var userID = message.author.id;
-  //Ignore messages sent by the bot
-  if (message.author.bot) return;
-  //Ignore messages that dont start with the command symbol
-  if (!message.content.includes(config.prefix)) return;
-  //check to see if bot can send messages on channel
-  //check to see if external emoji can be used
-  if (message.channel.type !== "dm") {
-    if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') != true) {
-      message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
-      return;
+    //Ignore messages sent by the bot
+    if (message.author.bot) return;
+    //Ignore messages that dont start with the command symbol
+    if (!message.content.includes(functions.config.prefix)) return;
+    //check to see if bot can send messages on channel
+    //check to see if external emoji can be used
+    if (message.channel.type !== 'dm') {
+        if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') !== true) {
+            message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
+            return;
+        }
+        if (message.channel.permissionsFor(bot.user).has('SEND_MESSAGES') !== true) return;
+
     }
-    if (message.channel.permissionsFor(bot.user).has('SEND_MESSAGES') != true) return;
 
-  }
-
-
-
-  //Seperate and create a list of parameters. A space in the message denotes a new parameter
-  if (!message.content.startsWith(config.prefix)) {
-    var params = message.content.split(" ");
-    for (var i=0; params.length>i; i++) {
-      if (params[i].startsWith(config.prefix)) break;
+    //Separate and create a list of parameters. A space in the message denotes a new parameter
+    let params = message.content.split(' ');
+    if (!message.content.startsWith(functions.config.prefix)) {
+        params.forEach((param, index) => {
+            if (param.startsWith(functions.config.prefix)) params = params.slice(index);
+        });
     }
-    params = params.slice(i);
-  } else var params = message.content.split(" ");
 
-  //create command
-  if (params.length == 0) return;
+    //create command
+    if (params.length === 0) return;
 
-  var command = params[0].toLowerCase().toString().slice(1);
-  params = params.slice(1);
-
-  if (command.startsWith('d') && (command.length > 1) && (command != 'destiny')) {
-    var sides = command.replace(/\D/g, "");
-    command = 'polyhedral';
-  }
-  //init the descriptor string to an empty string
-  var desc = "";
-  var beg, end = 0;
-  var begF, endF = false;
-  for (var i = 0; i < params.length; i++) {
-    if (params[i].includes('"')) {
-      if (!begF) {
-        beg = i;
-        end = i;
-        begF = true;
-      } else if (begF && !endF) {
-        end = i;
-        endF = true;
-      }
+    let command = params[0].toLowerCase().toString().slice(1);
+    params = params.slice(1);
+    let sides;
+    if (command.startsWith('d') && (command.length > 1) && (command !== 'destiny')) {
+        sides = command.replace(/\D/g, '');
+        command = 'polyhedral';
+        if (!sides) return;
     }
-  }
-  //remove the text field arguments from the list of parameters before checking for dice.
-  for (i = beg; i <= end; i++) {
-    desc += " " + params[i];
-  }
-  var spliceAmnt = end + 1 - beg;
-  params.splice(beg, spliceAmnt);
-  //remove Quotes from descriptor
-  desc = desc.replace(/['"]+/g, '');
 
-  //set the rest of params to lowercase
-  if (params != undefined) {
+    //make the descriptor
+    let beg, end;
+    let desc = [];
+    params.forEach((param, index)=>{
+        if (param.includes('"')) {
+            if (!beg) {
+                beg = index;
+                end = index;
+            }
+            else end = index;
+        }
+    });
+
+    if (beg && end) {
+        desc = params.slice(beg, end + 1);
+        params.splice(beg, end + 1 - beg);
+        desc = desc.join(' ').replace(/['"']+/g, '');
+    }
+
+    //set the rest of params to lowercase
     params = params.filter(Boolean);
-    for (var i = 0; i < params.length; i++) {
-      params[i] = params[i].toLowerCase();
-    }
-  }
-  console.log(`@${message.author.username} ${message.createdAt}`);
-  console.log(`${command} ${params} ${desc}`);
+    params.forEach((param, index)=> params[index] = param.toLowerCase());
+
+    //remove user mentions
+    params.forEach((param, index)=> {
+       if (param.includes('<') && param.includes('>')) {
+           console.log('pamars split');
+           params.splice(index, 1);
+       }
+    });
+
+
+    console.log(`@${message.author.username} ${message.createdAt}`);
+    console.log(`${command} ${params} ${desc}`);
+
 
 //************************COMMANDS START HERE************************
-  data.readData(message, bot, 'channelEmoji', (channelEmoji) => {
-    switch (command) {
-      //Ver command
-      case "ver":
-        message.channel.send(bot.user.username + ": version: " + version);
-        break;
-      //Character Tracker
-      case "char":
-        data.readData(message, bot, 'characterStatus', (characterStatus) => {
-          characterStatus = char(params, characterStatus, message, bot);
-          data.writeData(message, bot, 'characterStatus', characterStatus);
-        });
-        break;
-      // help module
-      case "help":
-        help(params, message);
-        break;
-      case "gleepglop":
-      case "species":
-        gleepglop(message);
-        command = 'species'
-        break;
-      case "polyhedral":
-        polyhedral(sides, params, message);
-        break;
-      case "poly":
-        poly(params, message);
-        command = 'polyhedral';
-        break;
-      case "crit":
-        crit(params, message, bot);
-        break;
-      //!shipcrit command
-      case "shipcrit":
-        shipcrit(params, message, bot);
-        break;
-      //Destiny Point Module
-      case "destiny":
-      case "d":
-      case "story":
-      case "s":
-        data.readData(message, bot, 'destinyBalance', (destinyBalance) => {
-          destinyBalance = destiny(params, destinyBalance, message, bot, channelEmoji);
-          data.writeData(message, bot, 'destinyBalance', destinyBalance);
-        });
-        command = 'destiny';
-        break;
+    functions.data.readData(message, bot, 'channelEmoji', (channelEmoji) => {
+        switch (command) {
+            //Ver command
+            case 'ver':
+                message.channel.send(`${bot.user.username}: version: ${functions.version}`);
+                break;
+            //Character Tracker
+            case 'char':
+                functions.data.readData(message, bot, 'characterStatus', (characterStatus) => {
+                    characterStatus = functions.char(params, characterStatus, message, bot);
+                    functions.data.writeData(message, bot, 'characterStatus', characterStatus);
+                });
+                break;
+            // help module
+            case 'help':
+                functions.help(params, message);
+                break;
+            case 'gleepglop':
+            case 'species':
+                functions.gleepglop(message);
+                command = 'species';
+                break;
+            case 'polyhedral':
+                functions.polyhedral(sides, params, message);
+                break;
+            case 'poly':
+                functions.poly(params, message);
+                command = 'polyhedral';
+                break;
+            case 'crit':
+                functions.crit(params, message, bot);
+                break;
+            //!shipcrit command
+            case 'shipcrit':
+                functions.shipcrit(params, message, bot);
+                break;
+            //Destiny Point Module
+            case 'destiny':
+            case 'd':
+            case 'story':
+            case 's':
+                functions.data.readData(message, bot, 'destinyBalance', (destinyBalance) => {
+                    destinyBalance = functions.destiny(params, destinyBalance, message, bot, channelEmoji);
+                    functions.data.writeData(message, bot, 'destinyBalance', destinyBalance);
+                });
+                command = 'destiny';
+                break;
 
-      // Roll the dice command
-      case "roll":
-      case "r":
-        let diceResult = roll(params, message, bot, desc, channelEmoji).roll;
-        data.writeData(message, bot, 'diceResult', diceResult);
-        command = 'roll';
-        break;
-      case "reroll":
-      case "rr":
-        data.readData(message, bot, 'diceResult', (diceResult) => {
-          diceResult = reroll(diceResult, params, message, bot, channelEmoji);
-          data.writeData(message, bot, 'diceResult', diceResult);
-        });
-        command = 'reroll';
-        break;
-      case "initiative":
-      case "init":
-      case "i":
-        data.readData(message, bot, 'initiativeOrder', (initiativeOrder) => {
-          initiativeOrder = initiative(params, initiativeOrder, message, bot, channelEmoji);
-          data.writeData(message, bot, 'initiativeOrder', initiativeOrder);
-        });
-        command = 'initiative';
-        break;
-      case "obligation":
-      case "o":
-        data.readData(message, bot, 'characterStatus', (characterStatus) => {
-          obligation(params, characterStatus, message);
-        });
-        command = 'obligation';
-        break;
-      case "swrpg":
-      case "genesys":
-          data.writeData(message, bot, 'channelEmoji', command);
-          message.channel.send(`${bot.user.username} will now use ${command} dice`);
-        break;
+            // Roll the dice command
+            case 'roll':
+            case 'r':
+                let diceResult = functions.roll(params, message, bot, desc, channelEmoji).roll;
+                functions.data.writeData(message, bot, 'diceResult', diceResult);
+                command = 'roll';
+                break;
+            case 'reroll':
+            case 'rr':
+                functions.data.readData(message, bot, 'diceResult', (diceResult) => {
+                    diceResult = functions.reroll(diceResult, params, message, bot, channelEmoji);
+                    functions.data.writeData(message, bot, 'diceResult', diceResult);
+                });
+                command = 'reroll';
+                break;
+            case 'initiative':
+            case 'init':
+            case 'i':
+                functions.data.readData(message, bot, 'initiativeOrder', (initiativeOrder) => {
+                    initiativeOrder = functions.initiative(params, initiativeOrder, message, bot, channelEmoji);
+                    functions.data.writeData(message, bot, 'initiativeOrder', initiativeOrder);
+                });
+                command = 'initiative';
+                break;
+            case 'obligation':
+            case 'o':
+                functions.data.readData(message, bot, 'characterStatus', (characterStatus) => {
+                    functions.obligation(params, characterStatus, message);
+                });
+                command = 'obligation';
+                break;
+            case 'swrpg':
+            case 'genesys':
+                functions.data.writeData(message, bot, 'channelEmoji', command);
+                message.channel.send(`${bot.user.username} will now use ${command} dice`);
+                break;
+        }
+        functions.botStats.track(command, bot);
+    });
+    if (message.author.id === functions.config.adminID) {
+        functions.admin(command, message, bot, params, functions.botStats);
     }
-    botStats.track(command, bot);
-  });
-if (message.author.id == config.adminID) {
-  admin(command, message, bot, params);
-}
 
-process.on("unhandledRejection", err => {
-  console.error("Uncaught Promise Error: \n" + err.stack);
-  });
+    process.on('unhandledRejection', err => {
+        console.error('Uncaught Promise Error: \n' + err.stack);
+    });
 
 });
