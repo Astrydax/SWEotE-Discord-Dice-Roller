@@ -36,10 +36,10 @@ function polyhedral(sides, str, message) {
     return total;
 }
 
-function cryptoDice(sides) {
+function dice(sides) {
     return Math.floor(rng() * sides) + 1;
 }
 
 exports.gleepglop = gleepglop;
 exports.polyhedral = polyhedral;
-exports.dice = cryptoDice;
+exports.dice = dice;

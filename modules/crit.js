@@ -9,8 +9,7 @@ function crit(params, message, bot, channelEmoji) {
             return;
         }
     }
-
-    let total = d100(100, params, message, bot, channelEmoji);
+    let total = d100(100, params, message);
     message.channel.send("Crit " + total + ": " + textCrit(total, bot, channelEmoji));
 }
 
@@ -22,7 +21,7 @@ function shipcrit(params, message, bot, channelEmoji) {
             return;
         }
     }
-    let total = d100(100, params, message, bot, channelEmoji);
+    let total = d100(100, params, message);
     message.channel.send("Ship Crit " + total + ": " + textShipCrit(total, bot, channelEmoji));
 }
 
