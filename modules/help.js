@@ -1,7 +1,7 @@
 function help(params, message) {
     if (!params[0]) {
         message.channel.send(
-`\`\`\`prolog
+            `\`\`\`prolog
 type '!Help [topic]' for further information
 
 !Roll: rolls any combination of swrpg dice
@@ -27,7 +27,7 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
         switch (topic) {
             case "destiny":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Destiny: view the destiny points
 !Destiny Roll: rolls a force die and adds result to the destiny pool
 !Destiny L/Light: uses light side point
@@ -39,7 +39,7 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
                 break;
             case "story":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Story: view the destiny points
 !Story Roll: rolls a white die and adds result to the story points
 !Story L/Light: uses light side point
@@ -51,7 +51,7 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
                 break;
             case "char":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Char: simple character stat manager
 !Char Setup CharacterName MaxWound MaxStrain Credits: setup a new character
 !Char Wound/W CharacterName +X/-X: increases/decreases wounds for characterName by x
@@ -68,7 +68,7 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
                 break;
             case "roll":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Roll DiceIdentifiers "TEXT"
 DICE IDENTIFIERS
     Pro = yellow/proficiency
@@ -95,7 +95,7 @@ Examples:
                 break;
             case "init":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Init: shows current initiative order
 !Init Roll DiceIdentifiers NPC/PC: rolls your initiative dice and adds character to the order
 !Init Next: moves to next initiative slot
@@ -107,7 +107,7 @@ Examples:
                 break;
             case "reroll":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Reroll Same: rolls the same pool again
 !Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
 !Reroll Remove DiceIdentifiers: remove random dice of the designated color
@@ -123,7 +123,7 @@ Examples:
                 break;
             case "poly":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Poly: rolls any combination of polyhedral dice with modifier
 Examples:
     poly 1d4 2d6+1 1d100-60 
@@ -132,7 +132,7 @@ Examples:
             case "crit":
             case "shipcrit":
                 message.channel.send(
-`\`\`\`prolog
+                    `\`\`\`prolog
 !Crit and !Shipcrit: rolls a d100 and matches the roll to the appropriate critical injury table then prints the result
 !Crit +10: automatically add 10 to the roll (any number can be used)
 !Crit -10: automatically subtract 10 to the roll (any number can be used)

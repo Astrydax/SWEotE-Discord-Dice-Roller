@@ -17,7 +17,7 @@ bot.on('ready', () => {
     console.log(`Bot version ${functions.version}`);
     console.log(`Logged in as ${bot.user.username}!`);
 
-    schedule.scheduleJob({hour: 8, minute: 8, second: 0}, () => {
+    schedule.scheduleJob({hour: 8, minute: 0, second: 0}, () => {
         functions.botStats.statUpdate(bot, functions.config);
     });
 });
