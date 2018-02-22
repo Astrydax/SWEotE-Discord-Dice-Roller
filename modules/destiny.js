@@ -1,7 +1,4 @@
-const print = require("./printValues.js").print;
-const roll = require("./roll.js").roll;
-
-function destiny(params, destinyBalance, message, bot, channelEmoji) {
+function destiny(params, destinyBalance, message, bot, channelEmoji, roll, print) {
     let type, pointNameLight, pointNameDark;
     if (channelEmoji === 'swrpg') {
         type = 'Destiny';
@@ -16,15 +13,14 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
     if (Object.keys(destinyBalance).length === 0) destinyBalance = initdestinyBalance();
 
     //!destiny commands
-    let command = params[0];
-    switch (command) {
+    switch (params[0]) {
         //Sets Destiny balance per color
         case "set":
         case "s":
             destinyBalance = initdestinyBalance();
             //check if numbers are used
             if (params.length > 1) {
-                if ((params[1].match(/\d+/g)) != null) {
+                if (params[1].match(/\d+/g)) {
                     for (let i = 0; i < params.length; i++) {
                         let color = params[i].replace(/\d/g, "");
                         switch (color) {
@@ -102,7 +98,7 @@ function destiny(params, destinyBalance, message, bot, channelEmoji) {
         default:
             break;
     }
-    printdestinyBalance(destinyBalance, bot, channelEmoji, message, type);
+    printdestinyBalance(destinyBalance, bot, channelEmoji, message, type, print);
     return destinyBalance;
 
     //Prints out destiny pool to channel
@@ -116,7 +112,7 @@ function initdestinyBalance() {
     };
 }
 
-function printdestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
+function printdestinyBalance(destinyBalance, bot, channelEmoji, message, type, print) {
     destinyBalance.face = "";
     for (let i = 1; i <= destinyBalance.light; i++) {
         destinyBalance.face += print("lightside", bot, channelEmoji);

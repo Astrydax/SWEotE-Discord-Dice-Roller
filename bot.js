@@ -17,7 +17,7 @@ bot.on('ready', () => {
     console.log(`Bot version ${functions.version}`);
     console.log(`Logged in as ${bot.user.username}!`);
 
-    schedule.scheduleJob({hour: 8, minute: 0, second: 0}, () => {
+    schedule.scheduleJob({hour: 8, minute: 8, second: 0}, () => {
         functions.botStats.statUpdate(bot, functions.config);
     });
 });
@@ -31,11 +31,11 @@ bot.on("message", message => {
     //check to see if bot can send messages on channel
     //check to see if external emoji can be used
     if (message.channel.type !== 'dm') {
-        if (message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS') !== true) {
+        if (!message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) {
             message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
             return;
         }
-        if (message.channel.permissionsFor(bot.user).has('SEND_MESSAGES') !== true) return;
+        if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 
     }
 
@@ -47,9 +47,19 @@ bot.on("message", message => {
         });
     }
 
-    //create command
-    if (params.length === 0) return;
 
+    //stop if there is no command
+    if (params.length === 0) return;
+    if (!params[0].startsWith(functions.config.prefix)) return;
+
+    //remove user mentions
+    params.forEach((param, index)=> {
+        if (param.includes('<') && param.includes('>')) {
+            params.splice(index, 1);
+        }
+    });
+
+    //create command
     let command = params[0].toLowerCase().toString().slice(1);
     params = params.slice(1);
     let sides;
@@ -81,15 +91,6 @@ bot.on("message", message => {
     //set the rest of params to lowercase
     params = params.filter(Boolean);
     params.forEach((param, index)=> params[index] = param.toLowerCase());
-
-    //remove user mentions
-    params.forEach((param, index)=> {
-       if (param.includes('<') && param.includes('>')) {
-           console.log('pamars split');
-           params.splice(index, 1);
-       }
-    });
-
 
     console.log(`@${message.author.username} ${message.createdAt}`);
     console.log(`${command} ${params} ${desc}`);
@@ -138,7 +139,7 @@ bot.on("message", message => {
             case 'story':
             case 's':
                 functions.data.readData(message, bot, 'destinyBalance', (destinyBalance) => {
-                    destinyBalance = functions.destiny(params, destinyBalance, message, bot, channelEmoji);
+                    destinyBalance = functions.destiny(params, destinyBalance, message, bot, channelEmoji, functions.roll, functions.print);
                     functions.data.writeData(message, bot, 'destinyBalance', destinyBalance);
                 });
                 command = 'destiny';

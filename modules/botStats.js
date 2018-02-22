@@ -20,14 +20,14 @@ function init() {
 function readbotStats (bot, cb) {
   firebase.database().ref().child(`${bot.user.username}`).child('botStats').once('value', snap => {
     let data = snap.val();
-    if (data == null) data = init();
+    if (!data) data = init();
     cb(data);
   });
 }
 
 function track(command, bot) {
     readbotStats(bot, (data) => {
-      if (data[command] !== undefined) {
+      if (data[command]) {
         data[command][0]++;
         firebase.database().ref().child(`${bot.user.username}`).child('botStats').set(data);
       }
@@ -52,8 +52,8 @@ function writeBotStats(bot, time = '1', cb) {
   });
 }
 
-function statUpdate(bot) {
-  readbotStats(bot, config, (botStats) => {
+function statUpdate(bot, config) {
+  readbotStats(bot, (botStats) => {
     let text = "Yesterday's stats: \n";
     Object.keys(botStats).forEach((stat)=> {
       text += "\t" + stat + ": " + botStats[stat][0] + "\n";
