@@ -126,7 +126,7 @@ function char(params, characterStatus, message, bot, channelEmoji) {
         case "obligation":
         case "o":
             let Ob;
-            if (!params[3]) Ob = params[3].toUpperCase();
+            if (params[3]) Ob = params[3].toUpperCase();
             if (params.length < 3) {
                 if (Object.keys(characterStatus[characterName].obligation).length === 0) message.channel.send(characterName + " has no Obligations.");
                 else {

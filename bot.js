@@ -142,6 +142,9 @@ bot.on("message", message => {
                     destinyBalance = functions.destiny(params, destinyBalance, message, bot, channelEmoji, functions.roll, functions.print);
                     functions.data.writeData(message, bot, 'destinyBalance', destinyBalance);
                 });
+
+
+
                 command = 'destiny';
                 break;
 
