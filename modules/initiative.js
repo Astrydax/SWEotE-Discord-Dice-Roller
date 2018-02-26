@@ -178,7 +178,7 @@ function initializeinitOrder() {
 
 //Prints out Initiative Order to channel
 function printinitiativeOrder(initiativeOrder, message, bot, channelEmoji) {
-    initiativeOrder = sortInitiativeOrder(initiativeOrder);
+    if (initiativeOrder.slots[0].success) initiativeOrder = sortInitiativeOrder(initiativeOrder);
     let faces = "";
     for (let i = initiativeOrder.turn - 1; i < initiativeOrder.slots.length; i++) {
         faces += getFace(initiativeOrder.slots[i].type, bot, channelEmoji);
