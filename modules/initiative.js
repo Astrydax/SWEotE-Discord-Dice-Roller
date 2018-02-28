@@ -140,7 +140,9 @@ function initiative(params, initiativeOrder, message, bot, channelEmoji) {
             console.log("Just printing initiativeOrder");
             break;
     }
-    printinitiativeOrder(initiativeOrder, message, bot, channelEmoji);
+    if (initiativeOrder.slots[0]) printinitiativeOrder(initiativeOrder, message, bot, channelEmoji);
+    else message.channel.send('No initiative order is set!');
+
     return initiativeOrder;
 }
 
