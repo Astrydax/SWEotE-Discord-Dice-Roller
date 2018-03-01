@@ -148,6 +148,7 @@ function initiative(params, initiativeOrder, message, bot, channelEmoji) {
 
 //Adds a roll to the order and sorts it
 function sortInitiativeOrder(initiativeOrder) {
+    console.log('sorting')
 
     initiativeOrder.slots.sort(function (a, b) {
         let nameA = a.type;
@@ -180,7 +181,7 @@ function initializeinitOrder() {
 
 //Prints out Initiative Order to channel
 function printinitiativeOrder(initiativeOrder, message, bot, channelEmoji) {
-    if (initiativeOrder.slots[0].success) initiativeOrder = sortInitiativeOrder(initiativeOrder);
+    if (Object.keys(initiativeOrder.slots[0]).length>1) initiativeOrder = sortInitiativeOrder(initiativeOrder);
     let faces = "";
     for (let i = initiativeOrder.turn - 1; i < initiativeOrder.slots.length; i++) {
         faces += getFace(initiativeOrder.slots[i].type, bot, channelEmoji);
