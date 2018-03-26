@@ -72,7 +72,7 @@ Commands:
   - !char list                                                  lists all characters
   - !char reset                                                 resets all characters
 
-- !Init initiative tracker and roller (See [here](docs/initiative.md) for more details)
+- !Init initiative tracker and roller
   - !Init: shows current initiative order
   - !Init Roll Dice NPC/PC: rolls your initiative dice and adds character to the order
   - !Init Next: moves to next initiative slot

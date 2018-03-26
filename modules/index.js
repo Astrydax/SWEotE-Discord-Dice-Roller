@@ -1,9 +1,10 @@
 exports.admin = require('./admin').admin;
-exports.botStats = require('./botStats');
 exports.char = require('./char').char;
 exports.config = require('../config').config;
 exports.crit = require('./crit').crit;
 exports.data = require('./data');
+exports.readData = require('./data').readData;
+exports.writeData = require('./data').writeData;
 exports.destiny = require('./destiny').destiny;
 exports.firebaseconfig = require('../config').firebaseconfig;
 exports.gleepglop = require('./misc').gleepglop;

@@ -1,4 +1,4 @@
-function help(params, message) {
+function help(bot, message, params) {
     if (!params[0]) {
         message.channel.send(
             `\`\`\`prolog
@@ -42,10 +42,10 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
                     `\`\`\`prolog
 !Story: view the destiny points
 !Story Roll: rolls a white die and adds result to the story points
-!Story L/Light: uses light side point
-!Story D/Dark: uses dark side point
-!Story Set #L #D: sets story points
-!Story Set LLDD: sets story points
+!Story P/Player: uses light side point
+!Story G/GM: uses dark side point
+!Story Set #P #G: sets story points
+!Story Set PPGG: sets story points
 !Story Reset: resets the story points
 \`\`\``);
                 break;

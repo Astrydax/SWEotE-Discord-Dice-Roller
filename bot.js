@@ -6,24 +6,18 @@ const functions = require('./modules/index');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const firebase = require('firebase');
-const schedule = require('node-schedule');
 
 bot.login(functions.config.token);
-require('events').EventEmitter.defaultMaxListeners = 0;
 firebase.initializeApp(functions.firebaseconfig);
 
 //Called When bot becomes functional
 bot.on('ready', () => {
     console.log(`Bot version ${functions.version}`);
     console.log(`Logged in as ${bot.user.username}!`);
-
-    schedule.scheduleJob({hour: 8, minute: 0, second: 0}, () => {
-        functions.botStats.statUpdate(bot, functions.config);
-    });
 });
 
 //Called whenever a users send a message to the server
-bot.on("message", message => {
+bot.on("message", async message => {
     //Ignore messages sent by the bot
     if (message.author.bot) return;
     //Ignore messages that dont start with the command symbol
@@ -53,7 +47,7 @@ bot.on("message", message => {
     if (!params[0].startsWith(functions.config.prefix)) return;
 
     //remove user mentions
-    params.forEach((param, index)=> {
+    params.forEach((param, index) => {
         if (param.includes('<') && param.includes('>')) {
             params.splice(index, 1);
         }
@@ -72,7 +66,7 @@ bot.on("message", message => {
     //make the descriptor
     let beg, end;
     let desc = [];
-    params.forEach((param, index)=>{
+    params.forEach((param, index) => {
         if (param.includes('"')) {
             if (!beg) {
                 beg = index;
@@ -90,109 +84,76 @@ bot.on("message", message => {
 
     //set the rest of params to lowercase
     params = params.filter(Boolean);
-    params.forEach((param, index)=> params[index] = param.toLowerCase());
+    params.forEach((param, index) => params[index] = param.toLowerCase());
 
     console.log(`@${message.author.username} ${message.createdAt}`);
     console.log(`${command} ${params} ${desc}`);
 
 
 //************************COMMANDS START HERE************************
-    functions.data.readData(message, bot, 'channelEmoji', (channelEmoji) => {
-        switch (command) {
-            //Ver command
-            case 'ver':
-                message.channel.send(`${bot.user.username}: version: ${functions.version}`);
-                break;
-            //Character Tracker
-            case 'char':
-                functions.data.readData(message, bot, 'characterStatus', (characterStatus) => {
-                    characterStatus = functions.char(params, characterStatus, message, bot);
-                    functions.data.writeData(message, bot, 'characterStatus', characterStatus);
-                });
-                break;
-            // help module
-            case 'help':
-                functions.help(params, message);
-                break;
-            case 'gleepglop':
-            case 'species':
-                functions.gleepglop(message);
-                command = 'species';
-                break;
-            case 'polyhedral':
-                functions.polyhedral(sides, params, message);
-                break;
-            case 'poly':
-                functions.poly(params, message);
-                command = 'polyhedral';
-                break;
-            case 'crit':
-                functions.crit(params, message, bot);
-                break;
-            //!shipcrit command
-            case 'shipcrit':
-                functions.shipcrit(params, message, bot);
-                break;
-            //Destiny Point Module
-            case 'destiny':
-            case 'd':
-            case 'story':
-            case 's':
-                functions.data.readData(message, bot, 'destinyBalance', (destinyBalance) => {
-                    destinyBalance = functions.destiny(params, destinyBalance, message, bot, channelEmoji, functions.roll, functions.print);
-                    functions.data.writeData(message, bot, 'destinyBalance', destinyBalance);
-                });
-
-
-
-                command = 'destiny';
-                break;
-
-            // Roll the dice command
-            case 'roll':
-            case 'r':
-                let diceResult = functions.roll(params, message, bot, desc, channelEmoji).roll;
-                functions.data.writeData(message, bot, 'diceResult', diceResult);
-                command = 'roll';
-                break;
-            case 'reroll':
-            case 'rr':
-                functions.data.readData(message, bot, 'diceResult', (diceResult) => {
-                    diceResult = functions.reroll(diceResult, params, message, bot, channelEmoji);
-                    functions.data.writeData(message, bot, 'diceResult', diceResult);
-                });
-                command = 'reroll';
-                break;
-            case 'initiative':
-            case 'init':
-            case 'i':
-                functions.data.readData(message, bot, 'initiativeOrder', (initiativeOrder) => {
-                    initiativeOrder = functions.initiative(params, initiativeOrder, message, bot, channelEmoji);
-                    functions.data.writeData(message, bot, 'initiativeOrder', initiativeOrder);
-                });
-                command = 'initiative';
-                break;
-            case 'obligation':
-            case 'o':
-                functions.data.readData(message, bot, 'characterStatus', (characterStatus) => {
-                    functions.obligation(params, characterStatus, message);
-                });
-                command = 'obligation';
-                break;
-            case 'swrpg':
-            case 'genesys':
-                functions.data.writeData(message, bot, 'channelEmoji', command);
-                message.channel.send(`${bot.user.username} will now use ${command} dice`);
-                break;
-        }
-        functions.botStats.track(command, bot);
-    });
-    if (message.author.id === functions.config.adminID) {
-        functions.admin(command, message, bot, params, functions.botStats);
+    let channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+    switch (command) {
+        //Ver command
+        case 'ver':
+            message.channel.send(`${bot.user.username}: version: ${functions.version}`);
+            break;
+        //Character Tracker
+        case 'char':
+            functions.char(bot, message, params, channelEmoji);
+            break;
+        // help module
+        case 'help':
+            functions.help(bot, message, params);
+            break;
+        case 'gleepglop':
+        case 'species':
+            functions.gleepglop(bot, message, params);
+            break;
+        case 'polyhedral':
+            functions.polyhedral(sides, params, message);
+            break;
+        case 'poly':
+            functions.poly(params, message);
+            break;
+        case 'crit':
+            functions.crit(bot, message, params);
+            break;
+        //!shipcrit command
+        case 'shipcrit':
+            functions.shipcrit(bot, message, params);
+            break;
+        //Destiny Point Module
+        case 'destiny':
+        case 'd':
+        case 'story':
+        case 's':
+            functions.destiny(bot, message, params, channelEmoji);
+            break;
+        // Roll the dice command
+        case 'roll':
+        case 'r':
+            functions.roll(bot, message, params, channelEmoji, desc).roll;
+            break;
+        case 'reroll':
+        case 'rr':
+            functions.reroll(bot, message, params, channelEmoji);
+            break;
+        case 'initiative':
+        case 'init':
+        case 'i':
+            functions.initiative(bot, message, params, channelEmoji);
+            break;
+        case 'obligation':
+        case 'o':
+            functions.obligation(bot, message);
+            break;
+        case 'swrpg':
+        case 'genesys':
+            functions.writeData(bot, message, 'channelEmoji', command);
+            message.channel.send(`${bot.user.username} will now use ${command} dice`);
+            break;
     }
-
-    process.on('unhandledRejection', err => {
-        console.error('Uncaught Promise Error: \n' + err.stack);
-    });
-
+    if (message.author.id === functions.config.adminID) {
+        functions.admin(bot, message, params, command);
+    }
 });

@@ -1,5 +1,11 @@
-function destiny(params, destinyBalance, message, bot, channelEmoji, roll, print) {
+const roll = require('./roll').roll;
+const print = require('./printValues').print;
+const readData = require('./data').readData;
+const writeData = require('./data').writeData;
+
+async function destiny(bot, message, params, channelEmoji) {
     let type, pointNameLight, pointNameDark;
+    let destinyBalance = await readData(bot, message, 'destinyBalance');
     if (channelEmoji === 'swrpg') {
         type = 'Destiny';
         pointNameLight = 'Lightside';
@@ -91,15 +97,15 @@ function destiny(params, destinyBalance, message, bot, channelEmoji, roll, print
             }
         case "roll":
         case "r":
-            let destinyRoll = roll(["w"], message, bot, `${type} roll`, channelEmoji).results;
-            destinyBalance.light = +destinyBalance.light + +destinyRoll.lightpip;
-            destinyBalance.dark = +destinyBalance.dark + +destinyRoll.darkpip;
+            let destinyRoll = await roll(bot, message, ["w"], channelEmoji, `${type} roll`);
+            destinyBalance.light = +destinyBalance.light + +destinyRoll.results.lightpip;
+            destinyBalance.dark = +destinyBalance.dark + +destinyRoll.results.darkpip;
             break;
         default:
             break;
     }
-    printdestinyBalance(destinyBalance, bot, channelEmoji, message, type, print);
-    return destinyBalance;
+    printdestinyBalance(destinyBalance, bot, channelEmoji, message, type);
+    writeData(bot, message, 'destinyBalance', destinyBalance);
 
     //Prints out destiny pool to channel
 }
@@ -112,7 +118,7 @@ function initdestinyBalance() {
     };
 }
 
-function printdestinyBalance(destinyBalance, bot, channelEmoji, message, type, print) {
+function printdestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
     destinyBalance.face = "";
     for (let i = 1; i <= destinyBalance.light; i++) {
         destinyBalance.face += print("lightside", bot, channelEmoji);

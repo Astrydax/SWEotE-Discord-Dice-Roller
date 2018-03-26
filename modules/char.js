@@ -1,17 +1,19 @@
-let textCrit = require("./crit.js").textCrit;
+const textCrit = require('./crit').textCrit;
+const readData = require('./data').readData;
+const writeData = require('./data').writeData;
 
-function char(params, characterStatus, message, bot, channelEmoji) {
+
+async function char(bot, message, params, channelEmoji) {
     //setting the channel specific variables
+    let characterStatus = await readData(bot, message, 'characterStatus');
     let characterName = "";
     let command = params[0];
     let modifier = 0;
 
     if (params[1]) characterName = params[1].toUpperCase();
     if (params[2]) modifier = +(params[2]).replace(/\D/g, "");
-    if (!command) {
-        message.channel.send("Bad Command, !help char for more information");
-        return characterStatus;
-    } else if (!characterStatus[characterName]) {
+    if (!command) command = 'list';
+    else if (!characterStatus[characterName]) {
         if (command === "setup" || command === "add") {
             if (characterName === "") {
                 message.channel.send("No characterName, !help char for more information");
@@ -22,7 +24,7 @@ function char(params, characterStatus, message, bot, channelEmoji) {
         else if (command === "reset") console.log("Reset command detected.");
         else {
             message.channel.send(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
-            return characterStatus;
+            return;
         }
     }
 
@@ -235,7 +237,7 @@ function char(params, characterStatus, message, bot, channelEmoji) {
             message.channel.send("Bad Command, !help char for more information");
             break;
     }
-    return characterStatus;
+    writeData(bot, message, 'characterStatus', characterStatus);
 }
 
 exports.char = char;

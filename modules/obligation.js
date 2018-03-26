@@ -1,6 +1,8 @@
-let dice = require("./misc.js").dice;
+const dice = require("./misc.js").dice;
+const readData = require('./data').readData;
 
-function obligation(params, characterStatus, message) {
+async function obligation(bot, message) {
+    let characterStatus = await readData(bot, message, 'characterStatus');
     let obList = [];
     if (Object.keys(characterStatus).length === 0) {
         message.channel.send("No characters found please use !char to setup");
@@ -33,9 +35,11 @@ function obligation(params, characterStatus, message) {
 
     for (let i = 0; i < obList.length; i++) {
         target += obList[i].value;
-        if (target > roll) break;
+        if (target > roll) {
+            message.channel.send(obList[i].name + "\'s " + obList[i].obligation + " obligation has been triggered.");
+            break;
+        }
     }
-    message.channel.send(obList[i].name + "\'s " + obList[i].obligation + " obligation has been triggered.");
 }
 
 module.exports = {
