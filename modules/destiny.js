@@ -6,14 +6,14 @@ const writeData = require('./data').writeData;
 async function destiny(bot, message, params, channelEmoji) {
     let type, pointNameLight, pointNameDark;
     let destinyBalance = await readData(bot, message, 'destinyBalance');
-    if (channelEmoji === 'swrpg') {
-        type = 'Destiny';
-        pointNameLight = 'Lightside';
-        pointNameDark = 'Darkside';
-    } else {
+    if (channelEmoji === 'genesys') {
         type = 'Story';
         pointNameLight = 'Player';
         pointNameDark = 'GM';
+    } else {
+        type = 'Destiny';
+        pointNameLight = 'Lightside';
+        pointNameDark = 'Darkside';
     }
 
     if (Object.keys(destinyBalance).length === 0) destinyBalance = initdestinyBalance();
