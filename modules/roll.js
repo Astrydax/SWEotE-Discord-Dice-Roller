@@ -1,4 +1,4 @@
-const config = require("../config.js");
+const config = require("../config.js").config;
 const diceFaces = require('./dice.js').dice;
 const dice = require("./misc.js").dice;
 const printEmoji = require("./printValues.js").print;
@@ -67,10 +67,12 @@ function processType(message, params) {
     return new Promise(resolve => {
         let diceOrder = [];
         if (params.length > 0) {
-            if ((params[0]).match(/\d+/g) != null) {
+            if ((params[0]).match(/\d+/g)) {
                 for (let i = 0; i < params.length; i++) {
                     let diceQty = (params[i]).replace(/\D/g, "");
                     let color = params[i].replace(/\d/g, "");
+                    console.log(diceQty);
+                    console.log(config.maxRollsPerDie);
                     if (diceQty > config.maxRollsPerDie) {
                         message.reply('Roll exceeds max roll per die limit of ' + config.maxRollsPerDie + ' . Please try again.');
                         resolve(0);
