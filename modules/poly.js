@@ -1,13 +1,14 @@
 const dice = require("./misc.js").dice;
+const config = require("../config.js").config;
 
 function poly(params, message) {
     let text = 'rolled: ';
-    params.forEach((unit) => {
+    params.forEach(unit => {
         let modifier = 0;
         text += "\n`" + unit + "`" + ": (";
 
         if (unit.includes("+")) {
-            for (k = 0; k < unit.length; k++) {
+            for (let k = 0; k < unit.length; k++) {
                 if (unit[k] === '+') {
                     modifier = +unit.slice(k + 1);
                     unit = unit.slice(0, k - unit.length);
@@ -17,7 +18,7 @@ function poly(params, message) {
         }
 
         if (unit.includes("-")) {
-            for (l = 0; l < unit.length; l++) {
+            for (let l = 0; l < unit.length; l++) {
                 if (unit[l] === '-') {
                     modifier = -(+unit.slice(l + 1));
                     unit = unit.slice(0, l - unit.length);
@@ -28,7 +29,7 @@ function poly(params, message) {
 
         let position = 0;
 
-        for (i = 0; i < unit.length; i++) {
+        for (let i = 0; i < unit.length; i++) {
             if (unit[i] === 'd') {
                 position = i;
                 break;
@@ -40,11 +41,16 @@ function poly(params, message) {
         let total = 0;
         let rolls = [];
 
-        for (j = 0; j < dieAmount; j++) {
+        if (dieAmount > config.maxRollsPerDie) {
+            message.reply(`Roll exceeds max roll per die limit of ${config.maxRollsPerDie}. Please try again.`);
+            return;
+        }
+
+        for (let j = 0; j < dieAmount; j++) {
             rolls.push(dice(dieType));
         }
 
-        rolls.forEach((roll) => {
+        rolls.forEach(roll => {
             text += roll + " + ";
             total += roll;
         });
@@ -53,10 +59,11 @@ function poly(params, message) {
         text = text.slice(0, -3) + ")";
         if (modifier > 0) text += " + " + modifier;
         if (modifier < 0) text += " - " + Math.abs(modifier);
-        text += " = " + total;
+        if (text.length < 1500) {
+            text += " = " + total + '.';
+        } else text = `Too many dice to display.  Total roll is ${total}.`;
     });
-
-    message.reply(text);
+    if (text.endsWith('.')) message.reply(text);
 }
 
 exports.poly = poly;

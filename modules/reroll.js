@@ -6,7 +6,13 @@ const readData = require('./data').readData;
 const writeData = require('./data').writeData;
 
 async function reroll(bot, message, params, channelEmoji) {
-    let diceResult = await readData(bot, message, 'diceResult');
+    let diceResult;
+    try {
+        diceResult = await readData(bot, message, 'diceResult');
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+        return;
+    }
     if (!diceResult) return;
     if (Object.keys(diceResult).length === 0) return;
     diceResult = {roll: diceResult};

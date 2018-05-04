@@ -1,3 +1,9 @@
+2.3.1
+    -new emoji
+    -added catch statements to all (hopefully) promises
+    -added catch for long poly rolls
+    -fixed max die check
+
 2.3.0
     -added promises for firebase data and time sensitive roll stuff
     -removed command tracker

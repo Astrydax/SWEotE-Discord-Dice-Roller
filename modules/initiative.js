@@ -3,7 +3,13 @@ const readData = require('./data').readData;
 const writeData = require('./data').writeData;
 
 async function initiative(bot, message, params, channelEmoji) {
-    let initiativeOrder = await readData(bot, message, 'initiativeOrder');
+    let initiativeOrder;
+    try {
+        initiativeOrder = await readData(bot, message, 'initiativeOrder');
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+        return;
+    }
 
     if (Object.keys(initiativeOrder).length === 0) initiativeOrder = initializeinitOrder();
     if (!initiativeOrder.newslots) initiativeOrder.newslots = [];

@@ -67,8 +67,8 @@ bot.on("message", async message => {
     let beg, end;
     let desc = [];
     params.forEach((param, index) => {
-        if (param.includes('"')) {
-            if (!beg) {
+        if (param.includes('\"') || param.includes('“') | param.includes('\'')) {
+            if (beg === undefined) {
                 beg = index;
                 end = index;
             }
@@ -76,10 +76,11 @@ bot.on("message", async message => {
         }
     });
 
-    if (beg && end) {
+    if (beg !== undefined && end !== undefined) {
         desc = params.slice(beg, end + 1);
         params.splice(beg, end + 1 - beg);
-        desc = desc.join(' ').replace(/['"']+/g, '');
+        desc.forEach((word, index) => desc[index] = word.replace('\"', '').replace('\'', '').replace('“', ''));
+        desc = desc.join(' ');
     }
 
     //set the rest of params to lowercase
@@ -91,7 +92,14 @@ bot.on("message", async message => {
 
 
 //************************COMMANDS START HERE************************
-    let channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+    let channelEmoji;
+    try {
+        channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+        return;
+    }
+
     switch (command) {
         //Ver command
         case 'ver':
@@ -132,7 +140,12 @@ bot.on("message", async message => {
         // Roll the dice command
         case 'roll':
         case 'r':
-            functions.roll(bot, message, params, channelEmoji, desc).roll;
+            try {
+                let dice = functions.roll(bot, message, params, channelEmoji, desc).roll;
+            } catch (error) {
+                message.reply(`That's an Error! ${error}`);
+                return;
+            }
             break;
         case 'reroll':
         case 'rr':

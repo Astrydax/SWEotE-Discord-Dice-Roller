@@ -5,7 +5,13 @@ const writeData = require('./data').writeData;
 
 async function destiny(bot, message, params, channelEmoji) {
     let type, pointNameLight, pointNameDark;
-    let destinyBalance = await readData(bot, message, 'destinyBalance');
+    let destinyBalance;
+    try {
+        destinyBalance = await readData(bot, message, 'destinyBalance');
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+        return;
+    }
     if (channelEmoji === 'genesys') {
         type = 'Story';
         pointNameLight = 'Player';

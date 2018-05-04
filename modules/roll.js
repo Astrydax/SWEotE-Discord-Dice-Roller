@@ -12,7 +12,14 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
             return;
         }
         //process each identifier and set it into an array
-        if (!diceOrder) diceOrder = await processType(message, params);
+        if (!diceOrder) {
+            try {
+                diceOrder = await processType(message, params);
+            } catch (error) {
+                message.reply(`That's an Error! ${error}`);
+                return;
+            }
+        }
         if (diceOrder === 0) return;
         //rolls each die and begins rollResults
         diceOrder.forEach((die) => {
@@ -21,8 +28,14 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
         });
 
         //counts the symbols rolled
+        try {
+            diceResult = await countSymbols(diceResult, message, bot, desc, channelEmoji);
+        } catch (error) {
+            message.reply(`That's an Error! ${error}`);
+            return;
+        }
 
-        diceResult = await countSymbols(diceResult, message, bot, desc, channelEmoji);
+
         resolve(diceResult);
         writeData(bot, message, 'diceResult', diceResult.roll);
     });

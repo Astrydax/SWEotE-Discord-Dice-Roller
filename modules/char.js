@@ -5,7 +5,13 @@ const writeData = require('./data').writeData;
 
 async function char(bot, message, params, channelEmoji) {
     //setting the channel specific variables
-    let characterStatus = await readData(bot, message, 'characterStatus');
+    let characterStatus;
+    try {
+        characterStatus = await readData(bot, message, 'characterStatus');
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+        return;
+    }
     let characterName = "";
     let command = params[0];
     let modifier = 0;

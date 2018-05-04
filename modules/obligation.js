@@ -2,7 +2,13 @@ const dice = require("./misc.js").dice;
 const readData = require('./data').readData;
 
 async function obligation(bot, message) {
-    let characterStatus = await readData(bot, message, 'characterStatus');
+    let characterStatus;
+    try {
+        characterStatus = await readData(bot, message, 'characterStatus');
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+        return;
+    }
     let obList = [];
     if (Object.keys(characterStatus).length === 0) {
         message.channel.send("No characters found please use !char to setup");
