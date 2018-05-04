@@ -30,9 +30,13 @@ function readData(bot, message, dataSet) {
 }
 
 function writeData(bot, message, dataSet, data) {
-    if (dataSet === 'diceResult') firebase.database().ref().child(`${bot.user.username}`).child(dataSet).child(message.channel.id).child(message.author.id).set(data);
-    else firebase.database().ref().child(`${bot.user.username}`).child(dataSet).child(message.channel.id).set(data);
+    return new Promise(resolve => {
+        if (dataSet === 'diceResult') firebase.database().ref().child(`${bot.user.username}`).child(dataSet).child(message.channel.id).child(message.author.id).set(data);
+        else firebase.database().ref().child(`${bot.user.username}`).child(dataSet).child(message.channel.id).set(data);
+        resolve();
+    });
 }
+
 
 exports.readData = readData;
 exports.writeData = writeData;

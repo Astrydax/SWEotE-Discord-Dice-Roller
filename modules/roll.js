@@ -37,7 +37,12 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 
 
         resolve(diceResult);
-        writeData(bot, message, 'diceResult', diceResult.roll);
+
+        try {
+            writeData(bot, message, 'diceResult', diceResult.roll);
+        } catch (error) {
+            message.reply(`That's an Error! ${error}`);
+        }
     });
 }
 

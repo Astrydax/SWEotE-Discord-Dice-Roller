@@ -130,7 +130,12 @@ async function initiative(bot, message, params, channelEmoji) {
     }
     if (initiativeOrder.slots[0]) printinitiativeOrder(initiativeOrder, message);
     else message.channel.send('No initiative order is set!');
-    writeData(bot, message, 'initiativeOrder', initiativeOrder);
+    try {
+        writeData(bot, message, 'initiativeOrder', initiativeOrder);
+
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+    }
 }
 
 //Adds a roll to the order and sorts it

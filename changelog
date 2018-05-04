@@ -1,3 +1,6 @@
+2.3.2
+    -added promise for writing data
+
 2.3.1
     -new emoji
     -added catch statements to all (hopefully) promises

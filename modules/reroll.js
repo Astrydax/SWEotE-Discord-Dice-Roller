@@ -141,7 +141,12 @@ async function reroll(bot, message, params, channelEmoji) {
             break
     }
     if (!diceResult) diceResult.roll = {};
-    writeData(bot, message, 'diceResult', diceResult.roll);
+    try {
+        writeData(bot, message, 'diceResult', diceResult.roll);
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+    }
+
 }
 
 module.exports = {

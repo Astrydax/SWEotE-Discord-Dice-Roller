@@ -243,7 +243,11 @@ async function char(bot, message, params, channelEmoji) {
             message.channel.send("Bad Command, !help char for more information");
             break;
     }
-    writeData(bot, message, 'characterStatus', characterStatus);
+    try {
+        writeData(bot, message, 'characterStatus', characterStatus);
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+    }
 }
 
 exports.char = char;

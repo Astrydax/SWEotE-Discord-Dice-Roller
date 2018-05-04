@@ -111,7 +111,11 @@ async function destiny(bot, message, params, channelEmoji) {
             break;
     }
     printdestinyBalance(destinyBalance, bot, channelEmoji, message, type);
-    writeData(bot, message, 'destinyBalance', destinyBalance);
+    try {
+        writeData(bot, message, 'destinyBalance', destinyBalance);
+    } catch (error) {
+        message.reply(`That's an Error! ${error}`);
+    }
 
     //Prints out destiny pool to channel
 }
