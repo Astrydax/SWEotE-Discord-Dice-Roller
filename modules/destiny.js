@@ -35,14 +35,15 @@ async function destiny(bot, message, params, channelEmoji) {
                 if (params[1].match(/\d+/g)) {
                     for (let i = 0; i < params.length; i++) {
                         let color = params[i].replace(/\d/g, "");
+                        let amount = params[i].replace(/\D/g, "");
                         switch (color) {
                             case "l":
                             case "p":
-                                destinyBalance.light = (params[i]).replace(/\D/g, "");
+                                destinyBalance.light = amount;
                                 break;
                             case "d":
                             case "g":
-                                destinyBalance.dark = (params[i]).replace(/\D/g, "");
+                                destinyBalance.dark = amount;
                                 break;
                             default:
                                 break;
@@ -138,6 +139,7 @@ function printdestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
     }
     message.channel.send(`${type} Points: `);
     if (destinyBalance.face !== "") {
+        if (destinyBalance.face.length > 1500) destinyBalance.face = `Too many ${type} Points to display.`;
         message.channel.send(destinyBalance.face);
     }
 }

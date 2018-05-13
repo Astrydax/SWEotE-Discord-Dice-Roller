@@ -182,6 +182,8 @@ function printinitiativeOrder(initiativeOrder, message) {
     }
     message.channel.send("Round: " + initiativeOrder.round + " Turn: " + initiativeOrder.turn + "\nInitiative Order: ");
     if (faces === "") return;
+    if (faces.length > 1500) faces = `Initiative order too long to display.`;
+
     message.channel.send(faces);
 }
 
