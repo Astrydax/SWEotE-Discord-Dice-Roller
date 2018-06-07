@@ -103,6 +103,8 @@ Examples:
 !Init Set: manually set initiative order before any turns occur
 !Init Modify: manually alter initiative order mid-round
 !Init Reset: resets the initiative order
+!Init Remove X: remove a slot where is is the position
+
 \`\`\``);
                 break;
             case "reroll":

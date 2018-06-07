@@ -29,7 +29,7 @@ function textCrit(total, bot) {
     //build textCrit
     let textCrit = "";
     switch (true) {
-        case (total < 5):
+        case (total < 6):
             textCrit = print('purple', bot) + "Minor Nick: The target suffers 1 strain.";
             break;
         case (total >= 6 && total <= 10):

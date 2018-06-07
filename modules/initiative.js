@@ -124,6 +124,16 @@ async function initiative(bot, message, params, channelEmoji) {
                 }
             }
             break;
+        case 'remove':
+            let slot = +params[0];
+            if (Object.keys(initiativeOrder.slots[0]).length > 1) initiativeOrder = sortInitiativeOrder(initiativeOrder);
+            if (initiativeOrder.slots.length >= slot - 1) {
+                message.reply(`Removing ${getFace(initiativeOrder.slots[slot - 1].type)} from slot ${slot}`);
+                initiativeOrder.slots.splice(slot - 1, 1);
+                if (slot < initiativeOrder.turn) initiativeOrder.turn--;
+            }
+            else message.reply(`There are not ${slot} slots!`);
+            break;
         default:
             console.log("Just printing initiativeOrder");
             break;
