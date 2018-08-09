@@ -1,7 +1,7 @@
 function help(bot, message, params) {
-    if (!params[0]) {
-        message.channel.send(
-            `\`\`\`prolog
+	if (!params[0]) {
+		message.channel.send(
+			`\`\`\`prolog
 type '!Help [topic]' for further information
 
 !Roll: rolls any combination of swrpg dice
@@ -22,12 +22,12 @@ type '!Help [topic]' for further information
 
 for more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'
 \`\`\``);
-    } else {
-        let topic = params[0];
-        switch (topic) {
-            case "destiny":
-                message.channel.send(
-                    `\`\`\`prolog
+	} else {
+		let topic = params[0];
+		switch (topic) {
+			case "destiny":
+				message.channel.send(
+					`\`\`\`prolog
 !Destiny: view the destiny points
 !Destiny Roll: rolls a force die and adds result to the destiny pool
 !Destiny L/Light: uses light side point
@@ -36,10 +36,10 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
 !Destiny Set LLDD: sets destiny pool
 !Destiny Reset: resets the destiny pool
 \`\`\``);
-                break;
-            case "story":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "story":
+				message.channel.send(
+					`\`\`\`prolog
 !Story: view the destiny points
 !Story Roll: rolls a white die and adds result to the story points
 !Story P/Player: uses light side point
@@ -48,10 +48,10 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
 !Story Set PPGG: sets story points
 !Story Reset: resets the story points
 \`\`\``);
-                break;
-            case "char":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "char":
+				message.channel.send(
+					`\`\`\`prolog
 !Char: simple character stat manager
 !Char Setup CharacterName MaxWound MaxStrain Credits: setup a new character
 !Char Wound/W CharacterName +X/-X: increases/decreases wounds for characterName by x
@@ -65,10 +65,10 @@ for more information join the SWRPG Assistant Bot discord server 'https://discor
 !Char List: displays all characters
 !Char Reset: resets all the characters
 \`\`\``);
-                break;
-            case "roll":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "roll":
+				message.channel.send(
+					`\`\`\`prolog
 !Roll DiceIdentifiers "TEXT"
 DICE IDENTIFIERS
     Pro = yellow/proficiency
@@ -92,10 +92,10 @@ Examples:
     !roll yyyggbbd (must use single character identifiers)
     !roll 1g 1p 1adv (must specify a number before each identifier)
 \`\`\``);
-                break;
-            case "init":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "init":
+				message.channel.send(
+					`\`\`\`prolog
 !Init: shows current initiative order
 !Init Roll DiceIdentifiers NPC/PC: rolls your initiative dice and adds character to the order
 !Init Next: moves to next initiative slot
@@ -106,10 +106,10 @@ Examples:
 !Init Remove X: remove a slot where is is the position
 
 \`\`\``);
-                break;
-            case "reroll":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "reroll":
+				message.channel.send(
+					`\`\`\`prolog
 !Reroll Same: rolls the same pool again
 !Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
 !Reroll Remove DiceIdentifiers: remove random dice of the designated color
@@ -122,29 +122,37 @@ Examples:
 !Reroll Fortune Swap DiceColor/DicePosition AdjacentFace (From !Reroll Fortune Show Command): swaps the current face for an adjacent one
     ie !Reroll Fortune Swap 2Y 3: swaps the current die face on the 2nd yellow with option 3 of the adjacent sides
 \`\`\``);
-                break;
-            case "poly":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "poly":
+				message.channel.send(
+					`\`\`\`prolog
 !Poly: rolls any combination of polyhedral dice with modifier
 Examples:
     poly 1d4 2d6+1 1d100-60 
 \`\`\``);
-                break;
-            case "crit":
-            case "shipcrit":
-                message.channel.send(
-                    `\`\`\`prolog
+				break;
+			case "prefix":
+				message.channel.send(
+					`\`\`\`prolog
+!Prefix: changes the activation prefix for the bot.
+Examples:
+    prefix ^, prefix & 
+\`\`\``);
+				break;
+			case "crit":
+			case "shipcrit":
+				message.channel.send(
+					`\`\`\`prolog
 !Crit and !Shipcrit: rolls a d100 and matches the roll to the appropriate critical injury table then prints the result
 !Crit +10: automatically add 10 to the roll (any number can be used)
 !Crit -10: automatically subtract 10 to the roll (any number can be used)
 !Crit 54?: look up crit by number (any number can be used)
 \`\`\``);
-                break;
-            default:
-                break;
-        }
-    }
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 exports.help = help;

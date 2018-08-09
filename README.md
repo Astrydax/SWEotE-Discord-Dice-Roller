@@ -108,6 +108,10 @@ Commands:
   - !help        displays help for topics
   - !init        initiative tracker and roller
   - !ver         displays bot version
+  
+-  !Prefix:      changes the activation prefix for the bot.
+  Examples:
+      prefix ^, prefix & 
 
 - ADMIN ONLY
   - !stats     Displays # of servers/users bot is currently has.

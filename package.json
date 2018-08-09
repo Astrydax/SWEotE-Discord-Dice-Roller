@@ -8,8 +8,8 @@
     "url": "git+https://github.com/SkyJedi/SWEotE-Discord-Dice-Roller"
   },
   "dependencies": {
-    "discord.js": "^11.3.2",
-    "firebase": "^4.12.0",
+    "discord.js": "^11.4.0",
+    "firebase": "^5.3.1",
     "seedrandom": "^2.4.3"
   },
   "scripts": {
