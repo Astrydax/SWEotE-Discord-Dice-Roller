@@ -18,6 +18,7 @@ type '!Help [topic]' for further information
 !Species/!Gleepglop: picks a random species
 !SWRPG: uses swrpg dice for this channel
 !GENESYS: uses genesys dice for this channel
+!PREFIX: changes the prefix to activate the bot
 !Help: displays help for topics
 
 for more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'
