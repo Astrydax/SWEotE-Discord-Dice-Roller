@@ -1,7 +1,6 @@
 function help(bot, message, params) {
 	if (!params[0]) {
-		message.channel.send(
-			`\`\`\`prolog
+		message.channel.send(`\`\`\`prolog
 type '!Help [topic]' for further information
 
 !Roll: rolls any combination of swrpg dice
@@ -20,9 +19,15 @@ type '!Help [topic]' for further information
 !GENESYS: uses genesys dice for this channel
 !PREFIX: changes the prefix to activate the bot (role needs to be higher than the bot)
 !Help: displays help for topics
+\`\`\`
+for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
 
-for more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'
-\`\`\``);
+Role Playing games by Fantasy Flight Games 
+<https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire>
+<https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny>
+<https://www.fantasyflightgames.com/en/products/star-wars-age-ofrebellion>
+<https://www.fantasyflightgames.com/en/products/genesys>
+`);
 	} else {
 		let topic = params[0];
 		switch (topic) {
