@@ -112,6 +112,8 @@ Commands:
 -  !Prefix:      changes the activation prefix for the bot.
   Examples:
       prefix ^, prefix & 
+      NOTE: User needs to have a higher role than the bot. 
+      See more: https://support.discordapp.com/hc/en-us/articles/214836687-Role-Management-101
 
 - ADMIN ONLY
   - !stats     Displays # of servers/users bot is currently has.

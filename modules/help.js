@@ -18,7 +18,7 @@ type '!Help [topic]' for further information
 !Species/!Gleepglop: picks a random species
 !SWRPG: uses swrpg dice for this channel
 !GENESYS: uses genesys dice for this channel
-!PREFIX: changes the prefix to activate the bot
+!PREFIX: changes the prefix to activate the bot (role needs to be higher than the bot)
 !Help: displays help for topics
 
 for more information join the SWRPG Assistant Bot discord server 'https://discord.gg/G8au6FH'
@@ -138,7 +138,9 @@ Examples:
 !Prefix: changes the activation prefix for the bot.
 Examples:
     prefix ^, prefix & 
-\`\`\``);
+\`\`\`
+NOTE: User needs to have a higher role than the bot. 
+See more: https://support.discordapp.com/hc/en-us/articles/214836687-Role-Management-101`);
 				break;
 			case "crit":
 			case "shipcrit":
