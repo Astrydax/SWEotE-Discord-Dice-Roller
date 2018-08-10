@@ -20,7 +20,13 @@ bot.on('ready', () => {
 bot.on("message", async message => {
 	//Ignore messages sent by the bot
 	if (message.author.bot) return;
-	let prefix = await functions.readData(bot, message, 'prefix');
+	let prefix;
+	try {
+		prefix = await functions.readData(bot, message, 'prefix');
+	} catch (error) {
+		message.reply(`That's an Error! ${error}`);
+		return;
+	}
 	if (!prefix) prefix = functions.config.prefix;
 	if (message.content.includes(bot.user.id) && message.content.includes('prefix')) message.channel.send(`${bot.user.username} is using ${prefix} as the activator for this server`);
 
@@ -94,7 +100,13 @@ bot.on("message", async message => {
 	console.log(`${command} ${params} ${desc}`);
 
 //************************COMMANDS START HERE************************
-	let channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+	let channelEmoji;
+	try {
+		channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+	} catch (error) {
+		message.reply(`That's an Error! ${error}`);
+		return;
+	}
 
 	switch (command) {
 		//Ver command

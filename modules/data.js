@@ -1,7 +1,7 @@
 const firebase = require('firebase');
 
 function readData(bot, message, dataSet) {
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		let dbRef = firebase.database().ref(`${bot.user.username}/${dataSet}/${message.channel.id}`);
 		if (dataSet === 'prefix') dbRef = firebase.database().ref(`${bot.user.username}/${dataSet}/${message.guild.id}/`);
 
@@ -30,7 +30,7 @@ function readData(bot, message, dataSet) {
 		}, error => {
 			console.error(error);
 			message.channel.send(`Error retrieving data`);
-			reject({});
+			resolve({});
 		});
 	});
 }
