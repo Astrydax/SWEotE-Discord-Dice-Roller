@@ -80,15 +80,14 @@ bot.on("message", async message => {
 			if (beg === undefined) {
 				beg = index;
 				end = index;
-			}
-			else end = index;
+			} else end = index;
 		}
 	});
 
 	if (beg !== undefined && end !== undefined) {
 		desc = params.slice(beg, end + 1);
 		params.splice(beg, end + 1 - beg);
-		desc.forEach((word, index) => desc[index] = word.replace('\"', '').replace('\'', '').replace('“', ''));
+		desc.forEach((word, index) => desc[index] = word.replace(/['"`“]/g, ''));
 		desc = desc.join(' ');
 	}
 
