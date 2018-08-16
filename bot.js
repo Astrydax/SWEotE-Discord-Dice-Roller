@@ -84,6 +84,10 @@ bot.on("message", async message => {
 		case 'prefix':
 			functions.prefix(bot, message, params);
 			break;
+		case 'invite':
+			message.channel.send(`Invite @D1-C3  to your server
+<https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`);
+			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
 	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji);

@@ -129,6 +129,8 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
       prefix ^, prefix & 
       NOTE: User needs to have a higher role than the bot. 
       See more: https://support.discordapp.com/hc/en-us/articles/214836687-Role-Management-101
+      
+-  !Invite  get an invite link for @D1-C3
 
 - ADMIN ONLY
   - !stats     Displays # of servers/users bot is currently has.
