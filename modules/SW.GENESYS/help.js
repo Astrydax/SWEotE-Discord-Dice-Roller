@@ -7,19 +7,20 @@ type '!Help [topic]' for further information
 !GENESYS: uses genesys dice for this channel
 !L5R: uses l5r dice in this channel
 
-!Roll: rolls any combination of SWRPG/GENESYS dice
 !Poly: rolls any combination of polyhedral dice
+!Ver: displays bot version
+!Prefix: changes the prefix to activate the bot (role needs to be higher than the bot)
+!Help: displays help for topics
+
+!Roll: rolls any combination of SWRPG/GENESYS dice
 !Reroll: modifies the previous roll
 !Destiny: manages the destiny balance
 !Crit: rolls and displays the critical hit
 !Shipcrit: rolls and displays the ship critical hit
 !Char: simple character stat manager
-!Ver: displays bot version
 !Init: initiative tracker and roller
 !Obligation: gathers all the obligations entered with !Char and rolls to trigger
 !Species/!Gleepglop: picks a random species
-!PREFIX: changes the prefix to activate the bot (role needs to be higher than the bot)
-!Help: displays help for topics
 \`\`\`
 for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
 
