@@ -15,11 +15,11 @@ async function commands(bot, message, params, command, desc, channelEmoji) {
 			functions.gleepglop(bot, message, params);
 			break;
 		case 'crit':
-			functions.crit(bot, message, params);
+			functions.crit(bot, message, params, channelEmoji);
 			break;
 		//!shipcrit command
 		case 'shipcrit':
-			functions.shipcrit(bot, message, params);
+			functions.shipcrit(bot, message, params, channelEmoji);
 			break;
 		//Destiny Point Module
 		case 'destiny':
