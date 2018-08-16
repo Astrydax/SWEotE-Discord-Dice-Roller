@@ -38,7 +38,6 @@ function buildCommand(params) {
 	//create command
 	let command = params[0].toString().slice(1);
 	params = params.slice(1);
-	console.log(params, command);
 	return [_.toLower(command), params];
 }
 
