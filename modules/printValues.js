@@ -1,9 +1,7 @@
-const config = require("../config.js").config;
+const config = require('../config').config;
 
 function print(str, bot, channelEmoji) {
-    let guild = "";
-    if (channelEmoji === "genesys") guild = bot.guilds.get(config.genesys);
-    else guild = bot.guilds.get(config.swrpg);
+	let guild = bot.guilds.get(config[channelEmoji]);
 	return guild.emojis.find(val => val.name === str).toString();
 }
 

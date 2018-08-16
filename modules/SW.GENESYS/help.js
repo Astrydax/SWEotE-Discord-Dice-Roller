@@ -22,7 +22,7 @@ type '!Help [topic]' for further information
 \`\`\`
 for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
 
-Role Playing games by Fantasy Flight Games 
+Role playing games by Fantasy Flight Games 
 <https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire>
 <https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny>
 <https://www.fantasyflightgames.com/en/products/star-wars-age-ofrebellion>

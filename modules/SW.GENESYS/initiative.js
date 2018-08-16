@@ -1,17 +1,11 @@
-let roll = require("./roll.js").roll;
-const readData = require('./data').readData;
-const writeData = require('./data').writeData;
+let functions = require('./');
+const readData = require('../').readData;
+const writeData = require('../').writeData;
 
 async function initiative(bot, message, params, channelEmoji) {
-	let initiativeOrder;
-	try {
-		initiativeOrder = await readData(bot, message, 'initiativeOrder');
-	} catch (error) {
-		message.reply(`That's an Error! ${error}`);
-		return;
-	}
-
-	if (Object.keys(initiativeOrder).length === 0) initiativeOrder = initializeinitOrder();
+	return new Promise(async () => {
+		let initiativeOrder = await readData(bot, message, 'initiativeOrder');
+		if (Object.keys(initiativeOrder).length === 0) initiativeOrder = initializeInitOrder();
 	if (!initiativeOrder.newslots) initiativeOrder.newslots = [];
 	if (!initiativeOrder.slots) initiativeOrder.slots = [];
 
@@ -29,13 +23,7 @@ async function initiative(bot, message, params, channelEmoji) {
 				break;
 			}
 			let type = params.pop();
-			let diceResult;
-			try {
-				diceResult = await roll(bot, message, params, channelEmoji, "Initiative roll");
-			} catch (error) {
-				message.reply(`That's an Error! ${error}`);
-				return;
-			}
+			let diceResult = await functions.roll(bot, message, params, channelEmoji, "Initiative roll");
 			diceResult = diceResult.results;
 			let rollResult = {
 				success: diceResult.success,
@@ -58,7 +46,7 @@ async function initiative(bot, message, params, channelEmoji) {
 		//manually set initiativeOrder
 		case "set":
 		case "s":
-			initiativeOrder = initializeinitOrder();
+			initiativeOrder = initializeInitOrder();
 			console.log("Setting current initiativeOrder for " + message.author.username);
 			if (!params[0]) {
 				message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
@@ -80,7 +68,7 @@ async function initiative(bot, message, params, channelEmoji) {
 		//Reset the initiativeOrder
 		case "reset":
 			console.log(message.author.username + " resets the Initiative Order");
-			initiativeOrder = initializeinitOrder();
+			initiativeOrder = initializeInitOrder();
 			message.reply(" resets the Initiative Order");
 			break;
 		//advance to next Initiative slot
@@ -92,7 +80,6 @@ async function initiative(bot, message, params, channelEmoji) {
 				message.channel.send("New Round!");
 				if (initiativeOrder.newslots.length > 0) {
 					initiativeOrder.slots = initiativeOrder.slots.concat(initiativeOrder.newslots);
-					initiativeOrder = addtoinitiativeOrder(initiativeOrder);
 					initiativeOrder.newslots = [];
 				}
 			} else initiativeOrder.turn++;
@@ -144,14 +131,10 @@ async function initiative(bot, message, params, channelEmoji) {
 			console.log("Just printing initiativeOrder");
 			break;
 	}
-	if (initiativeOrder.slots[0]) printinitiativeOrder(initiativeOrder, message);
+		if (initiativeOrder.slots[0]) printInitiativeOrder(initiativeOrder, message);
 	else message.channel.send('No initiative order is set!');
-	try {
 		writeData(bot, message, 'initiativeOrder', initiativeOrder);
-
-	} catch (error) {
-		message.reply(`That's an Error! ${error}`);
-	}
+	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
 //Adds a roll to the order and sorts it
@@ -175,8 +158,8 @@ function sortInitiativeOrder(initiativeOrder) {
 	return initiativeOrder;
 }
 
-//initializeinitOrder
-function initializeinitOrder() {
+//initializeInitOrder
+function initializeInitOrder() {
 	return {
 		turn: 1,
 		round: 1,
@@ -186,7 +169,7 @@ function initializeinitOrder() {
 }
 
 //Prints out Initiative Order to channel
-function printinitiativeOrder(initiativeOrder, message) {
+function printInitiativeOrder(initiativeOrder, message) {
 	if (Object.keys(initiativeOrder.slots[0]).length > 1) initiativeOrder = sortInitiativeOrder(initiativeOrder);
 	let faces = "";
 	for (let i = initiativeOrder.turn - 1; i < initiativeOrder.slots.length; i++) {

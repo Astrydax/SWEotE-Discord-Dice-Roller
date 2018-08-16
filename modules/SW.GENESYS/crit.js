@@ -1,5 +1,5 @@
-let d100 = require("./misc.js").polyhedral;
-let print = require("./printValues.js").print;
+let d100 = require("../.").polyhedral;
+let print = require("../").print;
 
 function crit(bot, message, params) {
     if (params.length > 0) {

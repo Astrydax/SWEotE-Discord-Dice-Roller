@@ -2,10 +2,13 @@
   Developed by Astrydax, aka Royalcrown28 for vampwood
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
-const functions = require('./modules/index');
+const functions = require('./modules/');
+const swcommands = require('./modules/SW.GENESYS/').commands;
+const l5rcommands = require('./modules/L5R/').commands;
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const firebase = require('firebase');
+
 
 bot.login(functions.config.token).catch((error) => console.error(error));
 firebase.initializeApp(functions.firebaseconfig);
@@ -18,20 +21,16 @@ bot.on('ready', () => {
 
 //Called whenever a users send a message to the server
 bot.on("message", async message => {
+
+	let prefix, params, command, desc, sides, channelEmoji;
+
 	//Ignore messages sent by the bot
 	if (message.author.bot) return;
-	let prefix;
-	try {
-		prefix = await functions.readData(bot, message, 'prefix');
-	} catch (error) {
-		message.reply(`That's an Error! ${error}`);
-		return;
-	}
-	if (!prefix) prefix = functions.config.prefix;
-	if (message.content.includes(bot.user.id) && message.content.includes('prefix')) message.channel.send(`${bot.user.username} is using ${prefix} as the activator for this server`);
 
-	//Ignore messages that dont include with the command symbol
-	if (!message.content.includes(prefix)) return;
+	//build the prefix
+	prefix = await functions.buildPrefix(bot, message);
+	if (!prefix) return;
+
 	//check to see if bot can send messages on channel
 	//check to see if external emoji can be used
 	if (message.channel.type !== 'dm') {
@@ -40,56 +39,21 @@ bot.on("message", async message => {
 			return;
 		}
 		if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
-
 	}
 
-	//Separate and create a list of parameters. A space in the message denotes a new parameter
-	let params = message.content.split(' ');
-	if (!message.content.startsWith(prefix)) {
-		params.forEach((param, index) => {
-			if (param.startsWith(prefix)) params = params.slice(index);
-		});
-	}
+	//build params
+	params = functions.buildParams(message, prefix);
+	if (!params) return;
 
-	//stop if there is no command
-	if (params.length === 0) return;
-	if (!params[0].startsWith(prefix)) return;
+	//build command
+	[command, params, sides] = functions.buildCommand(message, params, prefix);
+	if (!command) return;
 
-	//remove user mentions
-	params.forEach((param, index) => {
-		if (param.includes('<') && param.includes('>')) {
-			params.splice(index, 1);
-		}
-	});
-
-	//create command
-	let command = params[0].toLowerCase().toString().slice(1);
-	params = params.slice(1);
-	let sides;
-	if (command.startsWith('d') && (command.length > 1) && (command !== 'destiny')) {
-		sides = command.replace(/\D/g, '');
-		command = 'polyhedral';
-		if (!sides) return;
-	}
+	//get channel emoji
+	channelEmoji = await functions.readData(bot, message, 'channelEmoji');
 
 	//make the descriptor
-	let beg, end;
-	let desc = [];
-	params.forEach((param, index) => {
-		if (param.includes('\"') || param.includes('“') | param.includes('\'')) {
-			if (beg === undefined) {
-				beg = index;
-				end = index;
-			} else end = index;
-		}
-	});
-
-	if (beg !== undefined && end !== undefined) {
-		desc = params.slice(beg, end + 1);
-		params.splice(beg, end + 1 - beg);
-		desc.forEach((word, index) => desc[index] = word.replace(/['"`“]/g, ''));
-		desc = desc.join(' ');
-	}
+	[desc, params] = functions.buildDescriptor(params);
 
 	//set the rest of params to lowercase
 	params = params.filter(Boolean);
@@ -99,30 +63,11 @@ bot.on("message", async message => {
 	console.log(`${command} ${params} ${desc}`);
 
 //************************COMMANDS START HERE************************
-	let channelEmoji;
-	try {
-		channelEmoji = await functions.readData(bot, message, 'channelEmoji');
-	} catch (error) {
-		message.reply(`That's an Error! ${error}`);
-		return;
-	}
 
 	switch (command) {
 		//Ver command
 		case 'ver':
 			message.channel.send(`${bot.user.username}: version: ${functions.version}`);
-			break;
-		//Character Tracker
-		case 'char':
-			functions.char(bot, message, params, channelEmoji);
-			break;
-		// help module
-		case 'help':
-			functions.help(bot, message, params);
-			break;
-		case 'gleepglop':
-		case 'species':
-			functions.gleepglop(bot, message, params);
 			break;
 		case 'polyhedral':
 			functions.polyhedral(sides, params, message);
@@ -130,45 +75,9 @@ bot.on("message", async message => {
 		case 'poly':
 			functions.poly(params, message);
 			break;
-		case 'crit':
-			functions.crit(bot, message, params);
-			break;
-		//!shipcrit command
-		case 'shipcrit':
-			functions.shipcrit(bot, message, params);
-			break;
-		//Destiny Point Module
-		case 'destiny':
-		case 'd':
-		case 'story':
-		case 's':
-			functions.destiny(bot, message, params, channelEmoji);
-			break;
-		// Roll the dice command
-		case 'roll':
-		case 'r':
-			try {
-				await functions.roll(bot, message, params, channelEmoji, desc).roll;
-			} catch (error) {
-				message.reply(`That's an Error! ${error}`);
-				return;
-			}
-			break;
-		case 'reroll':
-		case 'rr':
-			functions.reroll(bot, message, params, channelEmoji);
-			break;
-		case 'initiative':
-		case 'init':
-		case 'i':
-			functions.initiative(bot, message, params, channelEmoji);
-			break;
-		case 'obligation':
-		case 'o':
-			functions.obligation(bot, message);
-			break;
 		case 'swrpg':
 		case 'genesys':
+		case 'l5r':
 			functions.writeData(bot, message, 'channelEmoji', command);
 			message.channel.send(`${bot.user.username} will now use ${command} dice`);
 			break;
@@ -176,7 +85,7 @@ bot.on("message", async message => {
 			functions.prefix(bot, message, params);
 			break;
 	}
-	if (message.author.id === functions.config.adminID) {
-		functions.admin(bot, message, params, command);
-	}
+	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
+	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji);
+	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji);
 });

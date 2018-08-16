@@ -1,10 +1,14 @@
 # SWEotE-Discord-Dice-Roller
 CREDIT: Vampwood for conceiving the bot, and SkyJedi for substantial contributions to the project.
 
-A Discord Bot Companion for the SW:EotE RPG
+A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 
 #Usage
-Commands:
+
+- !swrpg, !genesys, !l5r  switches dice and functionality between games.
+
+#SW/Genesys commands
+
 - !roll   rolls any combination of SWRPG dice and returns the cancelled results
 
   - You may add " " at the end of the line to give the roll a name like Initiative
@@ -108,6 +112,17 @@ Commands:
   - !help        displays help for topics
   - !init        initiative tracker and roller
   - !ver         displays bot version
+
+#L5R commands
+
+!Roll: rolls any combination of L5R dice
+!Poly: rolls any combination of polyhedral dice
+!Keep: ie !keep 12 - keeps the first, second, and discards the rest of the dice
+!Add: ie !add ww - adds specified dice to previous dicepool.
+!Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
+!Help: displays help for topics  
+
+#General Commands
   
 -  !Prefix:      changes the activation prefix for the bot.
   Examples:
@@ -117,6 +132,8 @@ Commands:
 
 - ADMIN ONLY
   - !stats     Displays # of servers/users bot is currently has.
+  
+  
 
 #Installation and Setup
 

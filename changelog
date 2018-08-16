@@ -1,3 +1,7 @@
+2.5.0
+    -added L5R functionality
+    -compartmentalized game types
+
 2.4.1
     -added role hierarchy for !prefix
 

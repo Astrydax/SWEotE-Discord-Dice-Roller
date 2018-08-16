@@ -32,7 +32,7 @@ function readData(bot, message, dataSet) {
 			message.channel.send(`Error retrieving data`);
 			resolve({});
 		});
-	});
+	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
 function writeData(bot, message, dataSet, data) {
@@ -44,8 +44,7 @@ function writeData(bot, message, dataSet, data) {
 				if (error) console.error(error);
 				resolve()
 			});
-		}
-	);
+	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
 
