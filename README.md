@@ -115,12 +115,12 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 
 # L5R commands
 
-!Roll: rolls any combination of L5R dice
-!Poly: rolls any combination of polyhedral dice
-!Keep: ie !keep 12 - keeps the first, second, and discards the rest of the dice
-!Add: ie !add ww - adds specified dice to previous dicepool.
-!Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
-!Help: displays help for topics  
+- !Roll: rolls any combination of L5R dice
+- !Poly: rolls any combination of polyhedral dice
+- !Keep: ie !keep 12 - keeps the first, second, and discards the rest of the dice
+- !Add: ie !add ww - adds specified dice to previous dicepool.
+- !Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
+- !Help: displays help for topics  
 
 # General Commands
   
