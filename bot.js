@@ -9,7 +9,6 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const firebase = require('firebase');
 
-
 bot.login(functions.config.token).catch((error) => console.error(error));
 firebase.initializeApp(functions.firebaseconfig);
 
@@ -51,7 +50,6 @@ bot.on("message", async message => {
 
 	//get channel emoji
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji');
-	if (!channelEmoji) channelEmoji = 'swrpg';
 
 	//make the descriptor
 	[desc, params] = functions.buildDescriptor(params);

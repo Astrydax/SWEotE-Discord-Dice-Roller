@@ -25,7 +25,10 @@ function readData(bot, message, dataSet) {
 				default:
 					break;
 			}
-			if (!data) resolve({});
+			if (!data) {
+				if (dataSet === 'channelEmoji') resolve('swrpg');
+				resolve({});
+			}
 			resolve(data);
 		}, error => {
 			console.error(error);
