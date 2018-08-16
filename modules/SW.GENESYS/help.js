@@ -7,7 +7,7 @@ type '!Help [topic]' for further information
 !GENESYS: uses genesys dice for this channel
 !L5R: uses l5r dice in this channel
 
-!Roll: rolls any combination of swrpg dice
+!Roll: rolls any combination of SWRPG/GENESYS dice
 !Poly: rolls any combination of polyhedral dice
 !Reroll: modifies the previous roll
 !Destiny: manages the destiny balance
