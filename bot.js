@@ -51,6 +51,7 @@ bot.on("message", async message => {
 
 	//get channel emoji
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+	if (!channelEmoji) channelEmoji = 'swrpg';
 
 	//make the descriptor
 	[desc, params] = functions.buildDescriptor(params);
