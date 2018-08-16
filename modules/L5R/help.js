@@ -32,17 +32,20 @@ Examples:
 			break;
 		default:
 			message.channel.send(`\`\`\`prolog
-            !Roll: rolls any combination of L5R dice
-            !Poly: rolls any combination of polyhedral dice
-            !Keep: ie !keep 12 - keeps the first, second, and discards the rest of the dice
-            !Add: ie !add ww - adds specified dice to previous dicepool.
-            !Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
-            !Help: displays help for topics
+!SWRPG: uses swrpg dice for this channel
+!GENESYS: uses genesys dice for this channel
+!L5R: uses l5r dice in this channel
 
-            for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
-            \`\`\`
-            Role playing games by Fantasy Flight Games
-            <https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/>`);
+!Roll: rolls any combination of L5R dice
+!Poly: rolls any combination of polyhedral dice
+!Keep: ie !keep 12 - keeps the first, second, and discards the rest of the dice
+!Add: ie !add ww - adds specified dice to previous dicepool.
+!Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
+!Help: displays help for topics
+
+for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH\`\`\`
+Role playing games by Fantasy Flight Games
+<https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/>`);
 			break;
 	}
 }

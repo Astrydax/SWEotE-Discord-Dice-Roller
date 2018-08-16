@@ -3,10 +3,13 @@ function help(bot, message, params) {
 		message.channel.send(`\`\`\`prolog
 type '!Help [topic]' for further information
 
+!SWRPG: uses swrpg dice for this channel
+!GENESYS: uses genesys dice for this channel
+!L5R: uses l5r dice in this channel
+
 !Roll: rolls any combination of swrpg dice
 !Poly: rolls any combination of polyhedral dice
 !Reroll: modifies the previous roll
-!DX: rolls a polyhedral die (x = any number) with optional modifier
 !Destiny: manages the destiny balance
 !Crit: rolls and displays the critical hit
 !Shipcrit: rolls and displays the ship critical hit
@@ -15,8 +18,6 @@ type '!Help [topic]' for further information
 !Init: initiative tracker and roller
 !Obligation: gathers all the obligations entered with !Char and rolls to trigger
 !Species/!Gleepglop: picks a random species
-!SWRPG: uses swrpg dice for this channel
-!GENESYS: uses genesys dice for this channel
 !PREFIX: changes the prefix to activate the bot (role needs to be higher than the bot)
 !Help: displays help for topics
 \`\`\`

@@ -8,6 +8,7 @@ const l5rcommands = require('./modules/L5R/').commands;
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const firebase = require('firebase');
+const _ = require('lodash');
 
 bot.login(functions.config.token).catch((error) => console.error(error));
 firebase.initializeApp(functions.firebaseconfig);
@@ -21,7 +22,7 @@ bot.on('ready', () => {
 //Called whenever a users send a message to the server
 bot.on("message", async message => {
 
-	let prefix, params, command, desc, sides, channelEmoji;
+	let prefix, params, command, desc, channelEmoji;
 
 	//Ignore messages sent by the bot
 	if (message.author.bot) return;
@@ -45,7 +46,7 @@ bot.on("message", async message => {
 	if (!params) return;
 
 	//build command
-	[command, params, sides] = functions.buildCommand(message, params, prefix);
+	[command, params] = functions.buildCommand(params);
 	if (!command) return;
 
 	//get channel emoji
@@ -56,7 +57,7 @@ bot.on("message", async message => {
 
 	//set the rest of params to lowercase
 	params = params.filter(Boolean);
-	params.forEach((param, index) => params[index] = param.toLowerCase());
+	params.forEach((param, index) => params[index] = _.toLower(param));
 
 	console.log(`@${message.author.username} ${message.createdAt}`);
 	console.log(`${command} ${params} ${desc}`);
@@ -67,9 +68,6 @@ bot.on("message", async message => {
 		//Ver command
 		case 'ver':
 			message.channel.send(`${bot.user.username}: version: ${functions.version}`);
-			break;
-		case 'polyhedral':
-			functions.polyhedral(sides, params, message);
 			break;
 		case 'poly':
 			functions.poly(params, message);

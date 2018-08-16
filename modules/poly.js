@@ -1,4 +1,4 @@
-const dice = require("./misc.js").dice;
+const dice = require("./").dice;
 const config = require("../config.js").config;
 
 function poly(params, message) {

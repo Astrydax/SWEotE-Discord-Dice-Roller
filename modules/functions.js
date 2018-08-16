@@ -1,4 +1,11 @@
 const functions = require('./');
+const _ = require('lodash');
+const seedrandom = require('seedrandom');
+const rng = seedrandom('added entropy.', {entropy: true});
+
+function dice(sides) {
+	return Math.floor(rng() * sides) + 1;
+}
 
 async function buildPrefix(bot, message) {
 	return new Promise(async resolve => {
@@ -27,17 +34,12 @@ function buildParams(message, prefix) {
 	return params;
 }
 
-function buildCommand(message, params) {
+function buildCommand(params) {
 	//create command
-	let command = params[0].toLowerCase().toString().slice(1);
+	let command = params[0].toString().slice(1);
 	params = params.slice(1);
-	let sides;
-	if (command.startsWith('d') && (command.length > 1) && (command !== 'destiny')) {
-		sides = command.replace(/\D/g, '');
-		command = 'polyhedral';
-		if (!sides) return;
-	}
-	return [command, params, sides];
+	console.log(params, command);
+	return [_.toLower(command), params];
 }
 
 function buildDescriptor(params) {
@@ -65,3 +67,5 @@ exports.buildPrefix = buildPrefix;
 exports.buildParams = buildParams;
 exports.buildCommand = buildCommand;
 exports.buildDescriptor = buildDescriptor;
+exports.dice = dice;
+

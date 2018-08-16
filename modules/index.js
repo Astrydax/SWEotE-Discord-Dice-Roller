@@ -1,10 +1,9 @@
 exports.admin = require('./admin').admin;
 exports.config = require('../config').config;
 exports.data = require('./data');
-exports.dice = require('./misc').dice;
+exports.dice = require('./functions').dice;
 exports.firebaseconfig = require('../config').firebaseconfig;
 exports.poly = require('./poly').poly;
-exports.polyhedral = require('./misc').polyhedral;
 exports.prefix = require('./prefix').prefix;
 exports.print = require('./printValues').print;
 exports.readData = require('./data').readData;
@@ -14,4 +13,3 @@ exports.buildPrefix = require('./functions').buildPrefix;
 exports.buildParams = require('./functions').buildParams;
 exports.buildCommand = require('./functions').buildCommand;
 exports.buildDescriptor = require('./functions').buildDescriptor;
-exports.fetchChannelEmoji = require('./functions').fetchChannelEmoji;

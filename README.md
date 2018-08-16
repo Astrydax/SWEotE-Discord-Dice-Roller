@@ -9,7 +9,7 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 
 # SW/Genesys commands
 
-- !roll   rolls any combination of SWRPG dice and returns the cancelled results
+- !roll   rolls any combination of SWRPG/Genesys dice and returns the cancelled results
 
   - You may add " " at the end of the line to give the roll a name like Initiative
   - Dice results and cancellations are computed by the bot so you don't have to!  
@@ -35,12 +35,6 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 
   EXAMPLES
       - !poly 1d4 2d6+1 1d100-60
-
-- !d100   rolls a d100 with optional modifier and displays result.
-  - !d100 +X
-  - !d100 + X
-  - !d100 -X
-  - !d100 - X
 
 - !destiny  sets and manages the Destiny Balance for the group
   - !destiny            view the destiny pool
@@ -104,7 +98,6 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 - !help          Type '!help topic for further information'
 
   - !roll        rolls any combination of SWRPG dice and returns the canceled results
-  - !d100        rolls a d100 with optional modifier and displays result
   - !destiny     sets and manages the destiny balance for the group
   - !crit        rolls a d100 with optional modifier and displays result of the critical hit
   - !shipcrit    rolls a d100 with optional modifier and displays result of the ship critical hit
