@@ -15,7 +15,8 @@ var config = {
     descriptorPrepend: "",
     dm: "",
     swrpg: "",
-    genesys: ""
+    genesys: "",
+    l5r: ""
 }
 
   exports.config = config;
