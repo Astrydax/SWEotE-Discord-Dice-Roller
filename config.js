@@ -1,4 +1,4 @@
-var firebaseconfig = {
+const firebaseconfig = {
   apiKey: "",
   authDomain: "",
   databaseURL: "",
@@ -7,7 +7,7 @@ var firebaseconfig = {
   messagingSenderId: ""
 };
 
-var config = {
+const config = {
     token: "",
     adminID: "",
     prefix: "!",
