@@ -117,7 +117,6 @@ function textCrit(total, bot, channelEmoji) {
             textCrit = "Dead: Complete, obliterated death.";
             break;
         default:
-            console.log("Something has gone horribly wrong. total is " + total);
             break;
     }
     return textCrit;
@@ -185,7 +184,6 @@ function textShipCrit(total, bot, channelEmoji) {
             textCrit = "Vaporized: The ship or vehicle is completely destroyed, consumed in a particularly large and dramatic fireball. Nothing survives.";
             break;
         default:
-            console.log("Something has gone horribly wrong. total is " + total);
             break;
     }
     return textCrit;

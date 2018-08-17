@@ -18,10 +18,8 @@ async function char(bot, message, params, channelEmoji) {
 				if (characterName === "") {
 					message.channel.send("No characterName, !help char for more information");
 					resolve();
-				} else console.log("Setup command detected.");
+				}
 			}
-			else if (command === "list") console.log("List command detected.");
-			else if (command === "reset") console.log("Reset command detected.");
 			else {
 				message.channel.send(characterName + " has not been set up.  Please use !char setup characterName [maxWound] [maxStrain] [credits] to complete setup.");
 				resolve();
@@ -36,7 +34,6 @@ async function char(bot, message, params, channelEmoji) {
 					break;
 				}
 				//init the new characters stats
-				console.log("Setting up " + characterName);
 				characterStatus[characterName] = {
 					maxWound: 0,
 					maxStrain: 0,

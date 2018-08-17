@@ -13,7 +13,6 @@ async function initiative(bot, message, params, channelEmoji) {
 		//roll for initiativeOrder
 		case "roll":
 		case "r":
-			console.log("Rolling initiativeOrder for " + message.author.username);
 			if (!params[0] || params[0] === "npc" || params[0] === "pc") {
 				message.channel.send("No dice defined.  ie '!init roll yygg npc/pc'");
 				break;
@@ -47,7 +46,6 @@ async function initiative(bot, message, params, channelEmoji) {
 		case "set":
 		case "s":
 			initiativeOrder = initializeInitOrder();
-			console.log("Setting current initiativeOrder for " + message.author.username);
 			if (!params[0]) {
 				message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
 				break;
@@ -67,7 +65,6 @@ async function initiative(bot, message, params, channelEmoji) {
 			break;
 		//Reset the initiativeOrder
 		case "reset":
-			console.log(message.author.username + " resets the Initiative Order");
 			initiativeOrder = initializeInitOrder();
 			message.reply(" resets the Initiative Order");
 			break;
@@ -97,7 +94,6 @@ async function initiative(bot, message, params, channelEmoji) {
 			break;
 		//manually modify the initiativeOrder
 		case "modify":
-			console.log("Modifying current initiativeOrder for " + message.author.username);
 			//check if numbers are used
 			if (!params[0]) {
 				message.channel.send("No Initiative Order defined.  ie '!init set nppnn'");
@@ -128,7 +124,6 @@ async function initiative(bot, message, params, channelEmoji) {
 			else message.reply(`There are not ${slot} slots!`);
 			break;
 		default:
-			console.log("Just printing initiativeOrder");
 			break;
 	}
 		if (initiativeOrder.slots[0]) printInitiativeOrder(initiativeOrder, message);

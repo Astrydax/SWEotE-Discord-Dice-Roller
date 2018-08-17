@@ -10,14 +10,14 @@ const bot = new Discord.Client();
 const firebase = require('firebase');
 const _ = require('lodash');
 
-bot.login(functions.config.token).catch((error) => console.error(error));
+bot.login(functions.config.token).catch(error => console.error(error));
 firebase.initializeApp(functions.firebaseconfig);
 
 //Called When bot becomes functional
 bot.on('ready', () => {
 	console.log(`Bot version ${functions.version}`);
 	console.log(`Logged in as ${bot.user.username}!`);
-}).catch((error) => console.error(error));
+}, error => console.error(error));
 
 //Called whenever a users send a message to the server
 bot.on("message", async message => {
@@ -59,8 +59,7 @@ bot.on("message", async message => {
 	params = params.filter(Boolean);
 	params.forEach((param, index) => params[index] = _.toLower(param));
 
-	console.log(`@${message.author.username} ${message.createdAt}`);
-	console.log(`${command} ${params} ${desc}`);
+	console.log(`${message.createdAt} @${message.author.username}\n message: ${message}\n command: ${command}\n params: ${params}`);
 
 //************************COMMANDS START HERE************************
 
@@ -89,4 +88,7 @@ bot.on("message", async message => {
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
 	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji);
 	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji);
-}).catch((error) => console.error(error));
+}, error => {
+	console.error(error);
+	message.channel.send(`That's an error ${error}`);
+});
