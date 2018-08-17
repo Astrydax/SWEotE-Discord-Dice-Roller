@@ -28,7 +28,6 @@ function buildParams(message, prefix) {
 		if (!newParams) return;
 		params = newParams;
 	}
-
 	//remove user mentions
 	params.forEach((param, index) => {
 		if (param.includes('<') && param.includes('>')) params.splice(index, 1);

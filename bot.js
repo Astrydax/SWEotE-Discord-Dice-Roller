@@ -17,7 +17,7 @@ firebase.initializeApp(functions.firebaseconfig);
 bot.on('ready', () => {
 	console.log(`Bot version ${functions.version}`);
 	console.log(`Logged in as ${bot.user.username}!`);
-});
+}).catch((error) => console.error(error));
 
 //Called whenever a users send a message to the server
 bot.on("message", async message => {
@@ -89,4 +89,4 @@ bot.on("message", async message => {
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
 	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji);
 	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji);
-});
+}).catch((error) => console.error(error));
