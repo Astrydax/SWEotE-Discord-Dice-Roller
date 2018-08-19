@@ -1,4 +1,4 @@
-let d100 = require("../").dice;
+let d100 = require("../").modifierRoll;
 let print = require("../").print;
 
 function crit(bot, message, params, channelEmoji) {

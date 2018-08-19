@@ -79,7 +79,7 @@ Role playing games by Fantasy Flight Games
 					`\`\`\`prolog
 !Roll DiceIdentifiers "TEXT"
 DICE IDENTIFIERS
-    Pro = yellow/proficiency
+    Y/Pro = yellow/proficiency
     G/A = green/ability
     B/Boo = blue/boost
     Blk/K/Sb/S = black/setback
@@ -92,8 +92,8 @@ DICE IDENTIFIERS
     Failure/Fail/- = failure
     Threat/Thr/T = threat
     Despair/Des/$ = despair
-    Light/L = lightside point
-    Dark/N = darkside point
+    Light/L = lightpip
+    Dark/N = darkpip
     "TEXT" assigns a label to the roll. (optional)
     
 Examples:

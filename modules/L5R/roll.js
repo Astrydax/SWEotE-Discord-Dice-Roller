@@ -1,7 +1,18 @@
 const config = require('../../config').config;
-let printEmoji = require('../').print;
+const printEmoji = require('../').print;
 const writeData = require('../').writeData;
 const readData = require('../').readData;
+const dice = ['white', 'black', 'success', 'opportunity', 'strife', 'explosiveSuccess'];
+const rollDice = require('../').dice;
+const asyncForEach = require('../').asyncForEach;
+const diceFaces = {
+	black: ['', 's', 'st', 'et', 'o', 'ot'],
+	white: ['', '', 's', 's', 'so', 'st', 'st', 'e', 'et', 'o', 'o', 'o'],
+	success: ['s'],
+	opportunity: ['o'],
+	explosiveSuccess: ['e'],
+	strife: ['t']
+};
 
 async function roll(params, message, bot, desc, channelEmoji, add) {
 	new Promise(async resolve => {
@@ -16,7 +27,7 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 		if (!diceOrder) resolve();
 
 		//rolls each die and begins rollResults
-		diceOrder.forEach(die => diceResult.roll[die].push(rollDice(die)));
+		await asyncForEach(diceOrder, color => diceResult.roll[color].push(diceFaces[color][rollDice(diceFaces[color].length)-1]));
 
 		//counts the symbols rolled and returns them in diceResult.results
 		countSymbols(diceResult, message, bot, desc, channelEmoji);
@@ -28,28 +39,48 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 
 async function keep(params, message, bot, desc, channelEmoji, reroll) {
 	new Promise(async resolve => {
-		let diceResult = initDiceResult(), keeperResults = initDiceResult();
-		diceResult.roll = {...diceResult.roll, ...await readData(bot, message, 'diceResult')};
-		if (!diceResult) resolve();
-		if (reroll) keeperResults.roll = diceResult.roll;
-		if (params.length === 1) params = params[0].split('');
-		params.forEach(keeper => {
-			let i = 0;
-			['white', 'black', 'success', 'opportunity', 'strife', 'explosiveSuccess'].forEach(color => {
-				if (diceResult.roll[color]) {
-					diceResult.roll[color].forEach(face => {
-						if (+keeper === i + 1) {
-							if (reroll) keeperResults.roll[color].splice(i, 1, rollDice(color));
-							else keeperResults.roll[color].push(face);
-						}
-						i++;
-					});
+			let Object = {black: [], white: [], success: [], opportunity: [], strife: [], explosiveSuccess: []};
+			let diceResult = initDiceResult(), keeperResults = initDiceResult();
+			diceResult.roll = {...diceResult.roll, ...await readData(bot, message, 'diceResult')};
+			if (!diceResult) resolve();
+			if (params.length === 1) params = params[0].split('');
+
+			params.forEach(target => {
+				target = +target;
+				let roll = diceResult.roll;
+				switch (true) {
+					case (roll.white.length >= target):
+						Object.white.push(target);
+						break;
+					case (roll.black.length + roll.white.length >= target):
+						Object.black.push(target - roll.black.length);
+						break;
+					case (roll.black.length + roll.white.length + roll.success.length >= target):
+						Object.success.push(target - (roll.black.length + roll.white.length));
+						break;
+					case (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length >= target):
+						Object.opportunity.push(target - (roll.black.length + roll.white.length + roll.success.length));
+						break;
+					case (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length >= target):
+						Object.strife.push(target - (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length));
+						break;
+					case (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length + roll.explosiveSuccess.length >= target):
+						Object.explosiveSuccess.push(target - (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length));
+						break;
 				}
 			});
-		});
-		countSymbols(keeperResults, message, bot, desc, channelEmoji);
-		writeData(bot, message, 'diceResult', keeperResults.roll);
-	}).catch(error => message.reply(`That's an Error! ${error}`));
+
+			if (reroll) keeperResults.roll = {...diceResult.roll};
+			await asyncForEach(dice, color => {
+				Object[color].forEach((die, index) => {
+					if (reroll) keeperResults.roll[color].splice(index, 1, diceFaces[color][rollDice(diceFaces[color].length)-1]);
+					else keeperResults.roll[color].push(diceResult.roll[color][die - 1]);
+				})
+			});
+			countSymbols(keeperResults, message, bot, desc, channelEmoji);
+			writeData(bot, message, 'diceResult', keeperResults.roll);
+		}
+	).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
 //init diceResult
@@ -137,22 +168,6 @@ function processType(params, message) {
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
-//rolls one die and returns the results in an array
-function rollDice(die) {
-	let diceFaces = {
-		black: ['', 's', 'st', 'et', 'o', 'ot'],
-		white: ['', '', 's', 's', 'so', 'st', 'st', 'e', 'et', 'o', 'o', 'o'],
-		success: 's',
-		opportunity: 'o',
-		explosiveSuccess: 'e',
-		strife: 't'
-	};
-	//roll dice and match them to a side and add that face to the message
-	if (!die) return;
-	if (die === 'white' || die === 'black') return diceFaces[die][(Math.floor(Math.random() * diceFaces[die].length) + 1) - 1];
-	else return diceFaces[die];
-}
-
 function countSymbols(diceResult, message, bot, desc, channelEmoji) {
 	diceResult.results = {
 		face: '',
@@ -164,7 +179,7 @@ function countSymbols(diceResult, message, bot, desc, channelEmoji) {
 			black: 0,
 		},
 	};
-	['white', 'black', 'success', 'opportunity', 'strife', 'explosiveSuccess'].forEach(color => {
+	dice.forEach(color => {
 		if (diceResult.roll[color]) {
 			diceResult.roll[color].forEach(face => {
 				if (color === 'white' || color === 'black') diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
