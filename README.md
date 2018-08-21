@@ -3,11 +3,11 @@ CREDIT: Vampwood for conceiving the bot, and SkyJedi for substantial contributio
 
 A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 
-# Usage
+##Usage
 
 - !swrpg, !genesys, !l5r  switches dice and functionality between games.
 
-# SW/Genesys commands
+##SW/Genesys commands
 
 - !roll   rolls any combination of SWRPG/Genesys dice and returns the cancelled results
 
@@ -106,7 +106,7 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
   - !init        initiative tracker and roller
   - !ver         displays bot version
 
-# L5R commands
+##L5R commands
 
 - !Roll: rolls any combination of L5R dice
 - !Poly: rolls any combination of polyhedral dice
@@ -115,7 +115,7 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 - !Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
 - !Help: displays help for topics  
 
-# General Commands
+##General Commands
   
 -  !Prefix:      changes the activation prefix for the bot.
   Examples:
@@ -130,7 +130,7 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
   
   
 
-# Installation and Setup
+##Installation and Setup
 
 1. First you will need to have NodeJS installed on your machine. You can find the latest version [here](https://nodejs.org/en/)
 2. Next create a discord account for your bot. You can do this [here](https://discordapp.com/developers/applications/me)
@@ -157,7 +157,7 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
       }
     }
   5. Overview....Click the reddish circle labeled "Add Firebase to your web app"
-  5. Copy everything between var config = {  }
+  6. Copy everything between var config = {  }
 4. Click "Clone or Download" at the top of this page. Click "Download Zip" and extract the files.
 5. Type \@<username> into your channel to get you userID
 6. Open config.js with a text editor program of your choice.
@@ -170,15 +170,15 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
 13. upload custom emoji from emoji folder to the server.  https://support.discordapp.com/hc/en-us/articles/207619737-Adding-Emoji-Magic
 13. Your bot is now configured and ready to launch.
 
-# Running the bot
+##Running the bot
 
 To run the bot, Just execute the file "start.bat" on a windows or "start.command" on mac.
 
-#Updating the bot
+##Updating the bot
 
 To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.command" on mac. Your config.js file will be backed up and restored automatically
 
-#Configuration File config.js
+##Configuration File config.js
 
   config.js has properties
 
@@ -203,7 +203,7 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
     - server ID for Genesys Dice emoji  
 
 
-# Amazon EC2 install
+##Amazon EC2 install
 
   1.  Connect to your ubuntu Linux instance using SSH.
 
@@ -226,3 +226,11 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
 
   6.  launch bot (this will launch the bot and let you close the terminal window)
       nohup nodejs bot.js &>/dev/null & disown
+
+##Patrons
+-Xavi Santamaria
+-Flobio
+
+[Patreon](https://www.patreon.com/SkyJedi)
+
+[Fantasy Flight Games, Genesys](https://www.fantasyflightgames.com/en/products/genesys)
