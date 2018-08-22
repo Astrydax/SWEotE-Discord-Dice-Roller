@@ -147,6 +147,7 @@ ${prefix}Shipcrit: rolls and displays the ship critical hit
 ${prefix}Char: simple character stat manager
 ${prefix}Init: initiative tracker and roller
 ${prefix}Obligation: gathers all the obligations entered with ${prefix}Char and rolls to trigger
+${prefix}Duty: gathers all the duty entered with ${prefix}Char and rolls to trigger
 ${prefix}Species/${prefix}Gleepglop: picks a random species
 \`\`\`
 for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
