@@ -1,6 +1,6 @@
 const functions = require('./');
 
-async function commands(bot, message, params, command, desc, channelEmoji) {
+async function commands(bot, message, params, command, desc, channelEmoji, prefix) {
 	switch (command) {
 		case 'roll':
 		case 'r':
@@ -19,7 +19,7 @@ async function commands(bot, message, params, command, desc, channelEmoji) {
 			break;
 		case 'help':
 		case 'h':
-			functions.help(params, message);
+			functions.help(params[0], message, prefix);
 			break;
 		default:
 			break;

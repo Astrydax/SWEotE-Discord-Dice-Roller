@@ -2,10 +2,10 @@ const dice = require("./").dice;
 const config = require("../config.js").config;
 
 function poly(params, message) {
-	let text = 'rolled: ';
+	let text = 'rolled:';
 	params.forEach(unit => {
 		let modifier = 0;
-		text += "\n`" + unit + "`" + ": (";
+		text += `  \`${unit}\` (`;
 
 		if (unit.includes("+")) {
 			for (let k = 0; k < unit.length; k++) {
@@ -51,16 +51,16 @@ function poly(params, message) {
 		}
 
 		rolls.forEach(roll => {
-			text += roll + " + ";
+			text += `${roll} + `;
 			total += roll;
 		});
 
 		total += modifier;
-		text = text.slice(0, -3) + ")";
-		if (modifier > 0) text += " + " + modifier;
-		if (modifier < 0) text += " - " + Math.abs(modifier);
+		text = `${text.slice(0, -3)})`;
+		if (modifier > 0) text += ` + ${modifier}`;
+		if (modifier < 0) text += ` - ${Math.abs(modifier)}`;
 		if (text.length < 1500) {
-			text += " = " + total + '.';
+			text += ` = ${total}.`;
 		} else text = `Too many dice to display.  Total roll is ${total}.`;
 	});
 	if (text.endsWith('.')) message.reply(text);

@@ -1,3 +1,8 @@
+2.5.2
+    -added duty
+    -rewrote !char
+    -added prefix to help
+
 2.5.1
     -removes !dx
     -fixed a thing or two

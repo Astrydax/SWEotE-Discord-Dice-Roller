@@ -1,6 +1,6 @@
 const functions = require('./');
 
-async function commands(bot, message, params, command, desc, channelEmoji) {
+async function commands(bot, message, params, command, desc, channelEmoji, prefix) {
 	switch (command) {
 		//Character Tracker
 		case 'char':
@@ -8,7 +8,7 @@ async function commands(bot, message, params, command, desc, channelEmoji) {
 			break;
 		// help module
 		case 'help':
-			functions.help(bot, message, params);
+			functions.help(bot, message, params[0], prefix);
 			break;
 		case 'gleepglop':
 		case 'species':
@@ -44,7 +44,10 @@ async function commands(bot, message, params, command, desc, channelEmoji) {
 			break;
 		case 'obligation':
 		case 'o':
-			functions.obligation(bot, message);
+			functions.trigger(bot, message, 'obligation');
+			break;
+		case 'duty':
+			functions.trigger(bot, message, 'duty');
 			break;
 	}
 }

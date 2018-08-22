@@ -228,8 +228,8 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
       nohup nodejs bot.js &>/dev/null & disown
 
 ## Patrons
--Xavi Santamaria
--Flobio
+- Xavi Santamaria
+- Flobio
 
 [Patreon](https://www.patreon.com/SkyJedi)
 

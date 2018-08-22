@@ -1,11 +1,10 @@
-function help(params, message) {
-	let topic = params[0];
+function help(topic, message, prefix) {
 	switch (topic) {
 		case `roll`:
 			message.channel.send(`\`\`\`prolog
 			COMMAND
 
-!Roll DiceIdentifiers \`TEXT\`
+${prefix}Roll DiceIdentifiers \`TEXT\`
 
 DICE IDENTIFIERS
 
@@ -19,32 +18,32 @@ Strife/STR/T = strife
 \`TEXT\` assigns a label to the roll. (optional)
 
 Examples:
-!roll wwwbb (must use single character identifiers)
-!roll 1white 2black (must specify a number before each identifier)
+${prefix}roll wwwbb (must use single character identifiers)
+${prefix}roll 1white 2black (must specify a number before each identifier)
 \`\`\``);
 			break;
 		case `poly`:
 			message.channel.send(`\`\`\`prolog
-!Poly: rolls any combination of polyhedral dice with modifier
+${prefix}Poly: rolls any combination of polyhedral dice with modifier
 
 Examples:
-!poly 1d4 2d6+1 1d100-60 \`\`\``);
+${prefix}poly 1d4 2d6+1 1d100-60 \`\`\``);
 			break;
 		default:
 			message.channel.send(`\`\`\`prolog
-!SWRPG: uses swrpg dice for this channel
-!GENESYS: uses genesys dice for this channel
-!L5R: uses l5r dice in this channel
+${prefix}SWRPG: uses swrpg dice for this channel
+${prefix}GENESYS: uses genesys dice for this channel
+${prefix}L5R: uses l5r dice in this channel
 
-!Poly: rolls any combination of polyhedral dice
-!Ver: displays bot version
-!Prefix: changes the prefix to activate the bot (role needs to be higher than the bot)
-!Help: displays help for topics
+${prefix}Poly: rolls any combination of polyhedral dice
+${prefix}Ver: displays bot version
+${prefix}Prefix: changes the prefix to activate the bot (role needs to be higher than the bot)
+${prefix}Help: displays help for topics
 
-!Roll: rolls any combination of L5R dice
-!Keep: ie !keep 12 - keeps the first, second, and discards the rest of the dice
-!Add: ie !add ww - adds specified dice to previous dicepool.
-!Reroll: ie !reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
+${prefix}Roll: rolls any combination of L5R dice
+${prefix}Keep: ie ${prefix}keep 12 - keeps the first, second, and discards the rest of the dice
+${prefix}Add: ie ${prefix}add ww - adds specified dice to previous dicepool.
+${prefix}Reroll: ie ${prefix}reroll 12 - rerolls the first and second dice without modifying the rest of the dicepool
 
 for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH\`\`\`
 Role playing games by Fantasy Flight Games

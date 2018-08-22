@@ -1,83 +1,49 @@
-function help(bot, message, params) {
-	if (!params[0]) {
-		message.channel.send(`\`\`\`prolog
-type '!Help [topic]' for further information
+const _ = require('lodash');
 
-!SWRPG: uses swrpg dice for this channel
-!GENESYS: uses genesys dice for this channel
-!L5R: uses l5r dice in this channel
-
-!Poly: rolls any combination of polyhedral dice
-!Ver: displays bot version
-!Prefix: changes the prefix to activate the bot (role needs to be higher than the bot)
-!Help: displays help for topics
-
-!Roll: rolls any combination of SWRPG/GENESYS dice
-!Reroll: modifies the previous roll
-!Destiny: manages the destiny balance
-!Crit: rolls and displays the critical hit
-!Shipcrit: rolls and displays the ship critical hit
-!Char: simple character stat manager
-!Init: initiative tracker and roller
-!Obligation: gathers all the obligations entered with !Char and rolls to trigger
-!Species/!Gleepglop: picks a random species
-\`\`\`
-for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
-
-Role playing games by Fantasy Flight Games 
-<https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire>
-<https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny>
-<https://www.fantasyflightgames.com/en/products/star-wars-age-ofrebellion>
-<https://www.fantasyflightgames.com/en/products/genesys>
-`);
-	} else {
-		let topic = params[0];
-		switch (topic) {
-			case "destiny":
-				message.channel.send(
-					`\`\`\`prolog
-!Destiny: view the destiny points
-!Destiny Roll: rolls a force die and adds result to the destiny pool
-!Destiny L/Light: uses light side point
-!Destiny D/Dark: uses dark side point
-!Destiny Set #L #D: sets destiny pool
-!Destiny Set LLDD: sets destiny pool
-!Destiny Reset: resets the destiny pool
+function help(bot, message, topic, prefix) {
+	switch (topic) {
+		case "destiny":
+			message.channel.send(`\`\`\`prolog
+${prefix}Destiny: view the destiny points
+${prefix}Destiny Roll: rolls a force die and adds result to the destiny pool
+${prefix}Destiny L/Light: uses light side point
+${prefix}Destiny D/Dark: uses dark side point
+${prefix}Destiny Set #L #D: sets destiny pool
+${prefix}Destiny Set LLDD: sets destiny pool
+${prefix}Destiny Reset: resets the destiny pool
 \`\`\``);
-				break;
-			case "story":
-				message.channel.send(
-					`\`\`\`prolog
-!Story: view the destiny points
-!Story Roll: rolls a white die and adds result to the story points
-!Story P/Player: uses light side point
-!Story G/GM: uses dark side point
-!Story Set #P #G: sets story points
-!Story Set PPGG: sets story points
-!Story Reset: resets the story points
+			break;
+		case "story":
+			message.channel.send(`\`\`\`prolog
+${prefix}Story: view the destiny points
+${prefix}Story Roll: rolls a white die and adds result to the story points
+${prefix}Story P/Player: uses light side point
+${prefix}Story G/GM: uses dark side point
+${prefix}Story Set #P #G: sets story points
+${prefix}Story Set PPGG: sets story points
+${prefix}Story Reset: resets the story points
 \`\`\``);
-				break;
-			case "char":
-				message.channel.send(
-					`\`\`\`prolog
-!Char: simple character stat manager
-!Char Setup CharacterName MaxWound MaxStrain Credits: setup a new character
-!Char Wound/W CharacterName +X/-X: increases/decreases wounds for characterName by x
-!Char Strain/S CharacterName +X/-X: increases/decreases strain for characterName by x
-!Char Credits/C CharacterName +X/-X: increases/decreases credit balance for characterName by x
-!Char Crit CharacterName +X/-X: adds/removes critical injuries for characterName
-!Char Obligation/O CharacterName +X/-X ObligationName: adds/removes obligations for characterName
-!Char Modify CharacterName +X/-X MaxStrain/MaxWounds: increases/decreases selected stat for characterName by x
-!Char Status CharacterName: current status for characterName
-!Char Remove CharacterName: removes characterName
-!Char List: displays all characters
-!Char Reset: resets all the characters
+			break;
+		case "char":
+			message.channel.send(`\`\`\`prolog
+${prefix}Char: simple character stat manager
+${prefix}Char Setup CharacterName MaxWound MaxStrain Credits: setup a new character
+${prefix}Char Wound/W CharacterName +X/-X: increases/decreases wounds for characterName by x
+${prefix}Char Strain/S CharacterName +X/-X: increases/decreases strain for characterName by x
+${prefix}Char Credits/C CharacterName +X/-X: increases/decreases credit balance for characterName by x
+${prefix}Char Crit CharacterName +X/-X: adds/removes critical injuries for characterName
+${prefix}Char Obligation/O CharacterName +X/-X ObligationName: adds/removes obligations for characterName
+${prefix}Char Duty/D CharacterName +X/-X DutyName: adds/removes duty for characterName
+${prefix}Char Modify CharacterName +X/-X MaxStrain/MaxWounds: increases/decreases selected stat for characterName by x
+${prefix}Char Status CharacterName: current status for characterName
+${prefix}Char Remove CharacterName: removes characterName
+${prefix}Char List: displays all characters
+${prefix}Char Reset: resets all the characters
 \`\`\``);
-				break;
-			case "roll":
-				message.channel.send(
-					`\`\`\`prolog
-!Roll DiceIdentifiers "TEXT"
+			break;
+		case "roll":
+			message.channel.send(`\`\`\`prolog
+${prefix}Roll DiceIdentifiers "TEXT"
 DICE IDENTIFIERS
     Y/Pro = yellow/proficiency
     G/A = green/ability
@@ -97,71 +63,101 @@ DICE IDENTIFIERS
     "TEXT" assigns a label to the roll. (optional)
     
 Examples:
-    !roll yyyggbbd (must use single character identifiers)
-    !roll 1g 1p 1adv (must specify a number before each identifier)
+    ${prefix}roll yyyggbbd (must use single character identifiers)
+    ${prefix}roll 1g 1p 1adv (must specify a number before each identifier)
 \`\`\``);
-				break;
-			case "init":
-				message.channel.send(
-					`\`\`\`prolog
-!Init: shows current initiative order
-!Init Roll DiceIdentifiers NPC/PC: rolls your initiative dice and adds character to the order
-!Init Next: moves to next initiative slot
-!Init Previous: moves to previous initiative slot
-!Init Set: manually set initiative order before any turns occur
-!Init Modify: manually alter initiative order mid-round
-!Init Reset: resets the initiative order
-!Init Remove X: remove a slot where is is the position
+			break;
+		case "init":
+			message.channel.send(`\`\`\`prolog
+${prefix}Init: shows current initiative order
+${prefix}Init Roll DiceIdentifiers NPC/PC: rolls your initiative dice and adds character to the order
+${prefix}Init Next: moves to next initiative slot
+${prefix}Init Previous: moves to previous initiative slot
+${prefix}Init Set: manually set initiative order before any turns occur
+${prefix}Init Modify: manually alter initiative order mid-round
+${prefix}Init Reset: resets the initiative order
+${prefix}Init Remove X: remove a slot where is is the position
 
 \`\`\``);
-				break;
-			case "reroll":
-				message.channel.send(
-					`\`\`\`prolog
-!Reroll Same: rolls the same pool again
-!Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
-!Reroll Remove DiceIdentifiers: remove random dice of the designated color
-!Reroll Select DiceColor/DicePosition: rerolls specified dice
-    ie !Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool
+			break;
+		case "reroll":
+			message.channel.send(`\`\`\`prolog
+${prefix}Reroll Same: rolls the same pool again
+${prefix}Reroll Add DiceIdentifiers: roll additional dice and adds them to the pool
+${prefix}Reroll Remove DiceIdentifiers: remove random dice of the designated color
+${prefix}Reroll Select DiceColor/DicePosition: rerolls specified dice
+    ie ${prefix}Reroll Select Y3 P1: rerolls only the 3rd yellow die and the 1st purple die in the current dice pool
     
-!Reroll Fortune Show DiceColor/DicePosition: shows adjacent sides for the specified die
-    ie !Reroll Fortune Show Y1 P2  (shows the adjacent side for the 1st yellow and 2 purple dicefaces)
+${prefix}Reroll Fortune Show DiceColor/DicePosition: shows adjacent sides for the specified die
+    ie ${prefix}Reroll Fortune Show Y1 P2  (shows the adjacent side for the 1st yellow and 2 purple dicefaces)
 
-!Reroll Fortune Swap DiceColor/DicePosition AdjacentFace (From !Reroll Fortune Show Command): swaps the current face for an adjacent one
-    ie !Reroll Fortune Swap 2Y 3: swaps the current die face on the 2nd yellow with option 3 of the adjacent sides
+${prefix}Reroll Fortune Swap DiceColor/DicePosition AdjacentFace (From ${prefix}Reroll Fortune Show Command): swaps the current face for an adjacent one
+    ie ${prefix}Reroll Fortune Swap 2Y 3: swaps the current die face on the 2nd yellow with option 3 of the adjacent sides
 \`\`\``);
-				break;
-			case "poly":
-				message.channel.send(
-					`\`\`\`prolog
-!Poly: rolls any combination of polyhedral dice with modifier
+			break;
+		case "poly":
+			message.channel.send(`\`\`\`prolog
+${prefix}Poly: rolls any combination of polyhedral dice with modifier
 Examples:
     poly 1d4 2d6+1 1d100-60 
 \`\`\``);
-				break;
-			case "prefix":
-				message.channel.send(
-					`\`\`\`prolog
-!Prefix: changes the activation prefix for the bot.
+			break;
+		case "prefix":
+			message.channel.send(`\`\`\`prolog
+${prefix}Prefix: changes the activation prefix for the bot.
 Examples:
     prefix ^, prefix & 
 \`\`\`
 NOTE: User needs to have a higher role than the bot. 
 See more: https://support.discordapp.com/hc/en-us/articles/214836687-Role-Management-101`);
-				break;
-			case "crit":
-			case "shipcrit":
-				message.channel.send(
-					`\`\`\`prolog
-!Crit and !Shipcrit: rolls a d100 and matches the roll to the appropriate critical injury table then prints the result
-!Crit +10: automatically add 10 to the roll (any number can be used)
-!Crit -10: automatically subtract 10 to the roll (any number can be used)
-!Crit 54?: look up crit by number (any number can be used)
+			break;
+		case "crit":
+		case "shipcrit":
+			message.channel.send(`\`\`\`prolog
+${prefix}Crit and ${prefix}Shipcrit: rolls a d100 and matches the roll to the appropriate critical injury table then prints the result
+${prefix}Crit +10: automatically add 10 to the roll (any number can be used)
+${prefix}Crit -10: automatically subtract 10 to the roll (any number can be used)
+${prefix}Crit 54?: look up crit by number (any number can be used)
 \`\`\``);
-				break;
-			default:
-				break;
-		}
+			break;
+		case "duty":
+		case "obligation":
+			message.channel.send(`\`\`\`prolog
+${prefix}${_.upperFirst(topic)}: gathers all ${topic} from ${prefix}Char and rolls a d100 to trigger ${topic}
+\`\`\``);
+			break;
+		default:
+			message.channel.send(`\`\`\`prolog
+type '${prefix}Help [topic]' for further information
+
+${prefix}SWRPG: uses swrpg dice for this channel
+${prefix}GENESYS: uses genesys dice for this channel
+${prefix}L5R: uses l5r dice in this channel
+
+${prefix}Poly: rolls any combination of polyhedral dice
+${prefix}Ver: displays bot version
+${prefix}Prefix: changes the prefix to activate the bot (role needs to be higher than the bot)
+${prefix}Help: displays help for topics
+
+${prefix}Roll: rolls any combination of SWRPG/GENESYS dice
+${prefix}Reroll: modifies the previous roll
+${prefix}Destiny: manages the destiny balance
+${prefix}Crit: rolls and displays the critical hit
+${prefix}Shipcrit: rolls and displays the ship critical hit
+${prefix}Char: simple character stat manager
+${prefix}Init: initiative tracker and roller
+${prefix}Obligation: gathers all the obligations entered with ${prefix}Char and rolls to trigger
+${prefix}Species/${prefix}Gleepglop: picks a random species
+\`\`\`
+for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH
+
+Role playing games by Fantasy Flight Games 
+<https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire>
+<https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny>
+<https://www.fantasyflightgames.com/en/products/star-wars-age-ofrebellion>
+<https://www.fantasyflightgames.com/en/products/genesys>
+`);
+			break;
 	}
 }
 

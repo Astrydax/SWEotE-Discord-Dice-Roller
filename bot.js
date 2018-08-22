@@ -87,8 +87,8 @@ bot.on("message", async message => {
 			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
-	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji);
-	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji);
+	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji, prefix);
+	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji, prefix);
 }, error => {
 	console.error(error, message);
 	message.channel.send(`That's an error ${error}`);
