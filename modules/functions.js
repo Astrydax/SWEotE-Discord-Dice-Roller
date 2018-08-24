@@ -43,11 +43,12 @@ async function buildPrefix(bot, message) {
 	return new Promise(async resolve => {
 		let prefix = await functions.readData(bot, message, 'prefix');
 		if (!prefix) prefix = functions.config.prefix;
+
 		if (message.content.includes(bot.user.id) && message.content.includes('prefix')) message.channel.send(`${bot.user.username} is using ${prefix} as the activator for this server`);
 		//Ignore messages that dont include with the command symbol
 		if (!message.content.includes(prefix)) resolve();
 		resolve(prefix);
-	}).catch(error => message.reply(`That's an Error! ${error}`));
+	}).catch(error => message.reply(`That's an Error! ${error} in buildPrefix`));
 }
 
 function buildParams(message, prefix) {

@@ -31,6 +31,7 @@ bot.on("message", async message => {
 	prefix = await functions.buildPrefix(bot, message);
 	if (!prefix) return;
 
+
 	//check to see if bot can send messages on channel
 	//check to see if external emoji can be used
 	if (message.channel.type !== 'dm') {
@@ -40,7 +41,6 @@ bot.on("message", async message => {
 		}
 		if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 	}
-
 	//build params
 	params = functions.buildParams(message, prefix);
 	if (!params) return;
@@ -80,7 +80,8 @@ bot.on("message", async message => {
 			message.channel.send(`${bot.user.username} will now use ${command} dice`);
 			break;
 		case 'prefix':
-			functions.prefix(bot, message, params);
+			if (message.channel.type === 'dm') message.channel.send('Prefix cannot be changed in DMs');
+			else functions.prefix(bot, message, params);
 			break;
 		case 'invite':
 			message.channel.send(`Invite @D1-C3  to your server <https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`);
