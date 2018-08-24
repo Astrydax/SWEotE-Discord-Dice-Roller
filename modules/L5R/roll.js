@@ -27,10 +27,18 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 		if (!diceOrder) resolve();
 
 		//rolls each die and begins rollResults
-		await asyncForEach(diceOrder, color => diceResult.roll[color].push(diceFaces[color][rollDice(diceFaces[color].length)-1]));
+		await asyncForEach(diceOrder, color => diceResult.roll[color].push(diceFaces[color][rollDice(diceFaces[color].length) - 1]));
 
 		//counts the symbols rolled and returns them in diceResult.results
-		countSymbols(diceResult, message, bot, desc, channelEmoji);
+
+		let messageGif = await message.channel.send(await printAnimatedEmoji(diceOrder, message, bot, channelEmoji))
+			.catch(error => console.error(error));
+
+		const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+		await sleep(1500);
+
+		diceResult = await countSymbols(diceResult, message, bot, desc, channelEmoji);
+		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
 		writeData(bot, message, 'diceResult', diceResult.roll);
 		resolve()
 	}).catch(error => message.reply(`That's an Error! ${error}`));
@@ -39,45 +47,72 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 
 async function keep(params, message, bot, desc, channelEmoji, reroll) {
 	new Promise(async resolve => {
-			let Object = {black: [], white: [], success: [], opportunity: [], strife: [], explosiveSuccess: []};
-			let diceResult = initDiceResult(), keeperResults = initDiceResult();
-			diceResult.roll = {...diceResult.roll, ...await readData(bot, message, 'diceResult')};
-			if (!diceResult) resolve();
+		let object = {black: [], white: [], success: [], opportunity: [], strife: [], explosiveSuccess: []};
+		let diceResult = initDiceResult(), keeperResults = initDiceResult(), messageGif, textGif = '';
+		let roll = {...diceResult.roll, ...await readData(bot, message, 'diceResult')};
+		if (!diceResult) {
+			resolve();
+			return;
+		}
 			if (params.length === 1) params = params[0].split('');
 
-			params.forEach(target => {
-				target = +target;
-				let roll = diceResult.roll;
+		await asyncForEach(params, target => {
 				switch (true) {
 					case (roll.white.length >= target):
-						Object.white.push(target);
+						object.white.push(target - 1);
 						break;
 					case (roll.black.length + roll.white.length >= target):
-						Object.black.push(target - roll.black.length);
+						object.black.push(target - roll.white.length - 1);
 						break;
 					case (roll.black.length + roll.white.length + roll.success.length >= target):
-						Object.success.push(target - (roll.black.length + roll.white.length));
+						object.success.push(target - (roll.black.length + roll.white.length) - 1);
 						break;
 					case (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length >= target):
-						Object.opportunity.push(target - (roll.black.length + roll.white.length + roll.success.length));
+						object.opportunity.push(target - (roll.black.length + roll.white.length + roll.success.length) - 1);
 						break;
 					case (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length >= target):
-						Object.strife.push(target - (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length));
+						object.strife.push(target - (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length) - 1);
 						break;
 					case (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length + roll.explosiveSuccess.length >= target):
-						Object.explosiveSuccess.push(target - (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length));
+						object.explosiveSuccess.push(target - (roll.black.length + roll.white.length + roll.success.length + roll.opportunity.length + roll.strife.length) - 1);
 						break;
 				}
 			});
 
-			if (reroll) keeperResults.roll = {...diceResult.roll};
-			await asyncForEach(dice, color => {
-				Object[color].forEach((die, index) => {
-					if (reroll) keeperResults.roll[color].splice(index, 1, diceFaces[color][rollDice(diceFaces[color].length)-1]);
-					else keeperResults.roll[color].push(diceResult.roll[color][die - 1]);
-				})
+		if (reroll) {
+			keeperResults.roll = {...roll};
+			await asyncForEach(Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)), async color => {
+				await asyncForEach(roll[color], (face, index) => {
+					if (object[color].includes(index)) {
+						keeperResults.roll[color].splice(index, 1, diceFaces[color][rollDice(diceFaces[color].length) - 1]);
+						if (dice.slice(0, -4).includes(color)) textGif += printEmoji(`${color}gif`, bot, channelEmoji);
+						else textGif += printEmoji(color, bot, channelEmoji);
+					}
+					else {
+						if (color === 'white' || color === 'black') textGif += printEmoji(`${color}${face}`, bot, channelEmoji);
+						else textGif += printEmoji(color, bot, channelEmoji);
+					}
+				});
 			});
-			countSymbols(keeperResults, message, bot, desc, channelEmoji);
+			messageGif = await message.channel.send(textGif)
+				.catch(error => console.error(error));
+
+			const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+			await sleep(1500);
+		} else {
+			await asyncForEach(Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)), async color => {
+				await asyncForEach(roll[color], (face, index) => {
+					if (object[color].includes(index)) {
+						keeperResults.roll[color].push(roll[color][index]);
+						textGif += printEmoji(color, bot, channelEmoji);
+					}
+				});
+			});
+
+		}
+
+		diceResult = await countSymbols(keeperResults, message, bot, desc, channelEmoji);
+		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
 			writeData(bot, message, 'diceResult', keeperResults.roll);
 		}
 	).catch(error => message.reply(`That's an Error! ${error}`));
@@ -169,18 +204,19 @@ function processType(params, message) {
 }
 
 function countSymbols(diceResult, message, bot, desc, channelEmoji) {
-	diceResult.results = {
-		face: '',
-		success: 0,
-		opportunity: 0,
-		strife: 0,
-		explosiveSuccess: {
-			white: 0,
-			black: 0,
-		},
-	};
-	dice.forEach(color => {
-		if (diceResult.roll[color]) {
+	return new Promise(resolve => {
+		diceResult.results = {
+			face: '',
+			success: 0,
+			opportunity: 0,
+			strife: 0,
+			explosiveSuccess: {
+				white: 0,
+				black: 0,
+			},
+		};
+
+		Object.keys(diceResult.roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)).forEach(color => {
 			diceResult.roll[color].forEach(face => {
 				if (color === 'white' || color === 'black') diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
 				else diceResult.results.face += printEmoji(`${color}`, bot, channelEmoji);
@@ -204,18 +240,30 @@ function countSymbols(diceResult, message, bot, desc, channelEmoji) {
 					}
 				}
 			});
-		}
+		});
+		if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
+		resolve(diceResult);
 	});
-	printResults(diceResult.results, message, bot, desc, channelEmoji);
 }
 
-function printResults(diceResult, message, bot, desc, channelEmoji) {
+async function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
+	let text = '';
+	diceOrder.sort((a, b) => dice.indexOf(a) - dice.indexOf(b));
+	await asyncForEach(diceOrder, (die) => {
+		if (dice.slice(0, -4).includes(die)) text += printEmoji(`${die}gif`, bot, channelEmoji);
+		else text += printEmoji(die, bot, channelEmoji);
+	});
+	if (text.length > 1500) text = 'Too many dice to display.';
+	return text;
+}
+
+function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) {
 	let symbolOrder = ['success', 'opportunity', 'strife'];
 	let response = '';
 	//prints faces
 	if (diceResult.face) {
-		if (diceResult.face.length > 1500) diceResult.face = 'Too many dice to display.';
-		message.channel.send(diceResult.face);
+		if (messageGif) messageGif.edit(diceResult.face);
+		else (message.channel.send(diceResult.face))
 	} else {
 		message.reply("No dice rolled.");
 		return;

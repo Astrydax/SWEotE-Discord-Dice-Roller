@@ -27,13 +27,13 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 
 		writeData(bot, message, 'diceResult', diceResult.roll);
 
-		message = await message.channel.send(await printAnimatedEmoji(diceOrder, message, bot, channelEmoji))
+		let messageGif = await message.channel.send(await printAnimatedEmoji(diceOrder, message, bot, channelEmoji))
 			.catch(error => console.error(error));
 
 		const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 		await sleep(1500);
 
-		printResults(diceResult.results, message, bot, desc, channelEmoji);
+		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
 		resolve(diceResult);
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
@@ -272,16 +272,14 @@ async function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
 		if (printOrder.slice(0, -8).includes(die)) text += printEmoji(`${die}gif`, bot, channelEmoji);
 		else text += printEmoji(die, bot, channelEmoji);
 	});
-	console.log(text.length);
 	if (text.length > 1500) text = 'Too many dice to display.';
 	return text;
 }
 
-function printResults(diceResult, message, bot, desc, channelEmoji) {
-	let response = '';
+function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) {
 	//prints faces
 	if (diceResult.face) {
-		if (message.author.id === bot.user.id) message.edit(diceResult.face);
+		if (messageGif) messageGif.edit(diceResult.face);
 		else (message.channel.send(diceResult.face))
 	} else {
 		message.reply("No dice rolled.");
@@ -300,6 +298,7 @@ function printResults(diceResult, message, bot, desc, channelEmoji) {
 	if (diceResult.darkpip > 0) finalCount.darkpip = diceResult.darkpip;
 
 	//prints finalCount
+	let response = '';
 	Object.keys(finalCount).forEach(symbol => {
 		if (finalCount[symbol] !== 0) response += `${printEmoji(symbol, bot, channelEmoji)} ${finalCount[symbol]} `;
 	});
