@@ -47,7 +47,12 @@ ${prefix}Reroll: ie ${prefix}reroll 12 - rerolls the first and second dice witho
 
 for more information or help join the FFG NDS Assistant Bot server https://discord.gg/G8au6FH\`\`\`
 Role playing games by Fantasy Flight Games
-<https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/>`);
+Role playing games by Fantasy Flight Games 
+<https://www.fantasyflightgames.com/en/products/star-wars-edge-of-the-empire>
+<https://www.fantasyflightgames.com/en/products/star-wars-force-and-destiny>
+<https://www.fantasyflightgames.com/en/products/star-wars-age-ofrebellion>
+<https://www.fantasyflightgames.com/en/products/genesys>
+<https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game>`);
 			break;
 	}
 }

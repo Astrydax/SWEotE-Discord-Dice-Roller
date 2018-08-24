@@ -3,6 +3,7 @@ const diceFaces = require('./').diceFaces;
 const dice = require('../').dice;
 const printEmoji = require('../').print;
 const writeData = require('../').writeData;
+const asyncForEach = require('../').asyncForEach;
 const printOrder = ['yellow', 'green', 'blue', 'red', 'purple', 'black', 'white', 'success', 'advantage', 'triumph', 'failure', 'threat', 'despair', 'lightpip', 'darkpip'];
 
 async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOrder) {
@@ -22,10 +23,17 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 		});
 
 		//counts the symbols rolled
-		diceResult = await countSymbols(diceResult, message, bot, desc, channelEmoji);
+		diceResult = await countSymbols(diceResult, message, bot, channelEmoji);
 
 		writeData(bot, message, 'diceResult', diceResult.roll);
 
+		message = await message.channel.send(await printAnimatedEmoji(diceOrder, message, bot, channelEmoji))
+			.catch(error => console.error(error));
+
+		const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+		await sleep(1500);
+
+		printResults(diceResult.results, message, bot, desc, channelEmoji);
 		resolve(diceResult);
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
@@ -71,11 +79,12 @@ function processType(message, params) {
 		if (params.length > 0) {
 			if ((params[0]).match(/\d+/g)) {
 				for (let i = 0; i < params.length; i++) {
-					let diceQty = (params[i]).replace(/\D/g, "");
+					let diceQty = +(params[i]).replace(/\D/g, "");
 					let color = params[i].replace(/\d/g, "");
-					if (diceQty > config.maxRollsPerDie) {
+					if (diceQty > +config.maxRollsPerDie) {
 						message.reply('Roll exceeds max roll per die limit of ' + config.maxRollsPerDie + ' . Please try again.');
 						resolve(0);
+						return;
 					}
 					for (let j = 0; j < diceQty; j++) {
 						diceOrder.push(color);
@@ -90,6 +99,7 @@ function processType(message, params) {
 		} else {
 			message.reply('No dice rolled.');
 			resolve(0);
+			return;
 		}
 
 		let finalOrder = [];
@@ -196,8 +206,8 @@ function rollDice(die) {
 	return dice(Object.keys(diceFaces[die]).length);
 }
 
-async function countSymbols(diceResult, message, bot, desc, channelEmoji) {
-	return new Promise(resolve => {
+async function countSymbols(diceResult, message, bot, channelEmoji) {
+	return new Promise(async resolve => {
 		diceResult.results = {
 			face: '',
 			success: 0,
@@ -209,7 +219,7 @@ async function countSymbols(diceResult, message, bot, desc, channelEmoji) {
 			lightpip: 0,
 			darkpip: 0
 		};
-		printOrder.forEach(color => {
+		await asyncForEach(printOrder, color => {
 			if (diceResult.roll[color]) {
 				diceResult.roll[color].forEach(number => {
 					let face = diceFaces[color][number].face;
@@ -250,21 +260,34 @@ async function countSymbols(diceResult, message, bot, desc, channelEmoji) {
 				});
 			}
 		});
-		printResults(diceResult.results, message, bot, desc, channelEmoji);
+		if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
 		resolve(diceResult);
 	}).catch(error => message.reply(`That's an Error! ${error}`));
+}
+
+async function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
+	let text = '';
+	diceOrder.sort((a, b) => printOrder.indexOf(a) - printOrder.indexOf(b));
+	await asyncForEach(diceOrder, (die) => {
+		if (printOrder.slice(0, -8).includes(die)) text += printEmoji(`${die}gif`, bot, channelEmoji);
+		else text += printEmoji(die, bot, channelEmoji);
+	});
+	console.log(text.length);
+	if (text.length > 1500) text = 'Too many dice to display.';
+	return text;
 }
 
 function printResults(diceResult, message, bot, desc, channelEmoji) {
 	let response = '';
 	//prints faces
 	if (diceResult.face) {
-		if (diceResult.face.length > 1500) diceResult.face = 'Too many dice to display.';
-		message.channel.send(diceResult.face);
+		if (message.author.id === bot.user.id) message.edit(diceResult.face);
+		else (message.channel.send(diceResult.face))
 	} else {
 		message.reply("No dice rolled.");
 		return;
 	}
+
 	//creates finalCount by cancelling results
 	let finalCount = {};
 	if (diceResult.success > diceResult.failure) finalCount.success = diceResult.success - diceResult.failure;
@@ -278,10 +301,10 @@ function printResults(diceResult, message, bot, desc, channelEmoji) {
 
 	//prints finalCount
 	Object.keys(finalCount).forEach(symbol => {
-		if (finalCount[symbol] !== 0) response += printEmoji(`${symbol}`, bot, channelEmoji) + finalCount[symbol] + ' ';
+		if (finalCount[symbol] !== 0) response += `${printEmoji(symbol, bot, channelEmoji)} ${finalCount[symbol]} `;
 	});
 	if (!response) response += 'All dice have cancelled out';
-	if (diceResult.face) message.reply(desc + " results:" + "\n\n\t" + response);
+	if (diceResult.face) message.reply(`${desc} results:\n\n\t${response}`);
 }
 
 exports.roll = roll;

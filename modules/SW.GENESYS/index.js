@@ -9,6 +9,7 @@ exports.initiative = require('./initiative').initiative;
 exports.trigger = require('./trigger').trigger;
 exports.reroll = require('./reroll').reroll;
 exports.roll = require('./roll').roll;
+exports.printResults = require('./roll').printResults;
 exports.processType = require('./roll').processType;
 exports.countSymbols = require('./roll').countSymbols;
 exports.rollDice = require('./roll').rollDice;

@@ -7,8 +7,9 @@ const functions = require('./');
 
 
 async function reroll(bot, message, params, channelEmoji) {
-	new Promise(async () => {
+	new Promise(async resolve => {
 		let diceResult = await readData(bot, message, 'diceResult');
+
 		if (!diceResult) return;
 		if (Object.keys(diceResult).length === 0) return;
 		diceResult = {roll: diceResult};
@@ -22,7 +23,7 @@ async function reroll(bot, message, params, channelEmoji) {
 				break;
 			case "same":
 				let rebuilt = [];
-				Object.keys(diceResult.roll).forEach((color) => {
+				Object.keys(diceResult.roll).forEach(color => {
 					diceResult.roll[color].forEach(() => rebuilt.push(color));
 				});
 				diceResult = await functions.roll(bot, message, params, channelEmoji, 'add', undefined, rebuilt);
@@ -35,7 +36,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					break;
 				}
 				let count = 0;
-				target.forEach((color) => {
+				target.forEach(color => {
 					if (!diceResult.roll[color] || diceResult.roll[color] === []) {
 						message.reply(`There are no more ${color} die to remove!`);
 					} else {
@@ -44,7 +45,8 @@ async function reroll(bot, message, params, channelEmoji) {
 						count++;
 					}
 				});
-				functions.countSymbols(diceResult, message, bot, `Removing ${count} Dice`, channelEmoji);
+				diceResult = await functions.countSymbols(diceResult, message, bot, channelEmoji);
+				functions.printResults(diceResult.results, message, bot, `Removing ${count} Dice`, channelEmoji);
 				break;
 			case "select":
 				if (!params[1]) {
@@ -70,7 +72,10 @@ async function reroll(bot, message, params, channelEmoji) {
 					}
 					else message.reply(`There are no ${target} dice at position ${position + 1} to reroll`);
 					if (index + 1 >= fortuneDice.length) {
-						if (trigger === 1) functions.countSymbols(diceResult, message, bot, text, channelEmoji);
+						if (trigger === 1) {
+							diceResult = await functions.countSymbols(diceResult, message, bot, channelEmoji);
+							functions.printResults(diceResult.results, message, bot, text, channelEmoji);
+						}
 					}
 
 				});
@@ -100,7 +105,7 @@ async function reroll(bot, message, params, channelEmoji) {
 								if (target === 'success' || target === 'advantage' || target === 'triumph' || target === 'failure' || target === 'threat' || target === 'despair' || target === 'lightpip' || target === 'darkpip') emoji = target;
 								let text = `${target}${position + 1} ` + printEmoji(emoji, bot, channelEmoji) + ':\n';
 								let count = 1;
-								diceFaces[target][currentRoll].adjacentposition.forEach((newRoll) => {
+								diceFaces[target][currentRoll].adjacentposition.forEach(newRoll => {
 									emoji = `${target}${diceFaces[target][newRoll].face}`;
 									if (target === 'success' || target === 'advantage' || target === 'triumph' || target === 'failure' || target === 'threat' || target === 'despair' || target === 'lightpip' || target === 'darkpip') emoji = target;
 									text += count + ': ' + printEmoji(emoji, bot, channelEmoji) + '  ';
@@ -128,7 +133,8 @@ async function reroll(bot, message, params, channelEmoji) {
 						if (trigger === 1) {
 							text.slice(0, -1);
 							message.reply(`Replacing${text}:`);
-							functions.countSymbols(diceResult, message, bot, '', channelEmoji);
+							diceResult = await functions.countSymbols(diceResult, message, bot, channelEmoji);
+							functions.printResults(diceResult.results, message, bot, ``, channelEmoji);
 						}
 						break;
 					default:
@@ -140,6 +146,7 @@ async function reroll(bot, message, params, channelEmoji) {
 		}
 		if (!diceResult) diceResult.roll = {};
 		writeData(bot, message, 'diceResult', diceResult.roll);
+		resolve();
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
