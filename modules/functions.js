@@ -97,9 +97,22 @@ function buildDescriptor(params) {
 	return [desc, params];
 }
 
+function buildStats(bot) {
+	let servers, users = [];
+	servers = bot.guilds.size;
+	bot.guilds.forEach(guild => {
+		guild.members.forEach(member => {
+			users.push(member.id)
+		})
+	});
+	users = _.uniq(users);
+	return [servers, users.length];
+}
+
 exports.buildPrefix = buildPrefix;
 exports.buildParams = buildParams;
 exports.buildCommand = buildCommand;
+exports.buildStats = buildStats;
 exports.buildDescriptor = buildDescriptor;
 exports.dice = dice;
 exports.modifierRoll = polyhedral;
