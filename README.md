@@ -125,8 +125,7 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
       
 -  !Invite  get an invite link for @D1-C3
 
-- ADMIN ONLY
-  - !stats     Displays # of servers/users bot is currently has.
+- !stats     Displays # of servers/users bot is currently has.
   
   
 
