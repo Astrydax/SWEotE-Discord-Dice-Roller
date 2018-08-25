@@ -12,7 +12,6 @@ exports.version = require('../package.json').version;
 exports.writeData = require('./data').writeData;
 exports.buildPrefix = require('./functions').buildPrefix;
 exports.buildParams = require('./functions').buildParams;
-exports.buildStats = require('./functions').buildStats;
 exports.buildCommand = require('./functions').buildCommand;
 exports.buildDescriptor = require('./functions').buildDescriptor;
 exports.asyncForEach = require('./functions').asyncForEach;

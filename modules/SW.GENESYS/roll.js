@@ -27,8 +27,8 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 
 		writeData(bot, message, 'diceResult', diceResult.roll);
 
-		let messageGif = await message.channel.send(await printAnimatedEmoji(diceOrder, message, bot, channelEmoji))
-			.catch(error => console.error(error));
+		let messageGif, textGif = printAnimatedEmoji(diceOrder, message, bot, channelEmoji);
+		if (textGif) messageGif = await message.channel.send(textGif).catch(error => console.error(error));
 
 		const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 		await sleep(1500);
@@ -265,10 +265,10 @@ async function countSymbols(diceResult, message, bot, channelEmoji) {
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
-async function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
+function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
 	let text = '';
 	diceOrder.sort((a, b) => printOrder.indexOf(a) - printOrder.indexOf(b));
-	await asyncForEach(diceOrder, (die) => {
+	diceOrder.forEach(die => {
 		if (printOrder.slice(0, -8).includes(die)) text += printEmoji(`${die}gif`, bot, channelEmoji);
 		else text += printEmoji(die, bot, channelEmoji);
 	});

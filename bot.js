@@ -65,7 +65,7 @@ bot.on("message", async message => {
 
 	switch (command) {
 		case 'stats':
-			functions.buildStats(bot, message);
+			message.channel.send(`Currently on ${servers} servers!\nCurrently assisting ${bot.users.size} unique users!`).catch(err => console.log(err));
 			break;
 		case 'ver':
 			message.channel.send(`${bot.user.username}: version: ${functions.version}`);
