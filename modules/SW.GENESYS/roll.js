@@ -279,8 +279,8 @@ function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
 function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) {
 	//prints faces
 	if (diceResult.face) {
-		if (messageGif) messageGif.edit(diceResult.face);
-		else (message.channel.send(diceResult.face))
+		if (messageGif) messageGif.edit(diceResult.face).catch(error => console.error(error));
+		else (message.channel.send(diceResult.face).catch(error => console.error(error)))
 	} else {
 		message.reply("No dice rolled.");
 		return;

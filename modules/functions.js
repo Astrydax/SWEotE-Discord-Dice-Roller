@@ -71,7 +71,7 @@ function buildParams(message, prefix) {
 
 function buildCommand(params) {
 	//create command
-	if (!params[0]) return;
+	if (!params[0]) return ['', params];
 	let command = params[0].slice(1);
 	params = params.slice(1);
 	return [_.toLower(command), params];

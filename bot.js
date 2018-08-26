@@ -28,7 +28,7 @@ bot.on("message", async message => {
 	if (message.author.bot) return;
 
 	//build the prefix
-	prefix = await functions.buildPrefix(bot, message);
+	prefix = await functions.buildPrefix(bot, message).catch(error => console.error(error));
 	if (!prefix) return;
 
 
@@ -36,7 +36,7 @@ bot.on("message", async message => {
 	//check to see if external emoji can be used
 	if (message.channel.type !== 'dm') {
 		if (!message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) {
-			message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`);
+			message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`).catch(error => console.error(error));
 			return;
 		}
 		if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
@@ -50,7 +50,7 @@ bot.on("message", async message => {
 	if (!command) return;
 
 	//get channel emoji
-	channelEmoji = await functions.readData(bot, message, 'channelEmoji');
+	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
 
 	//make the descriptor
 	[desc, params] = functions.buildDescriptor(params);
@@ -68,7 +68,7 @@ bot.on("message", async message => {
 			functions.buildStats(bot, message);
 			break;
 		case 'ver':
-			message.channel.send(`${bot.user.username}: version: ${functions.version}`);
+			message.channel.send(`${bot.user.username}: version: ${functions.version}`).catch(error => console.error(error));
 			break;
 		case 'poly':
 			functions.poly(params, message);
@@ -77,20 +77,17 @@ bot.on("message", async message => {
 		case 'genesys':
 		case 'l5r':
 			functions.writeData(bot, message, 'channelEmoji', command);
-			message.channel.send(`${bot.user.username} will now use ${command} dice`);
+			message.channel.send(`${bot.user.username} will now use ${command} dice`).catch(error => console.error(error));
 			break;
 		case 'prefix':
-			if (message.channel.type === 'dm') message.channel.send('Prefix cannot be changed in DMs');
+			if (message.channel.type === 'dm') message.channel.send('Prefix cannot be changed in DMs').catch(error => console.error(error));
 			else functions.prefix(bot, message, params);
 			break;
 		case 'invite':
-			message.channel.send(`Invite @D1-C3  to your server <https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`);
+			message.channel.send(`Invite @D1-C3  to your server <https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`).catch(error => console.error(error));
 			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
 	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji, prefix);
 	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji, prefix);
-}, error => {
-	console.error(error, message);
-	message.channel.send(`That's an error ${error}`);
-});
+}, error => console.error(error, message));
