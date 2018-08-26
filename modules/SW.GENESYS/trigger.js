@@ -25,17 +25,17 @@ async function trigger(bot, message, type) {
 		let target = 0;
 		let total = 0;
 		list.forEach(name => total += name.value);
-		message.channel.send(`The total group ${type} is ${total}. The ${type} roll is ${roll}.`);
+		message.channel.send(`The total group ${type} is ${total}. The ${type} roll is ${roll}.`).catch(error => console.error(error));
 
 		if (roll > total) {
-			message.channel.send(`No ${type} triggered`);
+			message.channel.send(`No ${type} triggered`).catch(error => console.error(error));
 			resolve();
 		}
 
 		for (let i = 0; i < list.length; i++) {
 			target += list[i].value;
 			if (target > roll) {
-				message.channel.send(`${list[i].name}'s ${list[i][type]} ${type} has been triggered.`);
+				message.channel.send(`${list[i].name}'s ${list[i][type]} ${type} has been triggered.`).catch(error => console.error(error));
 				break;
 			}
 		}

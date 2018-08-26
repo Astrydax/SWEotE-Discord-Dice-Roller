@@ -49,8 +49,11 @@ bot.on("message", async message => {
 	[command, params] = functions.buildCommand(params);
 	if (!command) return;
 
-	//get channel emoji
+	//get channelEmoji
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
+
+	//check for Rival
+	functions.checkPatreon(bot, message);
 
 	//make the descriptor
 	[desc, params] = functions.buildDescriptor(params);

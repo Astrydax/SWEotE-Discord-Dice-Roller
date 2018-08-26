@@ -1,4 +1,5 @@
 const functions = require('./');
+const config = require('../config').config;
 const _ = require('lodash');
 const seedrandom = require('seedrandom');
 const rng = seedrandom('added entropy.', {entropy: true});
@@ -114,13 +115,19 @@ function buildStats(bot, message) {
 	});
 }
 
-exports.buildPrefix = buildPrefix;
-exports.buildParams = buildParams;
+function checkPatreon(bot, message) {
+	let guild = bot.guilds.get(config.patreonGuild);
+	console.log(guild.roles.get(config.rivalRole).members.some(member => member.user.id === message.author.id));
+}
+
+exports.asyncForEach = asyncForEach;
 exports.buildCommand = buildCommand;
-exports.buildStats = buildStats;
 exports.buildDescriptor = buildDescriptor;
+exports.buildParams = buildParams;
+exports.buildPrefix = buildPrefix;
+exports.buildStats = buildStats;
+exports.checkPatreon = checkPatreon;
 exports.dice = dice;
 exports.modifierRoll = polyhedral;
-exports.asyncForEach = asyncForEach;
 
 
