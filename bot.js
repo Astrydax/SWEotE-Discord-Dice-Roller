@@ -52,7 +52,7 @@ bot.on("message", async message => {
 	//get channelEmoji
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
 
-	//check for Rival
+	//check for Patron
 	functions.checkPatreon(bot, message);
 
 	//make the descriptor

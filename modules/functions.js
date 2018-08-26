@@ -117,7 +117,7 @@ function buildStats(bot, message) {
 
 function checkPatreon(bot, message) {
 	let guild = bot.guilds.get(config.patreonGuild);
-	console.log(guild.roles.get(config.rivalRole).members.some(member => member.user.id === message.author.id));
+	console.log(guild.roles.get(config.patronDiceRole).members.some(member => member.user.id === message.author.id));
 }
 
 exports.asyncForEach = asyncForEach;
