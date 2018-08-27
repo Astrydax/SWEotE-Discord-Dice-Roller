@@ -53,7 +53,10 @@ bot.on("message", async message => {
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
 
 	//check for Patron
-	functions.checkPatreon(bot, message);
+	if (functions.checkPatreon(bot, message)) channelEmoji += 'Patreon';
+	console.log(channelEmoji);
+	console.log(functions.checkPatreon(bot, message));
+
 
 	//make the descriptor
 	[desc, params] = functions.buildDescriptor(params);
@@ -91,6 +94,6 @@ bot.on("message", async message => {
 			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
-	if (channelEmoji === 'swrpg' || channelEmoji === 'genesys') swcommands(bot, message, params, command, desc, channelEmoji, prefix);
-	if (channelEmoji === 'l5r') l5rcommands(bot, message, params, command, desc, channelEmoji, prefix);
+	if (channelEmoji.includes('swrpg') || channelEmoji.includes('genesys')) swcommands(bot, message, params, command, desc, channelEmoji, prefix);
+	if (channelEmoji.includes('l5r')) l5rcommands(bot, message, params, command, desc, channelEmoji, prefix);
 }, error => console.error(error, message));
