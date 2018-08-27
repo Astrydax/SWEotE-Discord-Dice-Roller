@@ -229,6 +229,7 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
 ## Patrons
 - Xavi Santamaria
 - Flobio
+- Scott McNeil
 
 [Patreon](https://www.patreon.com/SkyJedi)
 
