@@ -53,10 +53,9 @@ bot.on("message", async message => {
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
 
 	//check for Patron
-	if (functions.checkPatreon(bot, message)) channelEmoji += 'Patreon';
-	console.log(channelEmoji);
-	console.log(functions.checkPatreon(bot, message));
-
+	if (functions.config.patronDiceRole && functions.config.patreonGuild) {
+		if (functions.checkPatreon(bot, message)) channelEmoji += 'Patreon';
+	}
 
 	//make the descriptor
 	[desc, params] = functions.buildDescriptor(params);
