@@ -64,7 +64,7 @@ bot.on("message", async message => {
 	params = params.filter(Boolean);
 	params.forEach((param, index) => params[index] = _.toLower(param));
 
-	console.log(`${message.createdAt} @${message.author.username}\n message: ${message}\n command: ${command}\n params: ${params}`);
+	console.log(`${message.author.username}, message: ${message}, command: ${command}, params: ${params}`);
 
 //************************COMMANDS START HERE************************
 
@@ -76,6 +76,7 @@ bot.on("message", async message => {
 			message.channel.send(`${bot.user.username}: version: ${functions.version}`).catch(error => console.error(error));
 			break;
 		case 'poly':
+		case 'p':
 			functions.poly(params, message);
 			break;
 		case 'swrpg':
