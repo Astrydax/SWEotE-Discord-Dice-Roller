@@ -2,6 +2,7 @@ exports.char = require('./char').char;
 exports.commands = require('./commands').commands;
 exports.crit = require('./crit').crit;
 exports.diceFaces = require('./dice').dice;
+exports.order = require('./dice').order;
 exports.destiny = require('./destiny').destiny;
 exports.gleepglop = require('./misc').gleepglop;
 exports.help = require('./help').help;

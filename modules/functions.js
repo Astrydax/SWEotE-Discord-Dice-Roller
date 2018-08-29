@@ -4,13 +4,13 @@ const _ = require('lodash');
 const seedrandom = require('seedrandom');
 const rng = seedrandom('added entropy.', {entropy: true});
 
-function dice(sides) {
-	return Math.floor(rng() * sides) + 1;
-}
+const dice = sides => Math.floor(rng() * sides) + 1;
 
-async function asyncForEach(array, callback) {
-	for (let index = 0; index < array.length; index++) {
-		await callback(array[index], index, array)
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+async function asyncForEach(array, cb) {
+	for (let i = 0; i < array.length; i++) {
+		await cb(array[i], i, array)
 	}
 }
 
@@ -129,5 +129,6 @@ exports.buildStats = buildStats;
 exports.checkPatreon = checkPatreon;
 exports.dice = dice;
 exports.modifierRoll = polyhedral;
+exports.sleep = sleep;
 
 

@@ -2,6 +2,7 @@ const functions = require('./');
 const print = require('../').print;
 const readData = require('../').readData;
 const writeData = require('../').writeData;
+const sleep = require('../').sleep;
 
 async function destiny(bot, message, params, channelEmoji) {
 	return new Promise(async () => {
@@ -107,8 +108,9 @@ async function destiny(bot, message, params, channelEmoji) {
 				break;
 		}
 		//Prints out destiny pool to channel
-		printDestinyBalance(destinyBalance, bot, channelEmoji, message, type);
 		writeData(bot, message, 'destinyBalance', destinyBalance);
+		if (params[0] === 'r' || params[0] === 'roll') await sleep(1200);
+		printDestinyBalance(destinyBalance, bot, channelEmoji, message, type);
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 
 }

@@ -29,7 +29,7 @@ async function reroll(bot, message, params, channelEmoji) {
 				diceResult = await functions.roll(bot, message, params, channelEmoji, 'add', undefined, rebuilt);
 				break;
 			case "remove":
-				target = await functions.processType(message, params.slice(1));
+				target = functions.processType(message, params.slice(1));
 
 				if (target === 0) {
 					message.reply("Bad syntax, please look at !help reroll");
@@ -45,7 +45,7 @@ async function reroll(bot, message, params, channelEmoji) {
 						count++;
 					}
 				});
-				diceResult = await functions.countSymbols(diceResult, message, bot, channelEmoji);
+				diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
 				functions.printResults(diceResult.results, message, bot, `Removing ${count} Dice`, channelEmoji);
 				break;
 			case "select":
@@ -60,8 +60,8 @@ async function reroll(bot, message, params, channelEmoji) {
 				let fortuneDice = params.slice(1);
 				let text = 'Rerolling ';
 				let trigger = 0;
-				fortuneDice.forEach(async (die, index) => {
-					let arr = await functions.processType(message, [`${die}`]);
+				fortuneDice.forEach((die, index) => {
+					let arr = functions.processType(message, [`${die}`]);
 					target = arr[0];
 					position = die.replace(/\D/g, "") - 1;
 
@@ -73,7 +73,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					else message.reply(`There are no ${target} dice at position ${position + 1} to reroll`);
 					if (index + 1 >= fortuneDice.length) {
 						if (trigger === 1) {
-							diceResult = await functions.countSymbols(diceResult, message, bot, channelEmoji);
+							diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
 							functions.printResults(diceResult.results, message, bot, text, channelEmoji);
 						}
 					}
@@ -94,8 +94,8 @@ async function reroll(bot, message, params, channelEmoji) {
 					case 'show':
 					case 'options':
 						let fortuneDice = params.slice(2);
-						fortuneDice.forEach(async die => {
-							let arr = await functions.processType(message, [`${die}`]);
+						fortuneDice.forEach(die => {
+							let arr = functions.processType(message, [`${die}`]);
 							target = arr[0];
 							position = die.replace(/\D/g, "") - 1;
 							let emoji;
@@ -119,7 +119,7 @@ async function reroll(bot, message, params, channelEmoji) {
 						break;
 					case 'swap':
 						let text = '';
-						let arr = await functions.processType(message, [params[2]]);
+						let arr = functions.processType(message, [params[2]]);
 						target = arr[0];
 						let trigger = 0;
 						position = params[2].replace(/\D/g, "") - 1;
@@ -133,7 +133,7 @@ async function reroll(bot, message, params, channelEmoji) {
 						if (trigger === 1) {
 							text.slice(0, -1);
 							message.reply(`Replacing${text}:`);
-							diceResult = await functions.countSymbols(diceResult, message, bot, channelEmoji);
+							diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
 							functions.printResults(diceResult.results, message, bot, ``, channelEmoji);
 						}
 						break;

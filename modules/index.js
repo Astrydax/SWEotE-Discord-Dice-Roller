@@ -5,6 +5,7 @@ exports.buildDescriptor = require('./functions').buildDescriptor;
 exports.buildParams = require('./functions').buildParams;
 exports.buildPrefix = require('./functions').buildPrefix;
 exports.buildStats = require('./functions').buildStats;
+exports.sleep = require('./functions').sleep;
 exports.checkPatreon = require('./functions').checkPatreon;
 exports.config = require('../config').config;
 exports.data = require('./data');

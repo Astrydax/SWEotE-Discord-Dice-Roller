@@ -4,7 +4,7 @@ const writeData = require('../').writeData;
 const readData = require('../').readData;
 const dice = ['white', 'black', 'success', 'opportunity', 'strife', 'explosiveSuccess'];
 const rollDice = require('../').dice;
-const asyncForEach = require('../').asyncForEach;
+const sleep = require('../').sleep;
 const diceFaces = {
 	black: ['', 's', 'st', 'et', 'o', 'ot'],
 	white: ['', '', 's', 's', 'so', 'st', 'st', 'e', 'et', 'o', 'o', 'o'],
@@ -23,19 +23,21 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 			return;
 		}
 		//process each identifier and set it into an array
-		let diceOrder = await processType(params, message);
-		if (!diceOrder) resolve();
+		let diceOrder = processType(params, message);
+		if (!diceOrder) {
+			resolve();
+			return;
+		}
 
 		//rolls each die and begins rollResults
-		await asyncForEach(diceOrder, color => diceResult.roll[color].push(diceFaces[color][rollDice(diceFaces[color].length) - 1]));
+		diceOrder.forEach(color => diceResult.roll[color].push(diceFaces[color][rollDice(diceFaces[color].length) - 1]));
 
 		//counts the symbols rolled and returns them in diceResult.results
 
 		let messageGif, textGif = printAnimatedEmoji(diceOrder, message, bot, channelEmoji);
 		if (textGif) messageGif = await message.channel.send(textGif).catch(error => console.error(error));
 
-		const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-		await sleep(1500);
+		await sleep(1200);
 
 		diceResult = await countSymbols(diceResult, message, bot, desc, channelEmoji);
 		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
@@ -56,7 +58,7 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 		}
 			if (params.length === 1) params = params[0].split('');
 
-		await asyncForEach(params, target => {
+		params.forEach(target => {
 				switch (true) {
 					case (roll.white.length >= target):
 						object.white.push(target - 1);
@@ -81,8 +83,8 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 
 		if (reroll) {
 			keeperResults.roll = {...roll};
-			await asyncForEach(Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)), async color => {
-				await asyncForEach(roll[color], (face, index) => {
+			Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)).forEach(color => {
+				roll[color].forEach((face, index) => {
 					if (object[color].includes(index)) {
 						keeperResults.roll[color].splice(index, 1, diceFaces[color][rollDice(diceFaces[color].length) - 1]);
 						if (dice.slice(0, -4).includes(color)) textGif += printEmoji(`${color}gif`, bot, channelEmoji);
@@ -94,21 +96,19 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 					}
 				});
 			});
-			messageGif = await message.channel.send(textGif)
-				.catch(error => console.error(error));
+			messageGif = await message.channel.send(textGif).catch(error => console.error(error));
 
-			const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-			await sleep(1500);
+			await sleep(1200);
+
 		} else {
-			await asyncForEach(Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)), async color => {
-				await asyncForEach(roll[color], (face, index) => {
+			Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)).forEach(color => {
+				roll[color].forEach((face, index) => {
 					if (object[color].includes(index)) {
 						keeperResults.roll[color].push(roll[color][index]);
 						textGif += printEmoji(color, bot, channelEmoji);
 					}
 				});
 			});
-
 		}
 
 		diceResult = await countSymbols(keeperResults, message, bot, desc, channelEmoji);
@@ -144,106 +144,102 @@ function initDiceResult() {
 
 //processes the params and give an array of the type of dice to roll
 function processType(params, message) {
-	return new Promise(resolve => {
-		let diceOrder = [], finalOrder = [];
-		if (params[0].match(/\d+/g)) {
-			for (let i = 0; i < params.length; i++) {
-				let diceQty = params[i].replace(/\D/g, "");
-				let color = params[i].replace(/\d/g, "");
-				if (diceQty > config.maxRollsPerDie) {
-					message.reply('Roll exceeds max roll per die limit of ' + config.maxRollsPerDie + ' . Please try again.');
-					resolve(0);
-				}
-				for (let j = 0; j < diceQty; j++) diceOrder.push(color);
+	let diceOrder = [], finalOrder = [];
+	if (params[0].match(/\d+/g)) {
+		for (let i = 0; i < params.length; i++) {
+			let diceQty = params[i].replace(/\D/g, "");
+			let color = params[i].replace(/\d/g, "");
+			if (diceQty > config.maxRollsPerDie) {
+				message.reply('Roll exceeds max roll per die limit of ' + config.maxRollsPerDie + ' . Please try again.');
+				return 0;
 			}
-		} else {
-			params = params.join('');
-			for (let i = 0; i < params.length; i++) diceOrder.push(params[i]);
+			for (let j = 0; j < diceQty; j++) diceOrder.push(color);
 		}
+	} else {
+		params = params.join('');
+		for (let i = 0; i < params.length; i++) diceOrder.push(params[i]);
+	}
 
-		diceOrder.forEach(die => {
-			switch (die) {
-				case 'black':
-				case 'b':
-				case 'blk':
-				case 'ring':
-				case 'r':
-					finalOrder.push('black');
-					break;
-				case 'white':
-				case 'w':
-				case 'skill':
-				case 's':
-					finalOrder.push('white');
-					break;
-				case 'success':
-				case 'suc':
-				case '+':
-					finalOrder.push('success');
-					break;
-				case 'strife':
-				case 'str':
-				case 't':
-					finalOrder.push('strife');
-					break;
-				case 'opportunity':
-				case 'o':
-					finalOrder.push('opportunity');
-					break;
-				case 'explosiveSuccess':
-				case 'e':
-				case 'exp':
-					finalOrder.push('explosiveSuccess');
-					break;
-				default:
-					break;
-			}
-		});
-		resolve(finalOrder);
-	}).catch(error => message.reply(`That's an Error! ${error}`));
+	diceOrder.forEach(die => {
+		switch (die) {
+			case 'black':
+			case 'b':
+			case 'blk':
+			case 'ring':
+			case 'r':
+				finalOrder.push('black');
+				break;
+			case 'white':
+			case 'w':
+			case 'skill':
+			case 's':
+				finalOrder.push('white');
+				break;
+			case 'success':
+			case 'suc':
+			case '+':
+				finalOrder.push('success');
+				break;
+			case 'strife':
+			case 'str':
+			case 't':
+				finalOrder.push('strife');
+				break;
+			case 'opportunity':
+			case 'o':
+				finalOrder.push('opportunity');
+				break;
+			case 'explosiveSuccess':
+			case 'e':
+			case 'exp':
+				finalOrder.push('explosiveSuccess');
+				break;
+			default:
+				break;
+		}
+	});
+	return finalOrder;
 }
 
 function countSymbols(diceResult, message, bot, desc, channelEmoji) {
-	return new Promise(resolve => {
-		diceResult.results = {
-			face: '',
-			success: 0,
-			opportunity: 0,
-			strife: 0,
-			explosiveSuccess: {
-				white: 0,
-				black: 0,
-			},
-		};
+	diceResult.results = {
+		face: '',
+		success: 0,
+		opportunity: 0,
+		strife: 0,
+		explosiveSuccess: {
+			white: 0,
+			black: 0,
+		},
+	};
 
-		Object.keys(diceResult.roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)).forEach(color => {
-			diceResult.roll[color].forEach(face => {
-				if (color === 'white' || color === 'black') diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
-				else diceResult.results.face += printEmoji(`${color}`, bot, channelEmoji);
-				for (let i = 0; face.length > i; i++) {
-					switch (face[i]) {
-						case 'e':
-							diceResult.results.explosiveSuccess[color]++;
-							diceResult.results.success++;
-							break;
-						case 's':
-							diceResult.results.success++;
-							break;
-						case 'o':
-							diceResult.results.opportunity++;
-							break;
-						case 't':
-							diceResult.results.strife++;
-							break;
-						default:
-							break;
-					}
+	Object.keys(diceResult.roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)).forEach(color => {
+		diceResult.roll[color].forEach(face => {
+			if (color === 'white' || color === 'black') diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
+			else diceResult.results.face += printEmoji(`${color}`, bot, channelEmoji);
+			for (let i = 0; face.length > i; i++) {
+				switch (face[i]) {
+					case 'e':
+						diceResult.results.explosiveSuccess[color]++;
+						diceResult.results.success++;
+						break;
+					case 's':
+						diceResult.results.success++;
+						break;
+					case 'o':
+						diceResult.results.opportunity++;
+						break;
+					case 't':
+						diceResult.results.strife++;
+						break;
+					default:
+						break;
 				}
-			});
+			}
 		});
-		if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
-		resolve(diceResult);
 	});
+	if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
+	return diceResult;
 }
 
 function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
