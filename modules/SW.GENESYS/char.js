@@ -202,7 +202,7 @@ const buildCharacterStatus = (name, character) => {
 	if (character.maxStrain > 0) text += `\nStrain: \`${character.currentStrain} / ${character.maxStrain}\``;
 	if (character.credits > 0) text += `\nCredits: \`${character.credits}\``;
 	if (character.crit.length > 0) text += `\nCrits: \`${character.crit}\``;
-	['obligation', 'duty', 'morality', 'inventory'].forEach(type => {
+	['obligation', 'duty', 'morality', 'inventory', 'misc'].forEach(type => {
 		if (character[type]) {
 			if (Object.keys(character[type]).length > 0) {
 				text += `\n${_.upperFirst(type)}: \``;
