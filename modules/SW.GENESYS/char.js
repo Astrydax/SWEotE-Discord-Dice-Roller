@@ -105,9 +105,12 @@ async function char(bot, message, params, channelEmoji) {
 			case 'duty':
 			case 'inventory':
 			case 'i':
+			case 'misc':
+			case 'm':
 				if (command === 'o' || command === 'obligation') type = 'obligation';
 				if (command === 'd' || command === 'duty') type = 'duty';
 				if (command === 'i' || command === 'inventory') type = 'inventory';
+				if (command === 'm' || command === 'misc') type = 'misc';
 				if (!character[type]) character[type] = {};
 				if (params[3]) name = params[3].toUpperCase();
 				if (!name) {
