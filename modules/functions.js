@@ -8,35 +8,25 @@ const dice = sides => Math.floor(rng() * sides) + 1;
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-async function asyncForEach(array, cb) {
-	for (let i = 0; i < array.length; i++) {
-		await cb(array[i], i, array)
-	}
-}
-
 function polyhedral(sides, str, message) {
-	let total = 0;
+	let total = 0, r = 0, text = '', modifier;
+	if (str.length > 0) modifier = +(str[str.length - 1]).replace(/\D/g, "");
 	//no modifier
 	if (str.length < 1) {
-		console.log("No modifier, straight d100 roll");
-		let r = dice(sides);
-		total = +r;
-		message.reply(" rolled a d" + sides + ": " + total);
+		total = dice(sides);
+		text = ` rolled a d${sides}: ${total}`;
 		//addition modifier
-	} else if (str.includes("+") || str[0][0] === "+") {
-		console.log("+ modifier detected");
-		let modifier = (str[str.length - 1]).replace(/\D/g, "");
-		let r = dice(sides);
-		total = +r + +modifier;
-		message.reply(" rolled a d" + sides + ": " + r + " + " + modifier + " " + "for a total of " + total);
+	} else if (str.some(e => e.includes('+'))) {
+		r = dice(sides);
+		total = r + modifier;
+		text = ` rolled a d${sides}: ${r} + ${modifier} for at total of ${total}`;
 		//subtraction modifier
-	} else if (str.includes("-") || str[0][0] === "-") {
-		console.log("- modifier detected");
-		let modifier = (str[str.length - 1]).replace(/\D/g, "");
-		let r = dice(sides);
-		total = +r - +modifier;
-		message.reply(" rolled a d" + sides + ": " + r + " - " + modifier + " " + "for a total of " + total);
+	} else if (str.some(e => e.includes('-'))) {
+		r = dice(sides);
+		total = r - modifier;
+		text = ` rolled a d${sides}: ${r} - ${modifier} for at total of ${total}`;
 	}
+	message.reply(text);
 	return total;
 }
 
@@ -120,7 +110,6 @@ function checkPatreon(bot, message) {
 	return guild.roles.get(config.patronDiceRole).members.some(member => member.user.id === message.author.id);
 }
 
-exports.asyncForEach = asyncForEach;
 exports.buildCommand = buildCommand;
 exports.buildDescriptor = buildDescriptor;
 exports.buildParams = buildParams;

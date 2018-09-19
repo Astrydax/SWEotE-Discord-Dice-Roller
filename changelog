@@ -1,3 +1,8 @@
+2.5.3
+    -fixed init and d roll
+    -updated firebase and lodash
+    -added inventory to !char
+
 2.5.2
     -added duty
     -rewrote !char

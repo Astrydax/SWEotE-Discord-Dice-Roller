@@ -3,8 +3,8 @@
   For Custom Discord Bots please email me at Astrydax@gmail.com
 */
 const functions = require('./modules/');
-const swcommands = require('./modules/SW.GENESYS/').commands;
-const l5rcommands = require('./modules/L5R/').commands;
+const swCommands = require('./modules/SW.GENESYS/').commands;
+const l5rCommands = require('./modules/L5R/').commands;
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const firebase = require('firebase');
@@ -31,7 +31,6 @@ bot.on("message", async message => {
 	prefix = await functions.buildPrefix(bot, message).catch(error => console.error(error));
 	if (!prefix) return;
 
-
 	//check to see if bot can send messages on channel
 	//check to see if external emoji can be used
 	if (message.channel.type !== 'dm') {
@@ -53,7 +52,7 @@ bot.on("message", async message => {
 	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
 
 	//check for Patron
-	if (functions.config.patronDiceRole && functions.config.patreonGuild) {
+	if (functions.config.patronDiceRole && functions.config.patreonGuild && functions.config[`${channelEmoji}Patreon`]) {
 		if (functions.checkPatreon(bot, message)) channelEmoji += 'Patreon';
 	}
 
@@ -82,6 +81,7 @@ bot.on("message", async message => {
 		case 'swrpg':
 		case 'genesys':
 		case 'l5r':
+		case 'dryh':
 			functions.writeData(bot, message, 'channelEmoji', command);
 			message.channel.send(`${bot.user.username} will now use ${command} dice`).catch(error => console.error(error));
 			break;
@@ -94,6 +94,19 @@ bot.on("message", async message => {
 			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
-	if (channelEmoji.includes('swrpg') || channelEmoji.includes('genesys')) swcommands(bot, message, params, command, desc, channelEmoji, prefix);
-	if (channelEmoji.includes('l5r')) l5rcommands(bot, message, params, command, desc, channelEmoji, prefix);
+	switch (channelEmoji) {
+		case 'swrpg':
+		case 'swrpgPatreon':
+		case 'genesys':
+		case 'genesysPatreon':
+			swCommands(bot, message, params, command, desc, channelEmoji, prefix);
+			break;
+		case 'l5r':
+		case 'l5rPatreon':
+			l5rCommands(bot, message, params, command, desc, channelEmoji, prefix);
+			break;
+		default:
+			break;
+
+	}
 }, error => console.error(error, message));

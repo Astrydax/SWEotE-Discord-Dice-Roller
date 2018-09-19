@@ -65,6 +65,8 @@ A Discord Bot Companion for the SW:EotE, AoR, FnD, Genesys, and L5R RPG
   - !Char Modify CharacterName +X/-X MaxStrain/MaxWounds        increases/decreases selected stat for characterName by x
   - !Char Crit CharacterName +X/-X                              adds/removes critical injuries for characterName
   - !Char obligation/o CharacterName +X/-X obligationName       adds/removes obligations for characterName
+  - !Char duty/d CharacterName +X/-X dutyName             adds/removes duty for characterName
+  - !Char inventory/i CharacterName +X/-X itemName       adds/removes inventory items for characterName
   - !char status characterName                                  current status for characterName   
   - !char remove characterName                                  removes characterName
   - !char list                                                  lists all characters
@@ -230,6 +232,8 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
 - Xavi Santamaria
 - Flobio
 - Scott McNeil
+- Jason Greathouse
+
 
 [Patreon](https://www.patreon.com/SkyJedi)
 

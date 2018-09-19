@@ -34,6 +34,7 @@ ${prefix}Char Credits/C CharacterName +X/-X: increases/decreases credit balance 
 ${prefix}Char Crit CharacterName +X/-X: adds/removes critical injuries for characterName
 ${prefix}Char Obligation/O CharacterName +X/-X ObligationName: adds/removes obligations for characterName
 ${prefix}Char Duty/D CharacterName +X/-X DutyName: adds/removes duty for characterName
+${prefix}Char Inventory/I CharacterName +X/-X ItemName: adds/removes inventory items for characterName
 ${prefix}Char Modify CharacterName +X/-X MaxStrain/MaxWounds: increases/decreases selected stat for characterName by x
 ${prefix}Char Status CharacterName: current status for characterName
 ${prefix}Char Remove CharacterName: removes characterName

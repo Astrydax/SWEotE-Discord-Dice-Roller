@@ -26,12 +26,12 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 		diceResult = countSymbols(diceResult, message, bot, channelEmoji);
 
 		writeData(bot, message, 'diceResult', diceResult.roll);
-		resolve(diceResult);
 
 		let messageGif, textGif = printAnimatedEmoji(diceOrder, message, bot, channelEmoji);
 		if (textGif) messageGif = await message.channel.send(textGif).catch(error => console.error(error));
+		resolve(diceResult);
 
-		await sleep(1200);
+		await sleep(desc.includes('roll') ? 0 : 1000);
 
 		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
 	}).catch(error => message.reply(`That's an Error! ${error}`));

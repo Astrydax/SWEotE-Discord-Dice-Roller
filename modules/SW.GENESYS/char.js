@@ -27,7 +27,7 @@ async function char(bot, message, params, channelEmoji) {
 				return;
 			}
 		}
-		let text = '';
+		let text = '', name = '', type = '';
 		switch (command) {
 			case 'setup':
 			case 'add':
@@ -103,9 +103,11 @@ async function char(bot, message, params, channelEmoji) {
 			case 'o':
 			case 'd':
 			case 'duty':
-				let name, type;
+			case 'inventory':
+			case 'i':
 				if (command === 'o' || command === 'obligation') type = 'obligation';
 				if (command === 'd' || command === 'duty') type = 'duty';
+				if (command === 'i' || command === 'inventory') type = 'inventory';
 				if (!character[type]) character[type] = {};
 				if (params[3]) name = params[3].toUpperCase();
 				if (!name) {
@@ -139,7 +141,7 @@ async function char(bot, message, params, channelEmoji) {
 			case 'credit':
 			case 'credits':
 			case 'c':
-				if (modifier > 0 || -modifier < +character.credits) {
+				if (modifier > 0 || +character.credits >= -modifier) {
 					character.credits = +character.credits + modifier;
 					if (modifier > 0) text += `${characterName} gets ${modifier} credits`;
 					else if (modifier < 0) text += `${characterName} pays ${-modifier} credits.`;
@@ -197,7 +199,7 @@ const buildCharacterStatus = (name, character) => {
 	if (character.maxStrain > 0) text += `\nStrain: \`${character.currentStrain} / ${character.maxStrain}\``;
 	if (character.credits > 0) text += `\nCredits: \`${character.credits}\``;
 	if (character.crit.length > 0) text += `\nCrits: \`${character.crit}\``;
-	['obligation', 'duty', 'morality'].forEach(type => {
+	['obligation', 'duty', 'morality', 'inventory'].forEach(type => {
 		if (character[type]) {
 			if (Object.keys(character[type]).length > 0) {
 				text += `\n${_.upperFirst(type)}: \``;

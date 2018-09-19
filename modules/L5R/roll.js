@@ -39,7 +39,7 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 
 		await sleep(1200);
 
-		diceResult = await countSymbols(diceResult, message, bot, desc, channelEmoji);
+		diceResult = countSymbols(diceResult, message, bot, desc, channelEmoji);
 		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
 		writeData(bot, message, 'diceResult', diceResult.roll);
 		resolve()
@@ -111,7 +111,7 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 			});
 		}
 
-		diceResult = await countSymbols(keeperResults, message, bot, desc, channelEmoji);
+		diceResult = countSymbols(keeperResults, message, bot, desc, channelEmoji);
 		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
 			writeData(bot, message, 'diceResult', keeperResults.roll);
 		}
