@@ -2,7 +2,7 @@ const functions = require('./');
 const config = require('../config').config;
 const _ = require('lodash');
 const seedrandom = require('seedrandom');
-const rng = seedrandom('added entropy.', {entropy: true});
+const rng = seedrandom(Math.random(), {entropy: true});
 
 const dice = sides => Math.floor(rng() * sides) + 1;
 
