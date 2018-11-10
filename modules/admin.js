@@ -1,4 +1,6 @@
-function admin(bot, message, params, command) {
+const functions = require('./');
+
+async function admin(bot, message, params, command) {
   switch (command) {
     case "logout":
       bot.logout();
@@ -6,6 +8,8 @@ function admin(bot, message, params, command) {
     case "fix":
       break;
     case "test":
+    	const msg = await functions.print('yellowr', bot, 'genesysPatreon', message);
+    	message.channel.send(msg);
       break;
     default:
       break;

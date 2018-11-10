@@ -110,12 +110,18 @@ function checkPatreon(bot, message) {
 	return guild.roles.get(config.patronDiceRole).members.some(member => member.user.id === message.author.id);
 }
 
+async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+		await callback(array[index], index, array);
+	}
+}
 exports.buildCommand = buildCommand;
 exports.buildDescriptor = buildDescriptor;
 exports.buildParams = buildParams;
 exports.buildPrefix = buildPrefix;
 exports.buildStats = buildStats;
 exports.checkPatreon = checkPatreon;
+exports.asyncForEach = asyncForEach;
 exports.dice = dice;
 exports.modifierRoll = polyhedral;
 exports.sleep = sleep;

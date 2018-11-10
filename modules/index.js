@@ -1,4 +1,5 @@
 exports.admin = require('./admin').admin;
+exports.asyncForEach = require('./functions').asyncForEach;
 exports.buildCommand = require('./functions').buildCommand;
 exports.buildDescriptor = require('./functions').buildDescriptor;
 exports.buildParams = require('./functions').buildParams;

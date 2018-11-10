@@ -123,14 +123,14 @@ function initDestinyBalance() {
 	};
 }
 
-function printDestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
+async function printDestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
 	destinyBalance.face = "";
-	for (let i = 1; i <= destinyBalance.light; i++) destinyBalance.face += print("lightside", bot, channelEmoji);
-	for (let i = 1; i <= destinyBalance.dark; i++) destinyBalance.face += print("darkside", bot, channelEmoji);
-	message.channel.send(`${type} Points: `);
+	for (let i = 1; i <= destinyBalance.light; i++) destinyBalance.face += await print("lightside", bot, channelEmoji);
+	for (let i = 1; i <= destinyBalance.dark; i++) destinyBalance.face += await print("darkside", bot, channelEmoji);
+	message.channel.send(`${type} Points: `).catch(console.error);
 	if (destinyBalance.face !== "") {
 		if (destinyBalance.face.length > 1500) destinyBalance.face = `Too many ${type} Points to display.`;
-		message.channel.send(destinyBalance.face);
+		message.channel.send(destinyBalance.face).catch(console.error);
 	}
 }
 

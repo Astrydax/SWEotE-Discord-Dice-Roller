@@ -4,6 +4,8 @@ const diceFaces = require('./').diceFaces;
 const readData = require('../').readData;
 const writeData = require('../').writeData;
 const functions = require('./');
+const asyncForEach = require('../').asyncForEach;
+const symbols = require('./dice').symbols;
 
 
 async function reroll(bot, message, params, channelEmoji) {
@@ -46,7 +48,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					}
 				});
 				diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
-				functions.printResults(diceResult.results, message, bot, `Removing ${count} Dice`, channelEmoji);
+				functions.printResults(diceResult, message, bot, `Removing ${count} Dice`, channelEmoji);
 				break;
 			case "select":
 				if (!params[1]) {
@@ -74,7 +76,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					if (index + 1 >= fortuneDice.length) {
 						if (trigger === 1) {
 							diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
-							functions.printResults(diceResult.results, message, bot, text, channelEmoji);
+							functions.printResults(diceResult, message, bot, text, channelEmoji);
 						}
 					}
 
@@ -94,7 +96,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					case 'show':
 					case 'options':
 						let fortuneDice = params.slice(2);
-						fortuneDice.forEach(die => {
+						await asyncForEach(fortuneDice, async die => {
 							let arr = functions.processType(message, [`${die}`]);
 							target = arr[0];
 							position = die.replace(/\D/g, "") - 1;
@@ -102,18 +104,18 @@ async function reroll(bot, message, params, channelEmoji) {
 							if (diceResult.roll[target] && diceResult.roll[target] !== 0 && diceResult.roll[target][position]) {
 								let currentRoll = diceResult.roll[target][position];
 								emoji = `${target}${diceFaces[target][currentRoll].face}`;
-								if (target === 'success' || target === 'advantage' || target === 'triumph' || target === 'failure' || target === 'threat' || target === 'despair' || target === 'lightpip' || target === 'darkpip') emoji = target;
-								let text = `${target}${position + 1} ` + printEmoji(emoji, bot, channelEmoji) + ':\n';
+								if (symbols.includes(target)) emoji = target;
+								let text = `${target}${position + 1} ` + await printEmoji(emoji, bot, channelEmoji) + ':\n';
 								let count = 1;
-								diceFaces[target][currentRoll].adjacentposition.forEach(newRoll => {
+								await asyncForEach(diceFaces[target][currentRoll].adjacentposition, async newRoll => {
 									emoji = `${target}${diceFaces[target][newRoll].face}`;
-									if (target === 'success' || target === 'advantage' || target === 'triumph' || target === 'failure' || target === 'threat' || target === 'despair' || target === 'lightpip' || target === 'darkpip') emoji = target;
-									text += count + ': ' + printEmoji(emoji, bot, channelEmoji) + '  ';
+									if (symbols.includes(target)) emoji = target;
+									text += count + ': ' + await printEmoji(emoji, bot, channelEmoji) + '  ';
 									count++
 								});
 								message.reply(text);
 							} else {
-								message.reply(`There is not a ${target} die at postion ${position + 1}`);
+								message.reply(`There is not a ${target} die at position ${position + 1}`);
 							}
 						});
 						break;
@@ -134,7 +136,7 @@ async function reroll(bot, message, params, channelEmoji) {
 							text.slice(0, -1);
 							message.reply(`Replacing${text}:`);
 							diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
-							functions.printResults(diceResult.results, message, bot, ``, channelEmoji);
+							functions.printResults(diceResult, message, bot, ``, channelEmoji);
 						}
 						break;
 					default:

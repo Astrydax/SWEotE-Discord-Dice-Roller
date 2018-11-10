@@ -1,4 +1,6 @@
 const order = ['yellow', 'green', 'blue', 'red', 'purple', 'black', 'white', 'success', 'advantage', 'triumph', 'failure', 'threat', 'despair', 'lightpip', 'darkpip'];
+const colors = ['yellow', 'green', 'blue', 'red', 'purple', 'black', 'white'];
+const symbols = ['success', 'advantage', 'triumph', 'failure', 'threat', 'despair', 'lightpip', 'darkpip'];
 
 const dice = {
 	yellow: {
@@ -91,4 +93,6 @@ const dice = {
 
 
 exports.dice = dice;
+exports.colors = colors;
+exports.symbols = symbols;
 exports.order = order;

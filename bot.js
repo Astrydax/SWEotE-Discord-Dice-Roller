@@ -63,7 +63,7 @@ bot.on("message", async message => {
 	params = params.filter(Boolean);
 	params.forEach((param, index) => params[index] = _.toLower(param));
 
-	console.log(`${message.author.username}, message: ${message}, command: ${command}, params: ${params}`);
+	console.log(`${message.author.username}, ${command}, ${params}, ${new Date()}`);
 
 //************************COMMANDS START HERE************************
 
@@ -72,7 +72,7 @@ bot.on("message", async message => {
 			functions.buildStats(bot, message);
 			break;
 		case 'ver':
-			message.channel.send(`${bot.user.username}: version: ${functions.version}`).catch(error => console.error(error));
+			message.channel.send(`${bot.user.username}: version: ${functions.version}`).catch(console.error);
 			break;
 		case 'poly':
 		case 'p':
@@ -83,14 +83,14 @@ bot.on("message", async message => {
 		case 'l5r':
 		case 'dryh':
 			functions.writeData(bot, message, 'channelEmoji', command);
-			message.channel.send(`${bot.user.username} will now use ${command} dice`).catch(error => console.error(error));
+			message.channel.send(`${bot.user.username} will now use ${command} dice`).catch(console.error);
 			break;
 		case 'prefix':
-			if (message.channel.type === 'dm') message.channel.send('Prefix cannot be changed in DMs').catch(error => console.error(error));
+			if (message.channel.type === 'dm') message.channel.send('Prefix cannot be changed in DMs').catch(console.error);
 			else functions.prefix(bot, message, params);
 			break;
 		case 'invite':
-			message.channel.send(`Invite @D1-C3  to your server <https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`).catch(error => console.error(error));
+			message.channel.send(`Invite @D1-C3  to your server <https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`).catch(console.error);
 			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
@@ -109,4 +109,4 @@ bot.on("message", async message => {
 			break;
 
 	}
-}, error => console.error(error, message));
+}, error => console.error(error));

@@ -5,6 +5,8 @@ const printEmoji = require('../').print;
 const writeData = require('../').writeData;
 const sleep = require('../').sleep;
 const order = require('./').order;
+const symbols = require('./').symbols;
+const asyncForEach = require('../').asyncForEach;
 
 async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOrder) {
 	return new Promise(async resolve => {
@@ -27,13 +29,13 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 
 		writeData(bot, message, 'diceResult', diceResult.roll);
 
-		let messageGif, textGif = printAnimatedEmoji(diceOrder, message, bot, channelEmoji);
-		if (textGif) messageGif = await message.channel.send(textGif).catch(error => console.error(error));
+		let messageGif, textGif = await printAnimatedEmoji(diceOrder, message, bot, channelEmoji).catch(console.error);
+		if (textGif) messageGif = await message.channel.send(textGif).catch(console.error);
 		resolve(diceResult);
 
-		await sleep(desc.includes('roll') ? 0 : 1000);
+		sleep(desc.includes('roll') ? 0 : 1000);
 
-		printResults(diceResult.results, message, bot, desc, channelEmoji, messageGif);
+		printResults(diceResult, message, bot, desc, channelEmoji, messageGif).catch(console.error);
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 }
 
@@ -201,7 +203,7 @@ function rollDice(die) {
 	return dice(Object.keys(diceFaces[die]).length);
 }
 
-function countSymbols(diceResult, message, bot, channelEmoji) {
+function countSymbols(diceResult) {
 	diceResult.results = {
 		face: '',
 		success: 0,
@@ -216,7 +218,7 @@ function countSymbols(diceResult, message, bot, channelEmoji) {
 	Object.keys(diceResult.roll).sort((a, b) => order.indexOf(a) - order.indexOf(b)).forEach(color => {
 		diceResult.roll[color].forEach(number => {
 			let face = diceFaces[color][number].face;
-			for (let i = 0; face.length > i; i++) {
+			for (let i=0; i<face.length; i++) {
 				switch (face[i]) {
 					case 's':
 						diceResult.results.success++;
@@ -248,30 +250,38 @@ function countSymbols(diceResult, message, bot, channelEmoji) {
 						break;
 				}
 			}
-			if (color === 'success' || color === 'advantage' || color === 'triumph' || color === 'failure' || color === 'threat' || color === 'despair' || color === 'lightpip' || color === 'darkpip') face = '';
-			diceResult.results.face += printEmoji(`${color}${face}`, bot, channelEmoji);
 		});
 	});
-	if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
 	return diceResult;
 }
 
-function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
-	let text = '';
-	diceOrder.sort((a, b) => order.indexOf(a) - order.indexOf(b));
-	diceOrder.forEach(die => {
-		if (order.slice(0, -8).includes(die)) text += printEmoji(`${die}gif`, bot, channelEmoji);
-		else text += printEmoji(die, bot, channelEmoji);
+async function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
+	return new Promise(async resolve => {
+		let text = '';
+		await asyncForEach(diceOrder.sort((a, b) => order.indexOf(a) - order.indexOf(b)), async die => {
+			if (order.slice(0, -8).includes(die)) text += await printEmoji(`${die}gif`, bot, channelEmoji).catch(console.error);
+			else text += await printEmoji(die, bot, channelEmoji).catch(console.error);
+		});
+		if (text.length > 1500) text = 'Too many dice to display.';
+		resolve(text);
 	});
-	if (text.length > 1500) text = 'Too many dice to display.';
-	return text;
 }
 
-function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) {
+async function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) {
 	//prints faces
-	if (diceResult.face) {
-		if (messageGif) messageGif.edit(diceResult.face).catch(error => console.error(error));
-		else (message.channel.send(diceResult.face).catch(error => console.error(error)))
+	await asyncForEach(Object.keys(diceResult.roll).sort((a, b) => order.indexOf(a) - order.indexOf(b)), async color => {
+		await asyncForEach(diceResult.roll[color], async number => {
+			let face = diceFaces[color][number].face;
+			if (symbols.includes(color)) face = '';
+			diceResult.results.face += await printEmoji(`${color}${face}`, bot, channelEmoji).catch(console.error);
+		});
+	});
+
+	if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
+
+	if (diceResult.results.face) {
+		if (messageGif) messageGif.edit(diceResult.results.face).catch(error => console.error(error));
+		else (message.channel.send(diceResult.results.face).catch(error => console.error(error)))
 	} else {
 		message.reply("No dice rolled.");
 		return;
@@ -279,22 +289,22 @@ function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) 
 
 	//creates finalCount by cancelling results
 	let finalCount = {};
-	if (diceResult.success > diceResult.failure) finalCount.success = diceResult.success - diceResult.failure;
-	if (diceResult.failure > diceResult.success) finalCount.failure = diceResult.failure - diceResult.success;
-	if (diceResult.advantage > diceResult.threat) finalCount.advantage = diceResult.advantage - diceResult.threat;
-	if (diceResult.threat > diceResult.advantage) finalCount.threat = diceResult.threat - diceResult.advantage;
-	if (diceResult.triumph > 0) finalCount.triumph = diceResult.triumph;
-	if (diceResult.despair > 0) finalCount.despair = diceResult.despair;
-	if (diceResult.lightpip > 0) finalCount.lightpip = diceResult.lightpip;
-	if (diceResult.darkpip > 0) finalCount.darkpip = diceResult.darkpip;
+	if (diceResult.results.success > diceResult.results.failure) finalCount.success = diceResult.results.success - diceResult.results.failure;
+	if (diceResult.results.failure > diceResult.results.success) finalCount.failure = diceResult.results.failure - diceResult.results.success;
+	if (diceResult.results.advantage > diceResult.results.threat) finalCount.advantage = diceResult.results.advantage - diceResult.results.threat;
+	if (diceResult.results.threat > diceResult.results.advantage) finalCount.threat = diceResult.results.threat - diceResult.results.advantage;
+	if (diceResult.results.triumph > 0) finalCount.triumph = diceResult.results.triumph;
+	if (diceResult.results.despair > 0) finalCount.despair = diceResult.results.despair;
+	if (diceResult.results.lightpip > 0) finalCount.lightpip = diceResult.results.lightpip;
+	if (diceResult.results.darkpip > 0) finalCount.darkpip = diceResult.results.darkpip;
 
 	//prints finalCount
 	let response = '';
-	Object.keys(finalCount).forEach(symbol => {
-		if (finalCount[symbol] !== 0) response += `${printEmoji(symbol, bot, channelEmoji)} ${finalCount[symbol]} `;
+	await asyncForEach(Object.keys(finalCount), async symbol => {
+		if (finalCount[symbol] !== 0) response +=  `${await printEmoji(symbol, bot, channelEmoji)} ${finalCount[symbol]} `;
 	});
 	if (!response) response += 'All dice have cancelled out';
-	if (diceResult.face) message.reply(`${desc} results:\n\n\t${response}`);
+	if (diceResult.results.face) message.reply(`${desc} results:\n\n\t${response}`);
 }
 
 exports.roll = roll;
