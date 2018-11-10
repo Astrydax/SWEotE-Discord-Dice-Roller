@@ -53,7 +53,7 @@ bot.on("message", async message => {
 
 	//check for Patron
 	if (functions.config.patronDiceRole && functions.config.patreonGuild && functions.config[`${channelEmoji}Patreon`]) {
-		if (functions.checkPatreon(bot, message)) channelEmoji += 'Patreon';
+		if (await functions.checkPatreon(bot, message.author.id)) channelEmoji +='Patreon';
 	}
 
 	//make the descriptor

@@ -105,9 +105,18 @@ function buildStats(bot, message) {
 	});
 }
 
-function checkPatreon(bot, message) {
-	let guild = bot.guilds.get(config.patreonGuild);
-	return guild.roles.get(config.patronDiceRole).members.some(member => member.user.id === message.author.id);
+function checkPatreon(bot, authorID) {
+	return new Promise((resolve, reject) => {
+		bot.shard.broadcastEval(`(${checkRoles}).call(this, '${authorID}', '${config.patreonGuild}', '${config.patronDiceRole}')`)
+			.then(array => resolve(array.some(toggle => toggle)))
+			.catch(reject);
+	});
+}
+
+function checkRoles(authorID, patreonGuild, patronDiceRole) {
+	const guild = this.guilds.get(patreonGuild);
+	if (!guild) return null;
+	return guild.roles.get(patronDiceRole).members.some(member => member.user.id === authorID);
 }
 
 async function asyncForEach(array, callback) {
