@@ -96,16 +96,16 @@ function buildDescriptor(params) {
 }
 
 function buildStats(bot, message) {
+	message.channel.send(`Currently there are ${bot.shard.count} shards.`).catch(console.error);
 	bot.shard.broadcastEval('this.guilds.size')
-		.then(results => message.channel.send(`Currently on ${results.reduce((prev, val) => prev + val, 0)} servers!`).catch(console.error))
+		.then(results => message.channel.send(`Currently on ${results.reduce((prev, val) => prev + val, 0)} servers.`).catch(console.error))
 		.catch(console.error);
 	bot.shard.broadcastEval(`(${buildMemberList}).call(this)`)
 		.then(list => {
 			list = _.flatten(list);
 			let users = _.uniq(list).length;
-			message.channel.send(`Currently assisting ${users} unique users!`).catch(console.error);
-		})
-		.catch(console.error);
+			message.channel.send(`Currently assisting ${users} unique users.`).catch(console.error);
+		}).catch(console.error);
 }
 
 function buildMemberList() {
