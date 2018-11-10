@@ -33,7 +33,7 @@ async function roll(bot, message, params, channelEmoji, desc, diceResult, diceOr
 		if (textGif) messageGif = await message.channel.send(textGif).catch(console.error);
 		resolve(diceResult);
 
-		sleep(desc.includes('roll') ? 0 : 1000);
+		await sleep(desc.includes('roll') ? 0 : 1000);
 
 		printResults(diceResult, message, bot, desc, channelEmoji, messageGif).catch(console.error);
 	}).catch(error => message.reply(`That's an Error! ${error}`));

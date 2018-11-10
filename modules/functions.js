@@ -8,6 +8,12 @@ const dice = sides => Math.floor(rng() * sides) + 1;
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+		await callback(array[index], index, array);
+	}
+}
+
 function polyhedral(sides, str, message) {
 	let total = 0, r = 0, text = '', modifier;
 	if (str.length > 0) modifier = +(str[str.length - 1]).replace(/\D/g, "");
@@ -90,19 +96,22 @@ function buildDescriptor(params) {
 }
 
 function buildStats(bot, message) {
-	let servers, users = [], i = 0;
-	servers = bot.guilds.size;
-	bot.guilds.forEach(guild => {
-		guild.fetchMembers()
-			.then(guild => {
-				guild.members.forEach(member => users.push(member.user.id));
-				i++;
-				if (i >= servers) {
-					users = _.uniq(users).length;
-					message.channel.send(`Currently on ${servers} servers!\nCurrently assisting ${users} unique users!`).catch(err => console.log(err));
-				}
-			}).catch(err => console.log(err));
-	});
+	bot.shard.broadcastEval('this.guilds.size')
+		.then(results => message.channel.send(`Currently on ${results.reduce((prev, val) => prev + val, 0)} servers!`).catch(console.error))
+		.catch(console.error);
+	bot.shard.broadcastEval(`(${buildMemberList}).call(this)`)
+		.then(list => {
+			list = _.flatten(list);
+			let users = _.uniq(list).length;
+			message.channel.send(`Currently assisting ${users} unique users!`).catch(console.error);
+		})
+		.catch(console.error);
+}
+
+function buildMemberList() {
+	let users = [];
+	this.guilds.forEach(guild => guild.members.forEach(member => users.push(member.user.id)));
+	return users;
 }
 
 function checkPatreon(bot, authorID) {
@@ -119,11 +128,6 @@ function checkRoles(authorID, patreonGuild, patronDiceRole) {
 	return guild.roles.get(patronDiceRole).members.some(member => member.user.id === authorID);
 }
 
-async function asyncForEach(array, callback) {
-	for (let index = 0; index < array.length; index++) {
-		await callback(array[index], index, array);
-	}
-}
 exports.buildCommand = buildCommand;
 exports.buildDescriptor = buildDescriptor;
 exports.buildParams = buildParams;

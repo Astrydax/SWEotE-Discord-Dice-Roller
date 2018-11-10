@@ -100,7 +100,7 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 				});
 				messageGif = await message.channel.send(textGif).catch(error => console.error(error));
 
-				await sleep(1200);
+				await sleep(1500);
 
 			} else {
 				await asyncForEach(Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)), async color => {
