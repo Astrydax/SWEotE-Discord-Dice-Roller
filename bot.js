@@ -27,29 +27,30 @@ bot.on("message", async message => {
 	//Ignore messages sent by the bot
 	if (message.author.bot) return;
 
-	//build the prefix
-	prefix = await functions.buildPrefix(bot, message).catch(error => console.error(error));
-	if (!prefix) return;
-
 	//check to see if bot can send messages on channel
 	//check to see if external emoji can be used
 	if (message.channel.type !== 'dm') {
+		if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 		if (!message.channel.permissionsFor(bot.user).has('USE_EXTERNAL_EMOJIS')) {
-			message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`).catch(error => console.error(error));
+			message.channel.send(`Please enable \'Use External Emoji\' for ${bot.user.username}`).catch(console.error);
 			return;
 		}
-		if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 	}
+
+	//build the prefix
+	prefix = await functions.buildPrefix(bot, message).catch(console.error);
+	if (!prefix) return;
+
 	//build params
 	params = functions.buildParams(message, prefix);
 	if (!params) return;
 
 	//build command
 	[command, params] = functions.buildCommand(params);
-	if (!command) return;
+	if (!command || command ==='play') return;
 
 	//get channelEmoji
-	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(error => console.error(error));
+	channelEmoji = await functions.readData(bot, message, 'channelEmoji').catch(console.error);
 
 	//check for Patron
 	if (functions.config.patronDiceRole && functions.config.patreonGuild && functions.config[`${channelEmoji}Patreon`]) {
@@ -81,7 +82,6 @@ bot.on("message", async message => {
 		case 'swrpg':
 		case 'genesys':
 		case 'l5r':
-		case 'dryh':
 			functions.writeData(bot, message, 'channelEmoji', command);
 			message.channel.send(`${bot.user.username} will now use ${command} dice`).catch(console.error);
 			break;
@@ -109,4 +109,4 @@ bot.on("message", async message => {
 			break;
 
 	}
-}, error => console.error(error));
+}, console.error);
