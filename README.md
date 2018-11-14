@@ -229,11 +229,17 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
       nohup nodejs bot.js &>/dev/null & disown
 
 ## Patrons
-- Xavi Santamaria
+- Chad Owen
+- Clynac
 - Flobio
-- Scott McNeil
 - Jason Greathouse
-
+- Matt Langhinrichs
+- Michael C Hershiser
+- Mitch Christenson
+- Nathan Montondon
+- Scott McNeil
+- triplel
+- Xavi Santamaria
 
 [Patreon](https://www.patreon.com/SkyJedi)
 
