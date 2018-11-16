@@ -6,7 +6,7 @@ async function trigger(bot, message, type) {
 		let characterStatus = await readData(bot, message, 'characterStatus');
 		let list = [];
 		if (Object.keys(characterStatus).length === 0) {
-			message.channel.send("No characters found please use !char to setup");
+			message.channel.send("No characters found please use !char to setup").catch(console.error);
 			return;
 		}
 		Object.keys(characterStatus).forEach(characterName => {
@@ -25,17 +25,17 @@ async function trigger(bot, message, type) {
 		let target = 0;
 		let total = 0;
 		list.forEach(name => total += name.value);
-		message.channel.send(`The total group ${type} is ${total}. The ${type} roll is ${roll}.`).catch(error => console.error(error));
+		message.channel.send(`The total group ${type} is ${total}. The ${type} roll is ${roll}.`).catch(console.error);
 
 		if (roll > total) {
-			message.channel.send(`No ${type} triggered`).catch(error => console.error(error));
+			message.channel.send(`No ${type} triggered`).catch(console.error);
 			resolve();
 		}
 
 		for (let i = 0; i < list.length; i++) {
 			target += list[i].value;
 			if (target > roll) {
-				message.channel.send(`${list[i].name}'s ${list[i][type]} ${type} has been triggered.`).catch(error => console.error(error));
+				message.channel.send(`${list[i].name}'s ${list[i][type]} ${type} has been triggered.`).catch(console.error);
 				break;
 			}
 		}

@@ -266,8 +266,8 @@ async function printResults(diceResult, message, bot, desc, channelEmoji, messag
 	let response = '';
 	//prints faces
 	if (results.face) {
-		if (messageGif) messageGif.edit(results.face).catch(error => console.error(error));
-		else (message.channel.send(results.face).catch(error => console.error(error)))
+		if (messageGif) messageGif.edit(results.face).catch(console.error);
+		else message.channel.send(results.face).catch(console.error);
 	} else {
 		message.reply("No dice rolled.");
 		return;

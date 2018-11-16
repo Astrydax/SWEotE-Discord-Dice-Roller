@@ -280,8 +280,8 @@ async function printResults(diceResult, message, bot, desc, channelEmoji, messag
 	if (diceResult.results.face.length > 1500) diceResult.results.face = 'Too many dice to display.';
 
 	if (diceResult.results.face) {
-		if (messageGif) messageGif.edit(diceResult.results.face).catch(error => console.error(error));
-		else (message.channel.send(diceResult.results.face).catch(error => console.error(error)))
+		if (messageGif) messageGif.edit(diceResult.results.face).catch(console.error);
+		else message.channel.send(diceResult.results.face).catch(console.error);
 	} else {
 		message.reply("No dice rolled.");
 		return;

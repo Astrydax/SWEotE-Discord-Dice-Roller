@@ -36,7 +36,7 @@ function readData(bot, message, dataSet) {
 			resolve(data);
 		}, error => {
 			console.error(error);
-			message.channel.send(`Error retrieving data`);
+			message.channel.send(`Error retrieving data`).catch(console.error);
 			resolve({});
 		});
 	}).catch(error => message.reply(`That's an Error! ${error} in readData`));

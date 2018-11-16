@@ -10,11 +10,11 @@ function prefix(bot, message, params) {
 		}
 	}
 	if (!params[0]) {
-		message.channel.send(`Please include a single symbol prefix ie \`!prefix $\``);
+		message.channel.send(`Please include a single symbol prefix ie \`!prefix $\``).catch(console.error);
 		return;
 	}
 	functions.writeData(bot, message, 'prefix', params[0][0]);
-	message.channel.send(`${bot.user.username} will now use ${params[0][0]} as the activator for this server`);
+	message.channel.send(`${bot.user.username} will now use ${params[0][0]} as the activator for this server`).catch(console.error);
 }
 
 exports.prefix = prefix;

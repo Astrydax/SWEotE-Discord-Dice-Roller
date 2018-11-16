@@ -3,21 +3,25 @@ const functions = require('./');
 async function commands(bot, message, params, command, desc, channelEmoji, prefix) {
 	switch (command) {
 		//Character Tracker
+		case 'character':
 		case 'char':
 			functions.char(bot, message, params, channelEmoji);
 			break;
 		// help module
 		case 'help':
+		case 'h':
 			functions.help(bot, message, params[0], prefix);
 			break;
 		case 'gleepglop':
 		case 'species':
 			functions.gleepglop(bot, message, params);
 			break;
+		case 'critical':
 		case 'crit':
 			functions.crit(bot, message, params, channelEmoji);
 			break;
 		//!shipcrit command
+		case 'shipcritical':
 		case 'shipcrit':
 			functions.shipcrit(bot, message, params, channelEmoji);
 			break;
