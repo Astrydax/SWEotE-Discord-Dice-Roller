@@ -121,11 +121,18 @@ function checkPatreon(bot, authorID) {
 			.catch(reject);
 	});
 }
+function checkPatreonServer(bot, ownerID) {
+	return new Promise((resolve, reject) => {
+		bot.shard.broadcastEval(`(${checkRoles}).call(this, '${ownerID}', '${config.patreonGuild}', '${config.patronMegaRole}')`)
+			.then(array => resolve(array.some(toggle => toggle)))
+			.catch(reject);
+	});
+}
 
-function checkRoles(authorID, patreonGuild, patronDiceRole) {
+function checkRoles(userID, patreonGuild, patronRole) {
 	const guild = this.guilds.get(patreonGuild);
 	if (!guild) return null;
-	return guild.roles.get(patronDiceRole).members.some(member => member.user.id === authorID);
+	return guild.roles.get(patronRole).members.some(member => member.user.id === userID);
 }
 
 exports.buildCommand = buildCommand;
@@ -134,6 +141,7 @@ exports.buildParams = buildParams;
 exports.buildPrefix = buildPrefix;
 exports.buildStats = buildStats;
 exports.checkPatreon = checkPatreon;
+exports.checkPatreonServer = checkPatreonServer;
 exports.asyncForEach = asyncForEach;
 exports.dice = dice;
 exports.modifierRoll = polyhedral;
