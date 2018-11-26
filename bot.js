@@ -55,7 +55,7 @@ bot.on("message", async message => {
 	//check for Patron
 	if (functions.config.patronDiceRole && functions.config.patreonGuild && functions.config[`${channelEmoji}Patreon`]) {
 		if (await functions.checkPatreon(bot, message.author.id)) channelEmoji +='Patreon';
-		if (!channelEmoji.includes('Patreon') && functions.config.patronMegaRole) if (await functions.checkPatreonServer(bot, message.guild.ownerID)) channelEmoji +='Patreon';
+		if (!channelEmoji.includes('Patreon') && functions.config.patronMegaRole && message.guild.ownerID) if (await functions.checkPatreonServer(bot, message.guild.ownerID)) channelEmoji += 'Patreon';
 	}
 
 	//make the descriptor

@@ -69,7 +69,7 @@ async function textCrit(total, bot, channelEmoji) {
 			textCrit = await print('purplediamond', bot, channelEmoji) + await print('purplediamond', bot, channelEmoji) + "Slightly Dazed: The target is disoriented until the end of the encounter.";
             break;
         case (total >= 66 && total <= 70):
-			textCrit = await print('purplediamond', bot, channelEmoji) + await print('purplediamond', bot, channelEmoji) + "Scattered Senses: The target removes all " + print('blue', bot, channelEmoji) + " from skill checks until end of encounter.";
+			textCrit = await print('purplediamond', bot, channelEmoji) + await print('purplediamond', bot, channelEmoji) + "Scattered Senses: The target removes all " + await print('blue', bot, channelEmoji) + " from skill checks until end of encounter.";
             break;
         case (total >= 71 && total <= 75):
 			textCrit = await print('purplediamond', bot, channelEmoji) + await print('purplediamond', bot, channelEmoji) + "Hamstrung: The target loses his free maneuver until the end of the encounter.";

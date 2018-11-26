@@ -75,10 +75,10 @@ function buildCommand(params) {
 }
 
 function buildDescriptor(params) {
-	let beg, end;
-	let desc = [];
+	let beg, end, desc = [];
+
 	params.forEach((param, index) => {
-		if (param.includes('\"') || param.includes('“') | param.includes('\'')) {
+		if (param.match(/['"`“”]/g)) {
 			if (beg === undefined) {
 				beg = index;
 				end = index;
@@ -89,7 +89,7 @@ function buildDescriptor(params) {
 	if (beg !== undefined && end !== undefined) {
 		desc = params.slice(beg, end + 1);
 		params.splice(beg, end + 1 - beg);
-		desc.forEach((word, index) => desc[index] = word.replace(/['"`“]/g, ''));
+		desc.forEach((word, index) => desc[index] = word.replace(/['"`“”]/g, ''));
 		desc = desc.join(' ');
 	}
 	return [desc, params];
