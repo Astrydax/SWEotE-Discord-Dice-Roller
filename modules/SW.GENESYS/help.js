@@ -141,7 +141,7 @@ function help(bot, message, topic, prefix) {
 				.addField(`${prefix}shipcrit`, 'rolls and displays the ship critical hit.')
 				.addField(`${prefix}char`, 'simple character stat manager.')
 				.addField(`${prefix}init`, 'initiative tracker and roller.')
-				.addField(`${prefix}obligation`, 'gathers all the obligations entered with ${prefix}char and rolls to trigger.')
+				.addField(`${prefix}obligation`, `gathers all the obligations entered with ${prefix}char and rolls to trigger.`)
 				.addField(`${prefix}duty`, `gathers all the duty entered with ${prefix}char and rolls to trigger.`)
 				.addField(`${prefix}species/${prefix}gleepglop`,'picks a random species.')
 				.addField('More Information', 'For more information or help join the [FFG NDS Assistant Bot server](https://discord.gg/G8au6FH)')

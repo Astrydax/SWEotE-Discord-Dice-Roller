@@ -102,15 +102,14 @@ function buildStats(bot, message) {
 		.catch(console.error);
 	bot.shard.broadcastEval(`(${buildMemberList}).call(this)`)
 		.then(list => {
-			list = _.flatten(list);
-			let users = _.uniq(list).length;
-			message.channel.send(`Currently assisting ${users} unique users.`).catch(console.error);
+			let users = _.sum(list);
+			message.channel.send(`Currently assisting ${users} users.`).catch(console.error);
 		}).catch(console.error);
 }
 
 function buildMemberList() {
-	let users = [];
-	this.guilds.forEach(guild => guild.members.forEach(member => users.push(member.user.id)));
+	let users = 0;
+	this.guilds.forEach(guild => users += +guild.memberCount);
 	return users;
 }
 

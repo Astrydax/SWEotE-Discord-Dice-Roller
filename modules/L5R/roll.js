@@ -275,7 +275,9 @@ async function printResults(diceResult, message, bot, desc, channelEmoji, messag
 	if (results.explosiveSuccess.white > 0 || results.explosiveSuccess.black > 0) {
 		response += await printEmoji('explosiveSuccess', bot, channelEmoji) + '(';
 		await asyncForEach(Object.keys(results.explosiveSuccess), async color => {
-			if (results.explosiveSuccess[color] > 0) response += await printEmoji(`${color}`, bot, channelEmoji) + results.explosiveSuccess[color] + ' ';
+			if (results.explosiveSuccess[color] > 0) {
+				response += `${await printEmoji(`${color === 'white' ? 'whiteHex' : color}`, bot, channelEmoji)} ${results.explosiveSuccess[color]} `;
+			}
 		});
 		response += ') ';
 	}
