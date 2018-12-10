@@ -231,12 +231,18 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
 ## Patrons
 - Chad Owen
 - Clynac
+- Esteban Riviera
 - Flobio
+- Gil Colgate
 - Jason Greathouse
+- Joonas Moisio
 - Matt Langhinrichs
+- Matthew R Martinez
 - Michael C Hershiser
 - Mitch Christenson
 - Nathan Montondon
+- Ohdias
+- Peter Cummuskey
 - Scott McNeil
 - triplel
 - Xavi Santamaria
