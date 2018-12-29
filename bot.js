@@ -10,14 +10,14 @@ const bot = new Discord.Client();
 const firebase = require('firebase');
 const _ = require('lodash');
 
-bot.login(functions.config.token).catch(error => console.error(error));
+bot.login(functions.config.token).catch(error => console.error(new Date(), error));
 firebase.initializeApp(functions.firebaseconfig);
 
 //Called When bot becomes functional
 bot.on('ready', () => {
 	console.log(`Bot version ${functions.version}`);
 	console.log(`Logged in as ${bot.user.username}!`);
-}, error => console.error(error));
+}, error => console.error(new Date(), error));
 
 //Called whenever a users send a message to the server
 bot.on("message", async message => {
@@ -91,7 +91,11 @@ bot.on("message", async message => {
 			else functions.prefix(bot, message, params);
 			break;
 		case 'invite':
-			message.channel.send(`Invite @D1-C3  to your server <https://discordapp.com/oauth2/authorize?client_id=294576386696544273&scope=bot&permissions=262144>`).catch(console.error);
+			const embed = new Discord.RichEmbed()
+				.setColor('777777')
+				.setTitle(`**Invite**`)
+				.setDescription(`Click [here](https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=280576) to invite the bot to your server!`);
+			message.channel.send(embed).catch(console.error);
 			break;
 	}
 	if (message.author.id === functions.config.adminID) functions.admin(bot, message, params, command);
@@ -110,4 +114,4 @@ bot.on("message", async message => {
 			break;
 
 	}
-}, console.error);
+}, error => console.error(new Date(), error));

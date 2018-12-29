@@ -1,9 +1,9 @@
 @echo off
 TITLE EotE Dice Rolling Bot
 if exist node_modules (
-	node bot.js
+	node start.js
 ) else (
 	npm install
-	node bot.js
+	node start.js
 )
 pause
