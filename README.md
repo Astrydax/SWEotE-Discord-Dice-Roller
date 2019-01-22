@@ -229,6 +229,7 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
       nohup nodejs bot.js &>/dev/null & disown
 
 ## Patrons
+- Caleb Smith
 - Chad Owen
 - Clynac
 - Esteban Riviera
@@ -236,6 +237,7 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
 - Gil Colgate
 - Jason Greathouse
 - Joonas Moisio
+- JP Sugarbroad
 - Matt Langhinrichs
 - Matthew R Martinez
 - Michael C Hershiser
@@ -243,7 +245,9 @@ To update the bot, Just execute the file "UPDATE.bat" on a windows or "UPDATE.co
 - Nathan Montondon
 - Ohdias
 - Peter Cummuskey
+- Peter Por
 - Scott McNeil
+- Tommy R.
 - triplel
 - Xavi Santamaria
 
