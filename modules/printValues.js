@@ -1,21 +1,22 @@
 const config = require('../config').config;
+const emoji = require('../emoji.json');
 
-function print(str, bot, channelEmoji) {
-	return new Promise((resolve, reject) => {
+const print = (str, bot, channelEmoji) => {
+	return new Promise(resolve => {
 		bot.shard.broadcastEval(`(${findGuild}).call(this, '${config[channelEmoji]}', '${str}')`)
-			.then(emojiArray => {
-				const foundEmoji = emojiArray.find(emoji => emoji);
-				resolve(foundEmoji)
-			})
-			.catch(reject);
-	})
-}
+			.then(emojiArray => resolve(emojiArray.find(emoji => emoji)))
+			.catch(console.error);
+	});
+};
 
-function findGuild(guildID, emojiID) {
+const findGuild = (guildID, emojiID) => {
 	const guild = this.guilds.get(guildID);
-	if (!guild) return null;
+	if (!guild) return emojiID;
 	const emoji = guild.emojis.find(val => val.name === emojiID);
-	return emoji.toString();
-}
+	return emoji ? emoji.toString() : emojiID;
+};
 
+const emojiSearch = (string, type) => emoji[type].find(x => x.includes(`${string}:`));
+
+exports.emoji = emojiSearch;
 exports.print = print;

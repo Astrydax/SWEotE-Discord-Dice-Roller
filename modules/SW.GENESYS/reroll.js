@@ -1,5 +1,5 @@
 const dice = require('../').dice;
-const printEmoji = require('../').print;
+const printEmoji = require('../').emoji;
 const diceFaces = require('./').diceFaces;
 const readData = require('../').readData;
 const writeData = require('../').writeData;
@@ -105,12 +105,12 @@ async function reroll(bot, message, params, channelEmoji) {
 								let currentRoll = diceResult.roll[target][position];
 								emoji = `${target}${diceFaces[target][currentRoll].face}`;
 								if (symbols.includes(target)) emoji = target;
-								let text = `${target}${position + 1} ` + await printEmoji(emoji, bot, channelEmoji) + ':\n';
+								let text = `${target}${position + 1} ` + await printEmoji(emoji, channelEmoji) + ':\n';
 								let count = 1;
 								await asyncForEach(diceFaces[target][currentRoll].adjacentposition, async newRoll => {
 									emoji = `${target}${diceFaces[target][newRoll].face}`;
 									if (symbols.includes(target)) emoji = target;
-									text += count + ': ' + await printEmoji(emoji, bot, channelEmoji) + '  ';
+									text += count + ': ' + await printEmoji(emoji, channelEmoji) + '  ';
 									count++
 								});
 								message.reply(text);

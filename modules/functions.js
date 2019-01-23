@@ -1,10 +1,8 @@
 const functions = require('./');
 const config = require('../config').config;
 const _ = require('lodash');
-const seedrandom = require('seedrandom');
-const rng = seedrandom(Math.random(), {entropy: true});
 
-const dice = sides => Math.floor(rng() * sides) + 1;
+const dice = sides => _.random(1, sides);
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 

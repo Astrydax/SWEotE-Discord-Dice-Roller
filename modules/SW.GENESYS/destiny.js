@@ -1,5 +1,5 @@
 const functions = require('./');
-const print = require('../').print;
+const emoji = require('../').emoji;
 const readData = require('../').readData;
 const writeData = require('../').writeData;
 const sleep = require('../').sleep;
@@ -110,7 +110,7 @@ async function destiny(bot, message, params, channelEmoji) {
 		//Prints out destiny pool to channel
 		writeData(bot, message, 'destinyBalance', destinyBalance);
 		if (params[0] === 'r' || params[0] === 'roll') await sleep(1200);
-		printDestinyBalance(destinyBalance, bot, channelEmoji, message, type);
+		printDestinyBalance(destinyBalance, channelEmoji, message, type);
 	}).catch(error => message.reply(`That's an Error! ${error}`));
 
 }
@@ -123,10 +123,10 @@ function initDestinyBalance() {
 	};
 }
 
-async function printDestinyBalance(destinyBalance, bot, channelEmoji, message, type) {
+function printDestinyBalance(destinyBalance, channelEmoji, message, type) {
 	destinyBalance.face = "";
-	for (let i = 1; i <= destinyBalance.light; i++) destinyBalance.face += await print("lightside", bot, channelEmoji);
-	for (let i = 1; i <= destinyBalance.dark; i++) destinyBalance.face += await print("darkside", bot, channelEmoji);
+	for (let i = 1; i <= destinyBalance.light; i++) destinyBalance.face += emoji("lightside", channelEmoji);
+	for (let i = 1; i <= destinyBalance.dark; i++) destinyBalance.face += emoji("darkside", channelEmoji);
 	message.channel.send(`${type} Points: `).catch(console.error);
 	if (destinyBalance.face !== "") {
 		if (destinyBalance.face.length > 1500) destinyBalance.face = `Too many ${type} Points to display.`;

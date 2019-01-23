@@ -16,6 +16,7 @@ exports.modifierRoll = require('./functions').modifierRoll;
 exports.poly = require('./poly').poly;
 exports.prefix = require('./prefix').prefix;
 exports.print = require('./printValues').print;
+exports.emoji = require('./printValues').emoji;
 exports.readData = require('./data').readData;
 exports.version = require('../package.json').version;
 exports.writeData = require('./data').writeData;

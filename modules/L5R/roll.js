@@ -1,5 +1,5 @@
 const config = require('../../config').config;
-const printEmoji = require('../').print;
+const emoji = require('../').emoji;
 const writeData = require('../').writeData;
 const readData = require('../').readData;
 const dice = ['white', 'black', 'success', 'opportunity', 'strife', 'explosiveSuccess'];
@@ -36,13 +36,13 @@ async function roll(params, message, bot, desc, channelEmoji, add) {
 
 		//counts the symbols rolled and returns them in diceResult.results
 
-		let messageGif, textGif = await printAnimatedEmoji(diceOrder, message, bot, channelEmoji);
+		let messageGif, textGif = await printAnimatedEmoji(diceOrder, message, channelEmoji);
 		if (textGif) messageGif = await message.channel.send(textGif).catch(error => console.error(error));
 
 		await sleep(1200);
 
 		diceResult = countSymbols(diceResult);
-		printResults(diceResult, message, bot, desc, channelEmoji, messageGif).catch(console.error);
+		printResults(diceResult, message, desc, channelEmoji, messageGif).catch(console.error);
 		writeData(bot, message, 'diceResult', diceResult.roll);
 		resolve()
 	}).catch(error => message.reply(`That's an Error! ${error}`));
@@ -89,12 +89,12 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 					await asyncForEach(roll[color], async (face, index) => {
 						if (object[color].includes(index)) {
 							keeperResults.roll[color].splice(index, 1, diceFaces[color][rollDice(diceFaces[color].length) - 1]);
-							if (dice.slice(0, -4).includes(color)) textGif += await printEmoji(`${color}gif`, bot, channelEmoji);
-							else textGif += await printEmoji(color, bot, channelEmoji);
+							if (dice.slice(0, -4).includes(color)) textGif += emoji(`${color}gif`, channelEmoji);
+							else textGif += emoji(color, channelEmoji);
 						}
 						else {
-							if (color === 'white' || color === 'black') textGif += await printEmoji(`${color}${face}`, bot, channelEmoji);
-							else textGif += await printEmoji(color, bot, channelEmoji);
+							if (color === 'white' || color === 'black') textGif += emoji(`${color}${face}`, channelEmoji);
+							else textGif += emoji(color, channelEmoji);
 						}
 					});
 				});
@@ -107,14 +107,14 @@ async function keep(params, message, bot, desc, channelEmoji, reroll) {
 					await asyncForEach(roll[color], async (face, index) => {
 						if (object[color].includes(index)) {
 							keeperResults.roll[color].push(roll[color][index]);
-							textGif += await printEmoji(color, bot, channelEmoji);
+							textGif += emoji(color, channelEmoji);
 						}
 					});
 				});
 			}
 
-			diceResult = countSymbols(keeperResults, message, bot, desc, channelEmoji);
-			printResults(diceResult, message, bot, desc, channelEmoji, messageGif).catch(console.error);
+		diceResult = countSymbols(keeperResults);
+		printResults(diceResult, message, desc, channelEmoji, messageGif).catch(console.error);
 			writeData(bot, message, 'diceResult', keeperResults.roll);
 		}
 	).catch(error => message.reply(`That's an Error! ${error}`));
@@ -241,23 +241,23 @@ function countSymbols(diceResult) {
 	return diceResult;
 }
 
-async function printAnimatedEmoji(diceOrder, message, bot, channelEmoji) {
+async function printAnimatedEmoji(diceOrder, message, channelEmoji) {
 	let text = '';
 	diceOrder.sort((a, b) => dice.indexOf(a) - dice.indexOf(b));
-	await asyncForEach(diceOrder, async die => {
-		if (dice.slice(0, -4).includes(die)) text += await printEmoji(`${die}gif`, bot, channelEmoji);
-		else text += await printEmoji(die, bot, channelEmoji);
+	await asyncForEach(diceOrder, die => {
+		if (dice.slice(0, -4).includes(die)) text += emoji(`${die}gif`, channelEmoji);
+		else text += emoji(die, channelEmoji);
 	});
 	if (text.length > 1500) text = 'Too many dice to display.';
 	return text;
 }
 
-async function printResults(diceResult, message, bot, desc, channelEmoji, messageGif) {
+async function printResults(diceResult, message, desc, channelEmoji, messageGif) {
 	let roll = diceResult.roll, results = diceResult.results;
 	await asyncForEach(Object.keys(roll).sort((a, b) => dice.indexOf(a) - dice.indexOf(b)), async color => {
-		await asyncForEach(roll[color], async face => {
-			if (color === 'white' || color === 'black') results.face += await printEmoji(`${color}${face}`, bot, channelEmoji);
-			else results.face += await printEmoji(`${color}`, bot, channelEmoji);
+		await asyncForEach(roll[color], face => {
+			if (color === 'white' || color === 'black') results.face += emoji(`${color}${face}`, channelEmoji);
+			else results.face += emoji(`${color}`, channelEmoji);
 		});
 	});
 	if (results.face.length > 1500) results.face = 'Too many dice to display.';
@@ -273,17 +273,17 @@ async function printResults(diceResult, message, bot, desc, channelEmoji, messag
 		return;
 	}
 	if (results.explosiveSuccess.white > 0 || results.explosiveSuccess.black > 0) {
-		response += await printEmoji('explosiveSuccess', bot, channelEmoji) + '(';
-		await asyncForEach(Object.keys(results.explosiveSuccess), async color => {
+		response += emoji('explosiveSuccess', channelEmoji) + '(';
+		await asyncForEach(Object.keys(results.explosiveSuccess), color => {
 			if (results.explosiveSuccess[color] > 0) {
-				response += `${await printEmoji(`${color === 'white' ? 'whiteHex' : color}`, bot, channelEmoji)} ${results.explosiveSuccess[color]} `;
+				response += `${emoji(`${color === 'white' ? 'whiteHex' : color}`, channelEmoji)} ${results.explosiveSuccess[color]} `;
 			}
 		});
 		response += ') ';
 	}
 	//prints symbols
-	await asyncForEach(symbolOrder, async symbol => {
-		if (results[symbol] !== 0) response += await printEmoji(`${symbol}`, bot, channelEmoji) + results[symbol] + ' ';
+	await asyncForEach(symbolOrder, symbol => {
+		if (results[symbol] !== 0) response += emoji(`${symbol}`, channelEmoji) + results[symbol] + ' ';
 	});
 	if (results.face) message.reply(desc + " results:" + "\n\n\t" + response);
 }

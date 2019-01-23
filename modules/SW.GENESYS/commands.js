@@ -18,12 +18,12 @@ async function commands(bot, message, params, command, desc, channelEmoji, prefi
 			break;
 		case 'critical':
 		case 'crit':
-			functions.crit(bot, message, params, channelEmoji);
+			functions.crit(message, params, channelEmoji);
 			break;
 		//!shipcrit command
 		case 'shipcritical':
 		case 'shipcrit':
-			functions.shipcrit(bot, message, params, channelEmoji);
+			functions.shipcrit(message, params, channelEmoji);
 			break;
 		//Destiny Point Module
 		case 'destiny':

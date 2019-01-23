@@ -10,8 +10,9 @@ const bot = new Discord.Client();
 const firebase = require('firebase');
 const _ = require('lodash');
 
-bot.login(functions.config.token).catch(error => console.error(new Date(), error));
 firebase.initializeApp(functions.firebaseconfig);
+
+bot.login(functions.config.token).catch(error => console.error(new Date(), error));
 
 //Called When bot becomes functional
 bot.on('ready', () => {

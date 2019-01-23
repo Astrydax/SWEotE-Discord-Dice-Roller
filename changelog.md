@@ -1,44 +1,48 @@
-2.6.7
+# 2.7.0
+    local emoji
+    removed a lot of stuff that i dont need
+    please don't make a personal instance anymore.  set up is just too much now
+# 2.6.7
     updated invite permissions
 
-2.6.6
+# 2.6.6
     -fixed Crit 66-70
     -added iOS's new stupid "i'm better just because im different" default double quotes
 
-2.6.5
+# 2.6.5
     -added patreonMega code
 
-2.6.4
+# 2.6.4
     -rich embeds for help
 
-2.6.3
+# 2.6.3
     -missing permission fix
     -ignore play command
 
-2.6.2
+# 2.6.2
     -stats fix
 
-2.6.1
+# 2.6.1
     -patreon dice fix
 
-2.6.0
+# 2.6.0
     -sharding and sharding emoji rewrite
 
-2.5.3
+# 2.5.3
     -fixed init and d roll
     -updated firebase and lodash
     -added inventory to !char
 
-2.5.2
+# 2.5.2
     -added duty
     -rewrote !char
     -added prefix to help
 
-2.5.1
+# 2.5.1
     -removes !dx
     -fixed a thing or two
 
-2.5.0
+# 2.5.0
     -added L5R functionality
     -compartmentalized game types
 
