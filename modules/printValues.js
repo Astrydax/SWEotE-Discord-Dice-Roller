@@ -16,7 +16,7 @@ const findGuild = (guildID, emojiID) => {
 	return emoji ? emoji.toString() : emojiID;
 };
 
-const emojiSearch = (string, type) => emoji[type].find(x => x.includes(`${string}:`));
+const emojiSearch = (string, type = 'swrpg') => emoji[type][string];
 
 exports.emoji = emojiSearch;
 exports.print = print;

@@ -48,7 +48,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					}
 				});
 				diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
-				functions.printResults(diceResult, message, bot, `Removing ${count} Dice`, channelEmoji);
+				functions.printResults(diceResult, message, `Removing ${count} Dice`, channelEmoji);
 				break;
 			case "select":
 				if (!params[1]) {
@@ -76,7 +76,7 @@ async function reroll(bot, message, params, channelEmoji) {
 					if (index + 1 >= fortuneDice.length) {
 						if (trigger === 1) {
 							diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
-							functions.printResults(diceResult, message, bot, text, channelEmoji);
+							functions.printResults(diceResult, message, text, channelEmoji);
 						}
 					}
 
@@ -136,7 +136,7 @@ async function reroll(bot, message, params, channelEmoji) {
 							text.slice(0, -1);
 							message.reply(`Replacing${text}:`);
 							diceResult = functions.countSymbols(diceResult, message, bot, channelEmoji);
-							functions.printResults(diceResult, message, bot, ``, channelEmoji);
+							functions.printResults(diceResult, message, ``, channelEmoji);
 						}
 						break;
 					default:

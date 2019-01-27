@@ -40,8 +40,9 @@ const l5rDice = [
 
 getEmoji = (type, bot, list) => {
 	return new Promise(resolve => {
-		const data = list.map(async key => await emoji(key, bot, type));
-		Promise.all(data).then(data => resolve(data));
+		const data = {};
+		const process = list.map(async key => data[key] = await emoji(key, bot, type));
+		Promise.all(process).then(() => resolve(data));
 	})
 };
 

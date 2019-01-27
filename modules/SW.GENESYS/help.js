@@ -96,7 +96,7 @@ function help(bot, message, topic, prefix) {
 					`shows adjacent sides for the specified die.
 					\`\`\`${prefix}reroll fortune show y1 p2\`\`\`  (shows the adjacent side for the 1st yellow and 2 purple diceFaces).`)
 				.addField(`${prefix}reroll fortune swap diceColor / dicePosition adjacentFace`, 'swaps the current face for an adjacent one.')
-				.addField(`${prefix}reroll fortune swap 2 y3`, 'swaps the current die face on the 2nd yellow with option 3 of the adjacent sides.');
+				.addField(`${prefix}reroll fortune swap y3 2`, 'swaps the current die face on the 2nd yellow with option 3 of the adjacent sides.');
 			break;
 		case 'polyhedral':
 		case 'poly':

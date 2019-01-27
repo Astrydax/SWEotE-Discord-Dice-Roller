@@ -99,10 +99,8 @@ function buildStats(bot, message) {
 		.then(results => message.channel.send(`Currently on ${results.reduce((prev, val) => prev + val, 0)} servers.`).catch(console.error))
 		.catch(console.error);
 	bot.shard.broadcastEval(`(${buildMemberList}).call(this)`)
-		.then(list => {
-			let users = _.sum(list);
-			message.channel.send(`Currently assisting ${users} users.`).catch(console.error);
-		}).catch(console.error);
+		.then(list => message.channel.send(`Currently assisting ${_.sum(list)} users.`).catch(console.error))
+		.catch(console.error);
 }
 
 function buildMemberList() {
