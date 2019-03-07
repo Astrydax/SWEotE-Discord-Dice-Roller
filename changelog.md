@@ -1,5 +1,7 @@
 # 2.7.1
     fixed rr print error
+    fixed char crit error
+    
 # 2.7.0
     local emoji
     removed a lot of stuff that i dont need

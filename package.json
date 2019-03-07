@@ -1,6 +1,6 @@
 {
   "name": "edge-of-the-empire-dice-roller",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "Discord dice roller for EotE, AoR, FnD, Genesys, and L5R role playing games.",
   "main": "bot.js",
   "repository": {
@@ -20,9 +20,8 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "Emoji-Genesys/",
-      "Emoji-L5R/",
-      "Emoji-SWRPG/"
+      "Emoji/*",
+      "node_modules/*"
     ]
   },
   "keywords": [

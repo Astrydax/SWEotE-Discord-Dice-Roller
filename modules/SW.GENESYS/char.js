@@ -95,7 +95,7 @@ async function char(bot, message, params, channelEmoji) {
 				}
 				if (character.crit.length > 0) {
 					text += `${characterName} has the following Critical Injuries.`;
-					character.crit.sort().forEach(crit => text += `\nCrit ${crit}: ${functions.textCrit(crit, bot, channelEmoji)}`);
+					character.crit.sort().forEach(crit => text += `\nCrit ${crit}: ${functions.textCrit(crit, channelEmoji)}`);
 				} else text += `${characterName} has no Critical Injuries.`;
 				break;
 
